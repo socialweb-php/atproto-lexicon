@@ -1,0 +1,20 @@
+{
+    "lexicon": 1,
+    "id": "org.example.foo.getSomething",
+    "defs": {
+        "main": {
+            "type": "query",
+            "description": "Gets something really cool.",
+            "output": {
+                "encoding": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": ["id"],
+                    "properties": {
+                        "id": {"type": "string"}
+                    }
+                }
+            }
+        }
+    }
+}
