@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SocialWeb\Atproto\Lexicon\Types;
+
+final class LexiconDoc
+{
+    public readonly int $lexicon;
+
+    /**
+     * @param string $id An NSID
+     * @param array<string, LexArray | LexPrimitive | LexRef | LexUnion | LexUserType> $defs
+     */
+    public function __construct(
+        public readonly string $id,
+        public readonly array $defs,
+        public readonly float | int | null $revision = null,
+        public readonly ?string $description = null,
+    ) {
+        $this->lexicon = 1;
+    }
+}
