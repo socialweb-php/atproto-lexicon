@@ -52,7 +52,7 @@ use function substr;
 
 use const DIRECTORY_SEPARATOR;
 
-final class LexiconParser
+final class LexiconDocParser
 {
     private const DEPTH = 5;
 

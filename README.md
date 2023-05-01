@@ -31,9 +31,9 @@ composer require socialweb/atproto-lexicon
 ## Usage
 
 ``` php
-use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
 
-$parser = new LexiconParser(
+$parser = new LexiconDocParser(
     documentPath: '/path/to/bluesky-social/atproto/lexicons/app/bsky/feed/post.json',
     schemaPath: '/path/to/bluesky-social/atproto/lexicons',
     resolveReferences: true,
