@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
-final class LexXrpcBody
+final class LexXrpcBody implements LexType
 {
     public function __construct(
         public readonly string $encoding,

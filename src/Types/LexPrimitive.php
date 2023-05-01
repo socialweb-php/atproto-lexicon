@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
-abstract class LexPrimitive
+abstract class LexPrimitive implements LexType
 {
     public function __construct(
         public readonly LexPrimitiveType $type,

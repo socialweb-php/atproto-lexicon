@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
-final class LexiconDoc
+final class LexiconDoc implements LexType
 {
     public readonly int $lexicon;
 

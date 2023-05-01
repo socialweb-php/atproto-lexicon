@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
-final class LexUnion
+final class LexUnion implements LexType
 {
     public readonly LexPrimitiveType $type;
 
