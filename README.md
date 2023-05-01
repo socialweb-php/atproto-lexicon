@@ -1,7 +1,7 @@
 <h1 align="center">socialweb/atproto-lexicon</h1>
 
 <p align="center">
-    <strong>A PHP-base Lexicon parser for applications using the AT Protocol</strong>
+    <strong>A PHP-based Lexicon parser for applications using the AT Protocol</strong>
 </p>
 
 <!--
@@ -20,20 +20,11 @@ TODO: Make sure the following URLs are correct and working for your project.
 </p>
 -->
 
-
 ## About
-
-<!--
-TODO: Use this space to provide more details about your package. Try to be
-      concise. This is the introduction to your package. Let others know what
-      your package does and how it can help them build applications.
--->
-
 
 This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
 By participating in this project and its community, you are expected to
 uphold this code.
-
 
 ## Installation
 
@@ -58,7 +49,6 @@ echo $example->greet('fellow human');
 ```
 -->
 
-
 ## Contributing
 
 Contributions are welcome! To contribute, please familiarize yourself with
@@ -71,11 +61,6 @@ contribution of external security researchers. If you believe you've found a
 security issue in software that is maintained in this repository, please read
 [SECURITY.md](SECURITY.md) for instructions on submitting a vulnerability report.
 
-
-
-
-
-
 ## Copyright and License
 
 socialweb/atproto-lexicon is copyright © [Ben Ramsey](https://benramsey.com)
@@ -83,5 +68,3 @@ and licensed for use under the terms of the
 GNU Lesser General Public License (LGPL-3.0-or-later) as published by the Free
 Software Foundation. Please see [COPYING.LESSER](COPYING.LESSER),
 [COPYING](COPYING), and [NOTICE](NOTICE) for more information.
-
-
