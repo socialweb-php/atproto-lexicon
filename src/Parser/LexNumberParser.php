@@ -10,7 +10,7 @@ use function is_float;
 use function is_int;
 use function is_string;
 
-class LexNumberParser implements Parser
+final class LexNumberParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

@@ -10,7 +10,7 @@ use function is_float;
 use function is_int;
 use function is_string;
 
-class LexAudioParser implements Parser
+final class LexAudioParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

@@ -9,7 +9,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use function is_int;
 use function is_string;
 
-class LexIntegerParser implements Parser
+final class LexIntegerParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;
