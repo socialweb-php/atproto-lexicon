@@ -10,7 +10,7 @@ final class LexiconDoc implements LexType
 
     /**
      * @param string $id An NSID
-     * @param array<string, LexArray | LexPrimitive | LexRef | LexUnion | LexUserType> $defs
+     * @param array<string, LexType> $defs
      */
     public function __construct(
         public readonly string $id,

@@ -17,9 +17,9 @@ use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexToken;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexUserType;
 use SocialWeb\Atproto\Lexicon\Types\LexVideo;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
@@ -111,16 +111,14 @@ final class LexiconDocParser implements Parser
         return $doc;
     }
 
-    private function parseDef(object $def): LexArray | LexPrimitive | LexRef | LexUnion | LexUserType
+    private function parseDef(object $def): LexType
     {
-        $type = $def->type ?? null;
-        assert($type === null || is_string($type));
+        $type = $def->type ?? '';
+        assert(is_string($type));
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'audio' => $this->getParserFactory()->getParser(LexAudioParser::class)->parse($def),
             'blob' => $this->parseBlob($def),
-            'boolean' => $this->getParserFactory()->getParser(LexBooleanParser::class)->parse($def),
             'image' => $this->parseImage($def),
             'integer' => $this->parseInteger($def),
             'number' => $this->parseNumber($def),
@@ -134,7 +132,7 @@ final class LexiconDocParser implements Parser
             'union' => $this->parseUnion($def),
             'unknown' => $this->parseUnknown($def),
             'video' => $this->parseVideo($def),
-            default => throw new UnableToParse("Encountered unknown type \"$type\""),
+            default => $this->getParserFactory()->getParserByTypeName($type)->parse($def),
         };
     }
 
@@ -341,7 +339,7 @@ final class LexiconDocParser implements Parser
         return new LexRecord($this->parseObject($record), $key, $description);
     }
 
-    private function parseRef(object $def): LexArray | LexPrimitive | LexRef | LexUnion | LexUserType
+    private function parseRef(object $def): LexType
     {
         $ref = $def->ref ?? null;
 

@@ -10,6 +10,29 @@ use function is_a;
 class ParserFactory
 {
     /**
+     * @var array<string, class-string<Parser> | null>
+     */
+    private array $typeParserMap = [
+        'array' => null,
+        'audio' => LexAudioParser::class,
+        'blob' => null,
+        'boolean' => LexBooleanParser::class,
+        'image' => null,
+        'integer' => null,
+        'number' => null,
+        'object' => null,
+        'procedure' => null,
+        'query' => null,
+        'record' => null,
+        'ref' => null,
+        'string' => null,
+        'token' => null,
+        'union' => null,
+        'unknown' => null,
+        'video' => null,
+    ];
+
+    /**
      * @param array<class-string<Parser>, Parser> $parsers
      */
     public function __construct(
@@ -44,5 +67,16 @@ class ParserFactory
 
         /** @var T */
         return $parser;
+    }
+
+    public function getParserByTypeName(string $typeName): Parser
+    {
+        $className = $this->typeParserMap[$typeName] ?? null;
+
+        if ($className === null) {
+            throw new ParserNotFound("Unable to find parser for \"$typeName\"");
+        }
+
+        return $this->getParser($className);
     }
 }

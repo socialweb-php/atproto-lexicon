@@ -9,7 +9,7 @@ final class LexUnion implements LexType
     public readonly LexPrimitiveType $type;
 
     /**
-     * @param string[] | array<LexArray | LexPrimitive | LexRef | LexUnion | LexUserType> $refs
+     * @param string[] | array<LexType> $refs
      */
     public function __construct(
         public readonly array $refs,
