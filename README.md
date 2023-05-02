@@ -32,14 +32,21 @@ composer require socialweb/atproto-lexicon
 
 ``` php
 use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
+use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
+
+$file = '/path/to/bluesky-social/atproto/lexicons/app/bsky/feed/post.json';
+$schemas = '/path/to/bluesky-social/atproto/lexicons';
+
+$schemaRepository = new SchemaRepository($schemas);
 
 $parser = new LexiconDocParser(
-    documentPath: '/path/to/bluesky-social/atproto/lexicons/app/bsky/feed/post.json',
-    schemaPath: '/path/to/bluesky-social/atproto/lexicons',
+    schemaRepository: $schemaRepository,
+    parserFactory: new ParserFactory($schemaRepository),
     resolveReferences: true,
 );
 
-$document = $parser->parse();
+$document = $parser->parse((string) file_get_contents($file));
 
 // This isn't necessary, but it uses jq to print the JSON and remove null
 // values, so you can see that what we parsed is very close to what we consumed.
