@@ -8,7 +8,6 @@ use ReflectionObject;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexNumber;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
@@ -116,7 +115,6 @@ final class LexiconDocParser implements Parser
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'number' => $this->parseNumber($def),
             'object' => $this->parseObject($def),
             'procedure' => $this->parseProcedure($def),
             'query' => $this->parseQuery($def),
@@ -197,27 +195,6 @@ final class LexiconDocParser implements Parser
         }
 
         return new LexXrpcQuery($parameters ?: null, $output, $errors ?: null, $description);
-    }
-
-    private function parseNumber(object $def): LexNumber
-    {
-        $default = $def->default ?? null;
-        $const = $def->const ?? null;
-        $description = $def->description ?? null;
-        $minimum = $def->minimum ?? null;
-        $maximum = $def->maximum ?? null;
-
-        /** @var list<int | float> | null $enum */
-        $enum = $def->enum ?? null;
-
-        assert($default === null || is_int($default) || is_float($default));
-        assert($minimum === null || is_int($minimum) || is_float($minimum));
-        assert($maximum === null || is_int($maximum) || is_float($maximum));
-        assert($enum === null || $this->isArrayOfNumber($enum));
-        assert($const === null || is_int($const) || is_float($const));
-        assert($description === null || is_string($description));
-
-        return new LexNumber($default, $minimum, $maximum, $enum, $const, $description);
     }
 
     private function parseObject(object $def): LexObject

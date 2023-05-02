@@ -19,7 +19,7 @@ class ParserFactory
         'boolean' => LexBooleanParser::class,
         'image' => LexImageParser::class,
         'integer' => LexIntegerParser::class,
-        'number' => null,
+        'number' => LexNumberParser::class,
         'object' => null,
         'procedure' => null,
         'query' => null,
