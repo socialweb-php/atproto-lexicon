@@ -13,7 +13,7 @@ use function realpath;
 
 use const DIRECTORY_SEPARATOR;
 
-final class SchemaRepository
+class SchemaRepository
 {
     public readonly string $schemaDirectory;
 

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use ReflectionObject;
+use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
-use SocialWeb\Atproto\Lexicon\Types\LexAudio;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
 use SocialWeb\Atproto\Lexicon\Types\LexImage;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexNumber;
@@ -28,32 +27,22 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
-use function array_pop;
-use function array_reduce;
 use function assert;
-use function explode;
 use function file_get_contents;
-use function implode;
-use function is_array;
-use function is_bool;
-use function is_dir;
 use function is_float;
 use function is_int;
 use function is_object;
-use function is_readable;
 use function is_string;
-use function json_decode;
 use function ltrim;
 use function sprintf;
 use function str_starts_with;
 use function strcasecmp;
-use function strpos;
-use function substr;
 
-use const DIRECTORY_SEPARATOR;
-
-final class LexiconDocParser
+final class LexiconDocParser implements Parser
 {
+    use IsArrayOf;
+    use ParserSupport;
+
     private const DEPTH = 5;
 
     /**
@@ -61,51 +50,39 @@ final class LexiconDocParser
      */
     private array $originalDefs = [];
 
-    /**
-     * @param array<string, LexiconDoc> $parsedDocuments Pass the array of
-     *     parsed documents, so we don't have to parse the same documents again
-     *     when iterating through references.
-     *
-     * @throws UnableToParse
-     */
     public function __construct(
-        private readonly string $documentPath,
-        private readonly string $schemaPath,
+        SchemaRepository $schemaRepository,
+        ParserFactory $parserFactory,
         private readonly bool $resolveReferences = false,
         private readonly int $depth = 0,
-        private array &$parsedDocuments = [],
     ) {
-        if (!is_readable($this->documentPath)) {
-            throw new UnableToParse("Unable to find or read schema at $this->documentPath");
-        }
-
-        if (!is_dir($this->schemaPath) || !is_readable($this->schemaPath)) {
-            throw new UnableToParse("Unable to read or find a directory at $this->schemaPath");
-        }
+        $this->setSchemaRepository($schemaRepository);
+        $this->setParserFactory($parserFactory);
     }
 
-    /**
-     * @throws UnableToParse
-     */
-    public function parse(): LexiconDoc
+    public function parse(object | string $data): LexiconDoc
     {
-        $document = json_decode((string) file_get_contents($this->documentPath));
+        /** @var object{id: string, revision?: float | int, description?: string, defs?: object} $data */
+        $data = $this->validate(
+            $data,
+            fn (object $data): bool => isset($data->lexicon)
+                && Nsid::isValid($data->id ?? null)
+                && (!isset($data->revision) || is_int($data->revision) || is_float($data->revision))
+                && (!isset($data->description) || is_string($data->description))
+                && (!isset($data->defs) || is_object($data->defs)),
+        );
 
-        if (!is_object($document) || !isset($document->lexicon)) {
-            throw new UnableToParse("Could not find a Lexicon schema at $this->documentPath");
+        $id = new Nsid($data->id);
+
+        $existingDoc = $this->getSchemaRepository()->findSchemaByNsid($id);
+        if ($existingDoc !== null) {
+            return $existingDoc;
         }
 
-        $id = $document->id ?? null;
-        assert(is_string($id) && $id !== '');
+        $revision = $data->revision ?? null;
+        $description = $data->description ?? null;
+        $originalDefs = $data->defs ?? (object) [];
 
-        $revision = $document->revision ?? null;
-        assert($revision === null || is_int($revision) || is_float($revision));
-
-        $description = $document->description ?? null;
-        assert($description === null || is_string($description));
-
-        /** @var object $originalDefs */
-        $originalDefs = $document->defs ?? (object) [];
         $validDefs = [];
 
         $reflectedDefs = new ReflectionObject($originalDefs);
@@ -122,28 +99,16 @@ final class LexiconDocParser
             $parsedDefs[$name] = $this->parseDef($def);
         }
 
-        return new LexiconDoc(
-            id: $id,
+        $doc = new LexiconDoc(
+            id: $id->nsid,
             defs: $parsedDefs,
             revision: $revision,
             description: $description,
         );
-    }
 
-    private function isArrayOfIntOrFloat(mixed $values): bool
-    {
-        return is_array($values)
-            && array_reduce($values, fn (bool $c, mixed $i): bool => $c && (is_int($i) || is_float($i)), true);
-    }
+        $this->getSchemaRepository()->storeSchema($doc);
 
-    private function isArrayOfInt(mixed $values): bool
-    {
-        return is_array($values) && array_reduce($values, fn (bool $c, mixed $i): bool => $c && is_int($i), true);
-    }
-
-    private function isArrayOfString(mixed $values): bool
-    {
-        return is_array($values) && array_reduce($values, fn (bool $c, mixed $i): bool => $c && is_string($i), true);
+        return $doc;
     }
 
     private function parseDef(object $def): LexArray | LexPrimitive | LexRef | LexUnion | LexUserType
@@ -153,9 +118,9 @@ final class LexiconDocParser
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'audio' => $this->parseAudio($def),
+            'audio' => $this->getParserFactory()->getParser(LexAudioParser::class)->parse($def),
             'blob' => $this->parseBlob($def),
-            'boolean' => $this->parseBoolean($def),
+            'boolean' => $this->getParserFactory()->getParser(LexBooleanParser::class)->parse($def),
             'image' => $this->parseImage($def),
             'integer' => $this->parseInteger($def),
             'number' => $this->parseNumber($def),
@@ -197,23 +162,6 @@ final class LexiconDocParser
         return new LexArray($items, $minLength, $maxLength, $description);
     }
 
-    private function parseAudio(object $def): LexAudio
-    {
-        $maxSize = $def->maxSize ?? null;
-        $maxLength = $def->maxLength ?? null;
-        $description = $def->description ?? null;
-
-        /** @var string[] | null $accept */
-        $accept = $def->accept ?? null;
-
-        assert($accept !== null && $this->isArrayOfString($accept));
-        assert($maxSize === null || is_int($maxSize) || is_float($maxSize));
-        assert($maxLength === null || is_int($maxLength) || is_float($maxLength));
-        assert($description === null || is_string($description));
-
-        return new LexAudio($accept, $maxSize, $maxLength, $description);
-    }
-
     private function parseBlob(object $def): LexBlob
     {
         $maxSize = $def->maxSize ?? null;
@@ -227,19 +175,6 @@ final class LexiconDocParser
         assert($description === null || is_string($description));
 
         return new LexBlob($accept, $maxSize, $description);
-    }
-
-    private function parseBoolean(object $def): LexBoolean
-    {
-        $default = $def->default ?? null;
-        $const = $def->const ?? null;
-        $description = $def->description ?? null;
-
-        assert($default === null || is_bool($default));
-        assert($const === null || is_bool($const));
-        assert($description === null || is_string($description));
-
-        return new LexBoolean($default, $const, $description);
     }
 
     private function parseImage(object $def): LexImage
@@ -275,7 +210,7 @@ final class LexiconDocParser
         assert($default === null || is_int($default));
         assert($minimum === null || is_int($minimum));
         assert($maximum === null || is_int($maximum));
-        assert($enum === null || $this->isArrayOfInt($enum));
+        assert($enum === null || $this->isArrayOfInteger($enum));
         assert($const === null || is_int($const));
         assert($description === null || is_string($description));
 
@@ -340,7 +275,7 @@ final class LexiconDocParser
         assert($default === null || is_int($default) || is_float($default));
         assert($minimum === null || is_int($minimum) || is_float($minimum));
         assert($maximum === null || is_int($maximum) || is_float($maximum));
-        assert($enum === null || $this->isArrayOfIntOrFloat($enum));
+        assert($enum === null || $this->isArrayOfNumber($enum));
         assert($const === null || is_int($const) || is_float($const));
         assert($description === null || is_string($description));
 
@@ -420,29 +355,22 @@ final class LexiconDocParser
                     }
                 }
             } else {
-                $parts = explode('.', $ref);
-                $method = array_pop($parts);
-                $hash = strpos($method, '#');
-                $property = $hash !== false ? substr($method, $hash + 1) : 'main';
-                $method = $hash !== false ? substr($method, 0, $hash) : $method;
-                $file = implode(DIRECTORY_SEPARATOR, $parts) . DIRECTORY_SEPARATOR . $method . '.json';
-                $filePath = $this->schemaPath . DIRECTORY_SEPARATOR . $file;
+                $nsid = new Nsid($ref);
+                $document = $this->getSchemaRepository()->findSchemaByNsid($nsid);
 
-                $document = $this->parsedDocuments[$filePath] ?? null;
                 if ($document === null && $this->depth < self::DEPTH) {
+                    $contents = file_get_contents((string) $this->getSchemaRepository()->findSchemaPathByNsid($nsid));
                     $parser = new self(
-                        $filePath,
-                        $this->schemaPath,
+                        $this->getSchemaRepository(),
+                        $this->getParserFactory(),
                         $this->resolveReferences,
                         $this->depth + 1,
-                        $this->parsedDocuments,
                     );
-                    $document = $parser->parse();
-                    $this->parsedDocuments[$filePath] = $document;
+                    $document = $parser->parse((string) $contents);
                 }
 
-                if ($document !== null && isset($document->defs[$property])) {
-                    return $document->defs[$property];
+                if ($document !== null && isset($document->defs[$nsid->defId])) {
+                    return $document->defs[$nsid->defId];
                 }
             }
         }
