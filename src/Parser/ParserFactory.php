@@ -15,7 +15,7 @@ class ParserFactory
     private array $typeParserMap = [
         'array' => null,
         'audio' => LexAudioParser::class,
-        'blob' => null,
+        'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
         'image' => null,
         'integer' => null,

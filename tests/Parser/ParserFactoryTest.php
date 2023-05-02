@@ -6,6 +6,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\TestWith;
 use SocialWeb\Atproto\Lexicon\Parser\LexAudioParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexBlobParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
@@ -59,6 +60,7 @@ class ParserFactoryTest extends TestCase
      * @param class-string<Parser> $expectedParserClass
      */
     #[TestWith(['audio', LexAudioParser::class])]
+    #[TestWith(['blob', LexBlobParser::class])]
     #[TestWith(['boolean', LexBooleanParser::class])]
     public function testGetParserByTypeName(string $typeName, string $expectedParserClass): void
     {
@@ -71,7 +73,6 @@ class ParserFactoryTest extends TestCase
 
     #[TestWith(['foobar'])]
     #[TestWith(['array'])]
-    #[TestWith(['blob'])]
     #[TestWith(['image'])]
     #[TestWith(['integer'])]
     #[TestWith(['number'])]

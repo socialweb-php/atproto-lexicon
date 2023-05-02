@@ -118,7 +118,6 @@ final class LexiconDocParser implements Parser
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'blob' => $this->parseBlob($def),
             'image' => $this->parseImage($def),
             'integer' => $this->parseInteger($def),
             'number' => $this->parseNumber($def),
@@ -158,21 +157,6 @@ final class LexiconDocParser implements Parser
         );
 
         return new LexArray($items, $minLength, $maxLength, $description);
-    }
-
-    private function parseBlob(object $def): LexBlob
-    {
-        $maxSize = $def->maxSize ?? null;
-        $description = $def->description ?? null;
-
-        /** @var string[] | null $accept */
-        $accept = $def->accept ?? null;
-
-        assert($accept !== null && $this->isArrayOfString($accept));
-        assert($maxSize === null || is_int($maxSize) || is_float($maxSize));
-        assert($description === null || is_string($description));
-
-        return new LexBlob($accept, $maxSize, $description);
     }
 
     private function parseImage(object $def): LexImage
