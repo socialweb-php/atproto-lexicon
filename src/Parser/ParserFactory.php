@@ -17,7 +17,7 @@ class ParserFactory
         'audio' => LexAudioParser::class,
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
-        'image' => null,
+        'image' => LexImageParser::class,
         'integer' => null,
         'number' => null,
         'object' => null,

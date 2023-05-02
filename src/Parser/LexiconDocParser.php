@@ -8,7 +8,6 @@ use ReflectionObject;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexImage;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexNumber;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
@@ -118,7 +117,6 @@ final class LexiconDocParser implements Parser
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'image' => $this->parseImage($def),
             'integer' => $this->parseInteger($def),
             'number' => $this->parseNumber($def),
             'object' => $this->parseObject($def),
@@ -157,25 +155,6 @@ final class LexiconDocParser implements Parser
         );
 
         return new LexArray($items, $minLength, $maxLength, $description);
-    }
-
-    private function parseImage(object $def): LexImage
-    {
-        $description = $def->description ?? null;
-        $maxSize = $def->maxSize ?? null;
-        $maxWidth = $def->maxWidth ?? null;
-        $maxHeight = $def->maxHeight ?? null;
-
-        /** @var string[] | null $accept */
-        $accept = $def->accept ?? null;
-
-        assert($accept !== null && $this->isArrayOfString($accept));
-        assert($maxSize === null || is_int($maxSize) || is_float($maxSize));
-        assert($maxWidth === null || is_int($maxWidth) || is_float($maxWidth));
-        assert($maxHeight === null || is_int($maxHeight) || is_float($maxHeight));
-        assert($description === null || is_string($description));
-
-        return new LexImage($accept, $maxSize, $maxWidth, $maxHeight, $description);
     }
 
     private function parseInteger(object $def): LexInteger
