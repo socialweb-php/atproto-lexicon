@@ -18,7 +18,7 @@ class ParserFactory
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
         'image' => LexImageParser::class,
-        'integer' => null,
+        'integer' => LexIntegerParser::class,
         'number' => null,
         'object' => null,
         'procedure' => null,

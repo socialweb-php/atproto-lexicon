@@ -8,7 +8,6 @@ use ReflectionObject;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexNumber;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
@@ -117,7 +116,6 @@ final class LexiconDocParser implements Parser
 
         return match ($type) {
             'array' => $this->parseArray($def),
-            'integer' => $this->parseInteger($def),
             'number' => $this->parseNumber($def),
             'object' => $this->parseObject($def),
             'procedure' => $this->parseProcedure($def),
@@ -155,27 +153,6 @@ final class LexiconDocParser implements Parser
         );
 
         return new LexArray($items, $minLength, $maxLength, $description);
-    }
-
-    private function parseInteger(object $def): LexInteger
-    {
-        $default = $def->default ?? null;
-        $minimum = $def->minimum ?? null;
-        $maximum = $def->maximum ?? null;
-        $const = $def->const ?? null;
-        $description = $def->description ?? null;
-
-        /** @var int[] | null $enum */
-        $enum = $def->enum ?? null;
-
-        assert($default === null || is_int($default));
-        assert($minimum === null || is_int($minimum));
-        assert($maximum === null || is_int($maximum));
-        assert($enum === null || $this->isArrayOfInteger($enum));
-        assert($const === null || is_int($const));
-        assert($description === null || is_string($description));
-
-        return new LexInteger($default, $minimum, $maximum, $enum, $const, $description);
     }
 
     /**
