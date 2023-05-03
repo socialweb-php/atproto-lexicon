@@ -16,7 +16,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
-use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
@@ -164,7 +163,7 @@ final class LexiconDocParser implements Parser
 
         foreach ($def->errors ?? [] as $error) {
             assert(is_object($error));
-            $errors[] = $this->parseXrpcError($error);
+            $errors[] = (new LexXrpcErrorParser())->parse($error);
         }
 
         $input = $def->input ?? null;
@@ -315,16 +314,5 @@ final class LexiconDocParser implements Parser
         assert($description === null || is_string($description));
 
         return new LexXrpcBody($encoding, $this->parseObject($schema), $description);
-    }
-
-    private function parseXrpcError(object $def): LexXrpcError
-    {
-        $name = $def->name ?? null;
-        $description = $def->description ?? null;
-
-        assert(is_string($name));
-        assert($description === null || is_string($description));
-
-        return new LexXrpcError($name, $description);
     }
 }
