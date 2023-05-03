@@ -6,18 +6,16 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexAudioParser;
-use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexAudio;
 use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
-use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
-use function is_string;
-use function json_encode;
-
-use const JSON_UNESCAPED_SLASHES;
-
-class LexAudioParserTest extends TestCase
+class LexAudioParserTest extends ParserTestCase
 {
+    public function getParserClassName(): string
+    {
+        return LexAudioParser::class;
+    }
+
     /**
      * @param array<string, scalar | scalar[]> $checkValues
      */
@@ -33,20 +31,6 @@ class LexAudioParserTest extends TestCase
         $this->assertSame($checkValues['maxSize'] ?? null, $parsed->maxSize);
         $this->assertSame($checkValues['maxLength'] ?? null, $parsed->maxLength);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
-    }
-
-    #[DataProvider('invalidValuesProvider')]
-    public function testThrowsForInvalidValues(object | string $value): void
-    {
-        $parser = new LexAudioParser();
-
-        $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage(
-            'The input data does not contain a valid schema definition: "'
-            . (is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES)) . '"',
-        );
-
-        $parser->parse($value);
     }
 
     /**

@@ -6,18 +6,16 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexImageParser;
-use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexImage;
 use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
-use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
-use function is_string;
-use function json_encode;
-
-use const JSON_UNESCAPED_SLASHES;
-
-class LexImageParserTest extends TestCase
+class LexImageParserTest extends ParserTestCase
 {
+    public function getParserClassName(): string
+    {
+        return LexImageParser::class;
+    }
+
     /**
      * @param array<string, scalar | scalar[]> $checkValues
      */
@@ -34,20 +32,6 @@ class LexImageParserTest extends TestCase
         $this->assertSame($checkValues['maxWidth'] ?? null, $parsed->maxWidth);
         $this->assertSame($checkValues['maxHeight'] ?? null, $parsed->maxHeight);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
-    }
-
-    #[DataProvider('invalidValuesProvider')]
-    public function testThrowsForInvalidValues(object | string $value): void
-    {
-        $parser = new LexImageParser();
-
-        $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage(
-            'The input data does not contain a valid schema definition: "'
-            . (is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES)) . '"',
-        );
-
-        $parser->parse($value);
     }
 
     /**

@@ -6,18 +6,16 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
-use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
-use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
-use function is_string;
-use function json_encode;
-
-use const JSON_UNESCAPED_SLASHES;
-
-class LexIntegerParserTest extends TestCase
+class LexIntegerParserTest extends ParserTestCase
 {
+    public function getParserClassName(): string
+    {
+        return LexIntegerParser::class;
+    }
+
     /**
      * @param array<string, scalar | scalar[]> $checkValues
      */
@@ -35,20 +33,6 @@ class LexIntegerParserTest extends TestCase
         $this->assertSame($checkValues['enum'] ?? null, $parsed->enum);
         $this->assertSame($checkValues['const'] ?? null, $parsed->const);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
-    }
-
-    #[DataProvider('invalidValuesProvider')]
-    public function testThrowsForInvalidValues(object | string $value): void
-    {
-        $parser = new LexIntegerParser();
-
-        $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage(
-            'The input data does not contain a valid schema definition: "'
-            . (is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES)) . '"',
-        );
-
-        $parser->parse($value);
     }
 
     /**
