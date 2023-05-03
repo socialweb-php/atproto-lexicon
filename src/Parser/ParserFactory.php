@@ -28,7 +28,7 @@ class ParserFactory
         'string' => LexStringParser::class,
         'token' => LexTokenParser::class,
         'union' => null,
-        'unknown' => null,
+        'unknown' => LexUnknownParser::class,
         'video' => null,
     ];
 

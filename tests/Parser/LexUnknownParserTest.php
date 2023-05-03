@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
-use SocialWeb\Atproto\Lexicon\Types\LexToken;
+use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
+use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
-class LexTokenParserTest extends ParserTestCase
+class LexUnknownParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
     {
-        return LexTokenParser::class;
+        return LexUnknownParser::class;
     }
 
     /**
@@ -22,11 +22,11 @@ class LexTokenParserTest extends ParserTestCase
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
     {
-        $parser = new LexTokenParser();
+        $parser = new LexUnknownParser();
         $parsed = $parser->parse($value);
 
-        $this->assertInstanceOf(LexToken::class, $parsed);
-        $this->assertSame(LexUserTypeType::Token, $parsed->type);
+        $this->assertInstanceOf(LexUnknown::class, $parsed);
+        $this->assertSame(LexUserTypeType::Unknown, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
     }
 
@@ -37,19 +37,19 @@ class LexTokenParserTest extends ParserTestCase
     {
         return [
             'JSON without properties' => [
-                'value' => '{"type":"token"}',
+                'value' => '{"type":"unknown"}',
                 'checkValues' => [],
             ],
             'object without properties' => [
-                'value' => (object) ['type' => 'token'],
+                'value' => (object) ['type' => 'unknown'],
                 'checkValues' => [],
             ],
             'JSON with description' => [
-                'value' => '{"type":"token","description":"Hello there"}',
+                'value' => '{"type":"unknown","description":"Hello there"}',
                 'checkValues' => ['description' => 'Hello there'],
             ],
             'object with description' => [
-                'value' => (object) ['type' => 'token', 'description' => 'Hello there'],
+                'value' => (object) ['type' => 'unknown', 'description' => 'Hello there'],
                 'checkValues' => ['description' => 'Hello there'],
             ],
         ];
@@ -66,8 +66,8 @@ class LexTokenParserTest extends ParserTestCase
             ['value' => (object) []],
             ['value' => '{"type":"foo"}'],
             ['value' => (object) ['type' => 'foo']],
-            ['value' => '{"type":"token","description":false}'],
-            ['value' => (object) ['type' => 'token', 'description' => false]],
+            ['value' => '{"type":"unknown","description":false}'],
+            ['value' => (object) ['type' => 'unknown', 'description' => false]],
         ];
     }
 }

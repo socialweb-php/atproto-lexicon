@@ -119,7 +119,6 @@ final class LexiconDocParser implements Parser
             'record' => $this->parseRecord($def),
             'ref' => $this->parseRef($def),
             'union' => $this->parseUnion($def),
-            'unknown' => $this->parseUnknown($def),
             'video' => $this->parseVideo($def),
             default => $this->getParserFactory()->getParserByTypeName($type)->parse($def),
         };
@@ -305,15 +304,6 @@ final class LexiconDocParser implements Parser
         }
 
         return new LexUnion($refs);
-    }
-
-    private function parseUnknown(object $def): LexUnknown
-    {
-        $description = $def->description ?? null;
-
-        assert($description === null || is_string($description));
-
-        return new LexUnknown($description);
     }
 
     private function parseVideo(object $def): LexVideo
