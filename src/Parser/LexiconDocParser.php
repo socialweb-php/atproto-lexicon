@@ -12,7 +12,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
-use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexToken;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
@@ -120,7 +119,6 @@ final class LexiconDocParser implements Parser
             'query' => $this->parseQuery($def),
             'record' => $this->parseRecord($def),
             'ref' => $this->parseRef($def),
-            'string' => $this->parseString($def),
             'token' => $this->parseToken($def),
             'union' => $this->parseUnion($def),
             'unknown' => $this->parseUnknown($def),
@@ -291,45 +289,6 @@ final class LexiconDocParser implements Parser
         }
 
         return new LexRef($ref);
-    }
-
-    private function parseString(object $def): LexString
-    {
-        $format = $def->format ?? null;
-        $default = $def->default ?? null;
-        $minLength = $def->minLength ?? null;
-        $maxLength = $def->maxLength ?? null;
-        $maxGraphemes = $def->maxGraphemes ?? null;
-        $const = $def->const ?? null;
-        $description = $def->description ?? null;
-
-        /** @var string[] | null $enum */
-        $enum = $def->enum ?? null;
-
-        /** @var string[] | null $knownValues */
-        $knownValues = $def->knownValues ?? null;
-
-        assert($format === null || is_string($format));
-        assert($default === null || is_string($default));
-        assert($minLength === null || is_int($minLength));
-        assert($maxLength === null || is_int($maxLength));
-        assert($maxGraphemes === null || is_int($maxGraphemes));
-        assert($enum === null || $this->isArrayOfString($enum));
-        assert($const === null || is_string($const));
-        assert($knownValues === null || $this->isArrayOfString($knownValues));
-        assert($description === null || is_string($description));
-
-        return new LexString(
-            $format,
-            $default,
-            $minLength,
-            $maxLength,
-            $maxGraphemes,
-            $enum,
-            $const,
-            $knownValues,
-            $description,
-        );
     }
 
     private function parseToken(object $def): LexToken

@@ -11,6 +11,7 @@ use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexImageParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexNumberParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\ParserNotFound;
@@ -68,6 +69,7 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['image', LexImageParser::class])]
     #[TestWith(['integer', LexIntegerParser::class])]
     #[TestWith(['number', LexNumberParser::class])]
+    #[TestWith(['string', LexStringParser::class])]
     public function testGetParserByTypeName(string $typeName, string $expectedParserClass): void
     {
         $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
@@ -84,7 +86,6 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['query'])]
     #[TestWith(['record'])]
     #[TestWith(['ref'])]
-    #[TestWith(['string'])]
     #[TestWith(['token'])]
     #[TestWith(['union'])]
     #[TestWith(['unknown'])]

@@ -25,7 +25,7 @@ class ParserFactory
         'query' => null,
         'record' => null,
         'ref' => null,
-        'string' => null,
+        'string' => LexStringParser::class,
         'token' => null,
         'union' => null,
         'unknown' => null,
