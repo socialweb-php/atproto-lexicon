@@ -15,7 +15,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexVideo;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
@@ -119,7 +118,6 @@ final class LexiconDocParser implements Parser
             'record' => $this->parseRecord($def),
             'ref' => $this->parseRef($def),
             'union' => $this->parseUnion($def),
-            'video' => $this->parseVideo($def),
             default => $this->getParserFactory()->getParserByTypeName($type)->parse($def),
         };
     }
@@ -304,27 +302,6 @@ final class LexiconDocParser implements Parser
         }
 
         return new LexUnion($refs);
-    }
-
-    private function parseVideo(object $def): LexVideo
-    {
-        $maxSize = $def->maxSize ?? null;
-        $maxLength = $def->maxLength ?? null;
-        $maxWidth = $def->maxWidth ?? null;
-        $maxHeight = $def->maxHeight ?? null;
-        $description = $def->description ?? null;
-
-        /** @var string[] | null $accept */
-        $accept = $def->accept ?? null;
-
-        assert($maxSize === null || is_int($maxSize) || is_float($maxSize));
-        assert($maxLength === null || is_int($maxLength) || is_float($maxLength));
-        assert($maxWidth === null || is_int($maxWidth) || is_float($maxWidth));
-        assert($maxHeight === null || is_int($maxHeight) || is_float($maxHeight));
-        assert($description === null || is_string($description));
-        assert($accept !== null && $this->isArrayOfString($accept));
-
-        return new LexVideo($accept, $maxSize, $maxWidth, $maxHeight, $maxLength, $description);
     }
 
     private function parseXrpcBody(object $def): LexXrpcBody

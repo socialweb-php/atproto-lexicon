@@ -29,7 +29,7 @@ class ParserFactory
         'token' => LexTokenParser::class,
         'union' => null,
         'unknown' => LexUnknownParser::class,
-        'video' => null,
+        'video' => LexVideoParser::class,
     ];
 
     /**
