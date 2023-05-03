@@ -31,7 +31,7 @@ composer require socialweb/atproto-lexicon
 ## Usage
 
 ``` php
-use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 
