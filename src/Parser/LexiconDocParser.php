@@ -12,7 +12,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
-use SocialWeb\Atproto\Lexicon\Types\LexToken;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
@@ -119,7 +118,6 @@ final class LexiconDocParser implements Parser
             'query' => $this->parseQuery($def),
             'record' => $this->parseRecord($def),
             'ref' => $this->parseRef($def),
-            'token' => $this->parseToken($def),
             'union' => $this->parseUnion($def),
             'unknown' => $this->parseUnknown($def),
             'video' => $this->parseVideo($def),
@@ -289,15 +287,6 @@ final class LexiconDocParser implements Parser
         }
 
         return new LexRef($ref);
-    }
-
-    private function parseToken(object $def): LexToken
-    {
-        $description = $def->description ?? null;
-
-        assert($description === null || is_string($description));
-
-        return new LexToken($description);
     }
 
     private function parseUnion(object $def): LexUnion
