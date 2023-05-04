@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
+use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
+use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
@@ -26,15 +28,7 @@ final class LexArrayParser implements Parser
     public function parse(object | string $data): LexArray
     {
         /** @var object{items?: object, minLength?: int, maxLength?: int, description?: string} $data */
-        $data = $this->validate(
-            $data,
-            fn (object $data): bool => isset($data->type)
-                && $data->type === 'array'
-                && (!isset($data->items) || is_object($data->items))
-                && (!isset($data->minLength) || is_int($data->minLength))
-                && (!isset($data->maxLength) || is_int($data->maxLength))
-                && (!isset($data->description) || is_string($data->description)),
-        );
+        $data = $this->validate($data, $this->getValidator());
 
         return new LexArray(
             items: $this->parseItems($data),
@@ -69,5 +63,17 @@ final class LexArrayParser implements Parser
             'The input data does not contain a valid schema definition: "%s"',
             json_encode($data, JSON_UNESCAPED_SLASHES),
         ));
+    }
+
+    /**
+     * @return Closure(object): bool
+     */
+    private function getValidator(): Closure
+    {
+        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Array->value
+            && (!isset($data->items) || is_object($data->items))
+            && (!isset($data->minLength) || is_int($data->minLength))
+            && (!isset($data->maxLength) || is_int($data->maxLength))
+            && (!isset($data->description) || is_string($data->description));
     }
 }

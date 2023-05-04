@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
+use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
+use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
 use function is_string;
 
@@ -16,15 +18,19 @@ final class LexUnknownParser implements Parser
     public function parse(object | string $data): LexUnknown
     {
         /** @var object{description?: string} $data */
-        $data = $this->validate(
-            $data,
-            fn (object $data): bool => isset($data->type)
-                && $data->type === 'unknown'
-                && (!isset($data->description) || is_string($data->description)),
-        );
+        $data = $this->validate($data, $this->getValidator());
 
         return new LexUnknown(
             description: $data->description ?? null,
         );
+    }
+
+    /**
+     * @return Closure(object): bool
+     */
+    private function getValidator(): Closure
+    {
+        return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Unknown->value
+            && (!isset($data->description) || is_string($data->description));
     }
 }

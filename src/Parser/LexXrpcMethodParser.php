@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
+use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
@@ -32,22 +33,7 @@ abstract class LexXrpcMethodParser implements Parser
         LexXrpcMethodType $method,
     ): LexXrpcQuery | LexXrpcProcedure {
         /** @var object{type: 'query' | 'procedure', parameters?: array<string, object>, errors?: object[], input?: object, output?: object, description?: string} $data */
-        $data = $this->validate(
-            $data,
-            function (object $data) use ($method): bool {
-                $isInputValid = true;
-                if ($method === LexXrpcMethodType::Procedure) {
-                    $isInputValid = (!isset($data->input) || is_object($data->input));
-                }
-
-                return isset($data->type) && $data->type === $method->value
-                    && (!isset($data->parameters) || is_object($data->parameters))
-                    && (!isset($data->errors) || is_array($data->errors))
-                    && (!isset($data->output) || is_object($data->output))
-                    && (!isset($data->description) || is_string($data->description))
-                    && $isInputValid;
-            },
-        );
+        $data = $this->validate($data, $this->getValidator($method));
 
         $parameters = $this->parseParameters($data);
         $errors = $this->parseErrors($data);
@@ -90,12 +76,7 @@ abstract class LexXrpcMethodParser implements Parser
             return null;
         }
 
-        $isValid = array_reduce(
-            $parsedParameters,
-            fn (bool $carry, mixed $value): bool => $carry
-                && $value instanceof LexPrimitive,
-            true,
-        );
+        $isValid = array_reduce($parsedParameters, $this->getParameterValidator(), true);
 
         if ($isValid) {
             /** @var array<string, LexPrimitive> */
@@ -131,5 +112,34 @@ abstract class LexXrpcMethodParser implements Parser
         }
 
         return $this->getParserFactory()->getParser(LexXrpcBodyParser::class)->parse($body);
+    }
+
+    /**
+     * @return Closure(object): bool
+     */
+    private function getValidator(LexXrpcMethodType $method): Closure
+    {
+        return function (object $data) use ($method): bool {
+            $isInputValid = true;
+            if ($method === LexXrpcMethodType::Procedure) {
+                $isInputValid = (!isset($data->input) || is_object($data->input));
+            }
+
+            return isset($data->type) && $data->type === $method->value
+                && (!isset($data->parameters) || is_object($data->parameters))
+                && (!isset($data->errors) || is_array($data->errors))
+                && (!isset($data->output) || is_object($data->output))
+                && (!isset($data->description) || is_string($data->description))
+                && $isInputValid;
+        };
+    }
+
+    /**
+     * @return Closure(bool, mixed): bool
+     */
+    private function getParameterValidator(): Closure
+    {
+        return fn (bool $carry, mixed $value): bool => $carry
+            && $value instanceof LexPrimitive;
     }
 }

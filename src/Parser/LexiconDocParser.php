@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
+use Closure;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function is_float;
@@ -20,15 +22,7 @@ final class LexiconDocParser implements Parser
     public function parse(object | string $data): LexiconDoc
     {
         /** @var object{id: string, revision?: float | int, description?: string, defs?: object} $data */
-        $data = $this->validate(
-            $data,
-            fn (object $data): bool => isset($data->lexicon)
-                && $data->lexicon === 1
-                && Nsid::isValid($data->id ?? null)
-                && (!isset($data->revision) || is_int($data->revision) || is_float($data->revision))
-                && (!isset($data->description) || is_string($data->description))
-                && (!isset($data->defs) || is_object($data->defs)),
-        );
+        $data = $this->validate($data, $this->getValidator());
 
         $nsid = new Nsid($data->id);
 
@@ -37,29 +31,43 @@ final class LexiconDocParser implements Parser
             return $existingDoc;
         }
 
-        $revision = $data->revision ?? null;
-        $description = $data->description ?? null;
-        $defs = $data->defs ?? (object) [];
-
-        $parsedDefs = [];
-
-        /**
-         * @var string $name
-         * @var object $def
-         */
-        foreach ($defs as $name => $def) {
-            $parsedDefs[$name] = $this->getParserFactory()->getParser(LexiconParser::class)->parse($def);
-        }
-
         $doc = new LexiconDoc(
             id: $nsid,
-            defs: $parsedDefs,
-            revision: $revision,
-            description: $description,
+            defs: $this->parseDefs($data),
+            revision: $data->revision ?? null,
+            description: $data->description ?? null,
         );
 
         $this->getSchemaRepository()->storeSchema($doc);
 
         return $doc;
+    }
+
+    /**
+     * @return array<string, LexType>
+     */
+    private function parseDefs(object $data): array
+    {
+        /** @var array<string, object> $defs */
+        $defs = $data->defs ?? (object) [];
+        $parsedDefs = [];
+
+        foreach ($defs as $name => $def) {
+            $parsedDefs[$name] = $this->getParserFactory()->getParser(LexiconParser::class)->parse($def);
+        }
+
+        return $parsedDefs;
+    }
+
+    /**
+     * @return Closure(object): bool
+     */
+    private function getValidator(): Closure
+    {
+        return fn (object $data): bool => isset($data->lexicon) && $data->lexicon === 1
+            && Nsid::isValid($data->id ?? null)
+            && (!isset($data->revision) || is_int($data->revision) || is_float($data->revision))
+            && (!isset($data->description) || is_string($data->description))
+            && (!isset($data->defs) || is_object($data->defs));
     }
 }
