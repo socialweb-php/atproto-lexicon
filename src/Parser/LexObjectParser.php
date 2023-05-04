@@ -30,8 +30,7 @@ final class LexObjectParser implements Parser
         /** @var object{properties?: object, required?: string[], description?: string} $data */
         $data = $this->validate(
             $data,
-            fn (object $data): bool => isset($data->type)
-                && $data->type === 'object'
+            fn (object $data): bool => isset($data->type) && $data->type === 'object'
                 && (!isset($data->properties) || is_object($data->properties))
                 && (!isset($data->required) || $this->isArrayOfString($data->required))
                 && (!isset($data->description) || is_string($data->description)),

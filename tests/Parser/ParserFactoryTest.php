@@ -20,6 +20,8 @@ use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexVideoParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexXrpcProcedureParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\ParserNotFound;
@@ -79,6 +81,8 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['integer', LexIntegerParser::class])]
     #[TestWith(['number', LexNumberParser::class])]
     #[TestWith(['object', LexObjectParser::class])]
+    #[TestWith(['procedure', LexXrpcProcedureParser::class])]
+    #[TestWith(['query', LexXrpcQueryParser::class])]
     #[TestWith(['ref', LexRefParser::class])]
     #[TestWith(['record', LexRecordParser::class])]
     #[TestWith(['string', LexStringParser::class])]
@@ -96,8 +100,6 @@ class ParserFactoryTest extends TestCase
     }
 
     #[TestWith(['foobar'])]
-    #[TestWith(['procedure'])]
-    #[TestWith(['query'])]
     public function testGetParserByTypeNameThrowsForUnknownTypeName(string $typeName): void
     {
         $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');

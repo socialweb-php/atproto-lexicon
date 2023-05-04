@@ -145,7 +145,7 @@ class LexObjectParserTest extends ParserTestCase
                 ],
             ],
             ['value' => '{"type":"object","description":false}'],
-            ['value' => (object) ['type' => 'array', 'description' => false]],
+            ['value' => (object) ['type' => 'object', 'description' => false]],
         ];
     }
 }
