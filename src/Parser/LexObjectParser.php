@@ -9,7 +9,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
-use SocialWeb\Atproto\Lexicon\Types\LexUnion;
+use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 
 use function array_reduce;
@@ -47,7 +47,7 @@ final class LexObjectParser implements Parser
     /**
      * @param object{properties?: object, required?: string[], description?: string} $data
      *
-     * @return array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown>
+     * @return array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown>
      */
     private function parseProperties(object $data): array
     {
@@ -72,14 +72,14 @@ final class LexObjectParser implements Parser
                     || $value instanceof LexObject
                     || $value instanceof LexPrimitive
                     || $value instanceof LexRef
-                    || $value instanceof LexUnion
+                    || $value instanceof LexRefUnion
                     || $value instanceof LexUnknown
                 ),
             true,
         );
 
         if ($parsedProperties === [] || $isValid) {
-            /** @var array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown> */
+            /** @var array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown> */
             return $parsedProperties;
         }
 

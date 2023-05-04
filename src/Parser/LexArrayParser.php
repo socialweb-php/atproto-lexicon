@@ -8,7 +8,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
-use SocialWeb\Atproto\Lexicon\Types\LexUnion;
+use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 
 use function is_int;
@@ -47,7 +47,7 @@ final class LexArrayParser implements Parser
     /**
      * @param object{items?: object, minLength?: int, maxLength?: int, description?: string} $data
      */
-    private function parseItems(object $data): LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown | null
+    private function parseItems(object $data): LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown | null
     {
         $parsedItems = null;
         if (isset($data->items)) {
@@ -59,7 +59,7 @@ final class LexArrayParser implements Parser
             || $parsedItems instanceof LexObject
             || $parsedItems instanceof LexPrimitive
             || $parsedItems instanceof LexRef
-            || $parsedItems instanceof LexUnion
+            || $parsedItems instanceof LexRefUnion
             || $parsedItems instanceof LexUnknown
         ) {
             return $parsedItems;

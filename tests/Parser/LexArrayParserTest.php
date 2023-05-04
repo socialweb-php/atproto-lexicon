@@ -13,9 +13,9 @@ use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
+use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
-use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 
 class LexArrayParserTest extends ParserTestCase
@@ -93,7 +93,7 @@ class LexArrayParserTest extends ParserTestCase
             ],
             'JSON with items as union' => [
                 'value' => '{"type":"array","items":{"type":"union","refs":["io.foo.bar","io.foo.baz"]}}',
-                'checkValues' => ['items' => new LexUnion(['io.foo.bar', 'io.foo.baz'])],
+                'checkValues' => ['items' => new LexRefUnion(refs: ['io.foo.bar', 'io.foo.baz'])],
             ],
             'object with items as union' => [
                 'value' => (object) [
@@ -103,7 +103,9 @@ class LexArrayParserTest extends ParserTestCase
                         'refs' => ['io.foo.qux', 'com.example.thing1', 'com.example.thing2'],
                     ],
                 ],
-                'checkValues' => ['items' => new LexUnion(['io.foo.qux', 'com.example.thing1', 'com.example.thing2'])],
+                'checkValues' => [
+                    'items' => new LexRefUnion(refs: ['io.foo.qux', 'com.example.thing1', 'com.example.thing2']),
+                ],
             ],
             'JSON with items as unknown' => [
                 'value' => '{"type":"array","items":{"type":"unknown"}}',

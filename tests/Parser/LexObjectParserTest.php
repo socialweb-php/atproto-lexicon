@@ -14,8 +14,8 @@ use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
 use SocialWeb\Atproto\Lexicon\Types\LexNumber;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
+use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
-use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
@@ -73,7 +73,7 @@ class LexObjectParserTest extends ParserTestCase
                         'cc' => new LexObject(),
                         'dd' => new LexNumber(),
                         'ee' => new LexRef('io.foo.bar'),
-                        'ff' => new LexUnion(['io.baz.aaa', 'io.baz.bbb']),
+                        'ff' => new LexRefUnion(refs: ['io.baz.aaa', 'io.baz.bbb']),
                         'gg' => new LexUnknown(),
                     ],
                     'required' => ['aa', 'dd', 'gg'],
@@ -100,7 +100,7 @@ class LexObjectParserTest extends ParserTestCase
                         'cc' => new LexObject(),
                         'dd' => new LexBoolean(),
                         'ee' => new LexRef('com.example.fooBar#main'),
-                        'ff' => new LexUnion(['io.foo.aaa', 'io.bar.bbb']),
+                        'ff' => new LexRefUnion(refs: ['io.foo.aaa', 'io.bar.bbb']),
                         'gg' => new LexUnknown(),
                     ],
                     'required' => ['bb', 'ff'],

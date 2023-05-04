@@ -8,7 +8,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
-use SocialWeb\Atproto\Lexicon\Types\LexUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
@@ -52,7 +51,6 @@ final class LexiconParser implements Parser
                 'procedure' => $this->parseProcedure($data),
                 'query' => $this->parseQuery($data),
                 'record' => $this->parseRecord($data),
-                'union' => $this->parseUnion($data),
                 default => $this->getParserFactory()->getParserByTypeName($type)->parse($data),
             };
         }
@@ -130,16 +128,6 @@ final class LexiconParser implements Parser
         $parsedRecord = $this->parse($record);
 
         return new LexRecord($parsedRecord, $key, $description);
-    }
-
-    private function parseUnion(object $def): LexUnion
-    {
-        /** @var string[] | null $refs */
-        $refs = $def->refs ?? null;
-
-        assert($refs !== null && $this->isArrayOfString($refs));
-
-        return new LexUnion($refs);
     }
 
     private function parseXrpcBody(object $def): LexXrpcBody

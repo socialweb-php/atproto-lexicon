@@ -8,7 +8,7 @@ final class LexObject extends LexUserType
 {
     /**
      * @param string[] | null $required
-     * @param array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown> $properties
+     * @param array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown> $properties
      */
     public function __construct(
         public readonly array $properties = [],
