@@ -13,7 +13,7 @@ class ParserFactory
      * @var array<string, class-string<Parser> | null>
      */
     private array $typeParserMap = [
-        'array' => null,
+        'array' => LexArrayParser::class,
         'audio' => LexAudioParser::class,
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,

@@ -9,7 +9,7 @@ final class LexArray implements LexType
     public readonly LexPrimitiveType $type;
 
     public function __construct(
-        public readonly LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown | null $items,
+        public readonly LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown | null $items = null,
         public readonly ?int $minLength = null,
         public readonly ?int $maxLength = null,
         public readonly ?string $description = null,

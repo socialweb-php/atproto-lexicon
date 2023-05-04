@@ -18,7 +18,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 
 use function assert;
-use function is_int;
 use function is_object;
 use function is_string;
 use function json_encode;
@@ -55,7 +54,6 @@ final class LexiconParser implements Parser
 
         if (is_string($type)) {
             return match ($type) {
-                'array' => $this->parseArray($data),
                 'object' => $this->parseObject($data),
                 'procedure' => $this->parseProcedure($data),
                 'query' => $this->parseQuery($data),
@@ -67,30 +65,6 @@ final class LexiconParser implements Parser
         }
 
         throw new UnableToParse('Unknown object: ' . json_encode($data));
-    }
-
-    private function parseArray(object $def): LexArray
-    {
-        $items = $def->items ?? null;
-        $minLength = $def->minLength ?? null;
-        $maxLength = $def->maxLength ?? null;
-        $description = $def->description ?? null;
-
-        assert(is_object($items));
-        assert($minLength === null || is_int($minLength));
-        assert($maxLength === null || is_int($maxLength));
-        assert($description === null || is_string($description));
-
-        $items = $this->parse($items);
-        assert(
-            $items instanceof LexObject
-            || $items instanceof LexPrimitive
-            || $items instanceof LexRef
-            || $items instanceof LexUnion,
-            sprintf('Did not expect type of %s at line %d', $items::class, __LINE__),
-        );
-
-        return new LexArray($items, $minLength, $maxLength, $description);
     }
 
     /**
