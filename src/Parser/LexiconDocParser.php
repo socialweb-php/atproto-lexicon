@@ -52,7 +52,7 @@ final class LexiconDocParser implements Parser
         }
 
         $doc = new LexiconDoc(
-            id: $nsid->nsid,
+            id: $nsid,
             defs: $parsedDefs,
             revision: $revision,
             description: $description,

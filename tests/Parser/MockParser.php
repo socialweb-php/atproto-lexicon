@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use RuntimeException;
+use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
@@ -23,7 +24,7 @@ class MockParser implements Parser
 
     public function __construct()
     {
-        $this->parsedValue = new LexiconDoc('foo', []);
+        $this->parsedValue = new LexiconDoc(new Nsid('foo.bar.baz'), []);
     }
 
     public function getParserFactory(): ParserFactory

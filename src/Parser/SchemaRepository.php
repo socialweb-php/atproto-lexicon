@@ -42,7 +42,7 @@ class SchemaRepository
 
     public function storeSchema(LexiconDoc $lexiconDoc): void
     {
-        $this->parsedSchemas[$lexiconDoc->id] = $lexiconDoc;
+        $this->parsedSchemas[$lexiconDoc->id->nsid] = $lexiconDoc;
     }
 
     /**

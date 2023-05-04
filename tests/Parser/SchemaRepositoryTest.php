@@ -23,14 +23,14 @@ class SchemaRepositoryTest extends TestCase
         new SchemaRepository('foo/bar/baz/');
     }
 
-    #[TestWith([new Nsid('net.example.someOperation'), new LexiconDoc('net.example.someOperation', [])])]
+    #[TestWith([new Nsid('net.example.someOperation'), new LexiconDoc(new Nsid('net.example.someOperation'), [])])]
     #[TestWith([new Nsid('net.example.someOtherOperation'), null])]
     public function testFindSchemaByNsid(Nsid $nsid, ?LexiconDoc $expectedResult): void
     {
         $parsedSchemas = [];
 
         if ($expectedResult !== null) {
-            $parsedSchemas[$expectedResult->id] = $expectedResult;
+            $parsedSchemas[$expectedResult->id->nsid] = $expectedResult;
         }
 
         $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas', $parsedSchemas);
@@ -40,7 +40,7 @@ class SchemaRepositoryTest extends TestCase
 
     public function testStoreSchema(): void
     {
-        $schema = new LexiconDoc('net.example.someOperation', []);
+        $schema = new LexiconDoc(new Nsid('net.example.someOperation'), []);
         $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
         $nsid = new Nsid('net.example.someOperation');
 
