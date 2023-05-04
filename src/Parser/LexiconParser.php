@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
-use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
-use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 
@@ -86,11 +84,11 @@ final class LexiconParser implements Parser
         assert($description === null || is_string($description));
 
         if ($input !== null) {
-            $input = $this->parseXrpcBody($input);
+            $input = $this->getParserFactory()->getParser(LexXrpcBodyParser::class)->parse($input);
         }
 
         if ($output !== null) {
-            $output = $this->parseXrpcBody($output);
+            $output = $this->getParserFactory()->getParser(LexXrpcBodyParser::class)->parse($output);
         }
 
         if ($queryOrProcedure === 'procedure') {
@@ -110,21 +108,5 @@ final class LexiconParser implements Parser
     {
         /** @var LexXrpcQuery */
         return $this->parseMethod($def, 'query');
-    }
-
-    private function parseXrpcBody(object $def): LexXrpcBody
-    {
-        $encoding = $def->encoding ?? null;
-        $schema = $def->schema ?? null;
-        $description = $def->description ?? null;
-
-        assert(is_string($encoding));
-        assert(is_object($schema));
-        assert($description === null || is_string($description));
-
-        /** @var LexObject $parsedSchema */
-        $parsedSchema = $this->parse($schema);
-
-        return new LexXrpcBody($encoding, $parsedSchema, $description);
     }
 }
