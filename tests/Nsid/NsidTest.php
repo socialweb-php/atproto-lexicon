@@ -9,6 +9,9 @@ use SocialWeb\Atproto\Lexicon\Nsid\InvalidNsid;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
+use function json_encode;
+use function sprintf;
+
 class NsidTest extends TestCase
 {
     #[TestWith(['com.example.status', 'com.example.status', 'example.com', 'status', 'main'])]
@@ -57,5 +60,16 @@ class NsidTest extends TestCase
     public function testIsValid(mixed $nsid, bool $expectedResult): void
     {
         $this->assertSame($expectedResult, Nsid::isValid($nsid));
+    }
+
+    #[TestWith(['com.example.status'])]
+    #[TestWith(['io.social.getFeed'])]
+    #[TestWith(['net.users.bob.ping'])]
+    #[TestWith(['com.example.foo#bar'])]
+    public function testJsonSerialize(string $nsid): void
+    {
+        $parsedNsid = new Nsid($nsid);
+
+        $this->assertSame(sprintf('"%s"', $nsid), json_encode($parsedNsid));
     }
 }

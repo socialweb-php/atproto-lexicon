@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Nsid;
 
+use JsonSerializable;
+
 use function array_pop;
 use function array_reverse;
 use function explode;
 use function implode;
 use function is_string;
 
-final class Nsid
+final class Nsid implements JsonSerializable
 {
     public readonly string $nsid;
     public readonly string $authority;
@@ -54,5 +56,12 @@ final class Nsid
         } catch (InvalidNsid) {
             return false;
         }
+    }
+
+    public function jsonSerialize(): string
+    {
+        $fragment = $this->defId !== 'main' ? '#' . $this->defId : '';
+
+        return $this->nsid . $fragment;
     }
 }
