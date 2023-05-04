@@ -12,6 +12,7 @@ use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexImageParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexNumberParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexObjectParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
@@ -74,6 +75,7 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['image', LexImageParser::class])]
     #[TestWith(['integer', LexIntegerParser::class])]
     #[TestWith(['number', LexNumberParser::class])]
+    #[TestWith(['object', LexObjectParser::class])]
     #[TestWith(['string', LexStringParser::class])]
     #[TestWith(['token', LexTokenParser::class])]
     #[TestWith(['unknown', LexUnknownParser::class])]
@@ -88,7 +90,6 @@ class ParserFactoryTest extends TestCase
     }
 
     #[TestWith(['foobar'])]
-    #[TestWith(['object'])]
     #[TestWith(['procedure'])]
     #[TestWith(['query'])]
     #[TestWith(['record'])]

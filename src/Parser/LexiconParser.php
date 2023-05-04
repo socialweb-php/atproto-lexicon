@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
-use SocialWeb\Atproto\Lexicon\Types\LexArray;
-use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnion;
-use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
@@ -21,7 +18,6 @@ use function assert;
 use function is_object;
 use function is_string;
 use function json_encode;
-use function sprintf;
 
 final class LexiconParser implements Parser
 {
@@ -54,7 +50,6 @@ final class LexiconParser implements Parser
 
         if (is_string($type)) {
             return match ($type) {
-                'object' => $this->parseObject($data),
                 'procedure' => $this->parseProcedure($data),
                 'query' => $this->parseQuery($data),
                 'record' => $this->parseRecord($data),
@@ -111,40 +106,6 @@ final class LexiconParser implements Parser
         return new LexXrpcQuery($parameters ?: null, $output, $errors ?: null, $description);
     }
 
-    private function parseObject(object $def): LexObject
-    {
-        $properties = [];
-
-        /**
-         * @var string $name
-         * @var object $property
-         */
-        foreach ($def->properties ?? [] as $name => $property) {
-            $property = $this->parse($property);
-            assert(
-                $property instanceof LexArray
-                || $property instanceof LexBlob
-                || $property instanceof LexObject
-                || $property instanceof LexPrimitive
-                || $property instanceof LexRef
-                || $property instanceof LexUnion
-                || $property instanceof LexUnknown,
-                sprintf('Did not expect type of %s at line %d', $property::class, __LINE__),
-            );
-            $properties[$name] = $property;
-        }
-
-        $description = $def->description ?? null;
-
-        /** @var string[] | null $required */
-        $required = $def->required ?? null;
-
-        assert($required === null || $this->isArrayOfString($required));
-        assert($description === null || is_string($description));
-
-        return new LexObject($properties, $required, $description);
-    }
-
     private function parseProcedure(object $def): LexXrpcProcedure
     {
         /** @var LexXrpcProcedure */
@@ -167,7 +128,10 @@ final class LexiconParser implements Parser
         assert($key === null || is_string($key));
         assert($description === null || is_string($description));
 
-        return new LexRecord($this->parseObject($record), $key, $description);
+        /** @var LexObject $parsedRecord */
+        $parsedRecord = $this->parse($record);
+
+        return new LexRecord($parsedRecord, $key, $description);
     }
 
     private function parseRef(object $def): LexType
@@ -199,6 +163,9 @@ final class LexiconParser implements Parser
         assert(is_object($schema));
         assert($description === null || is_string($description));
 
-        return new LexXrpcBody($encoding, $this->parseObject($schema), $description);
+        /** @var LexObject $parsedSchema */
+        $parsedSchema = $this->parse($schema);
+
+        return new LexXrpcBody($encoding, $parsedSchema, $description);
     }
 }

@@ -11,7 +11,7 @@ final class LexObject extends LexUserType
      * @param array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexUnion | LexUnknown> $properties
      */
     public function __construct(
-        public readonly array $properties,
+        public readonly array $properties = [],
         public readonly ?array $required = null,
         ?string $description = null,
     ) {

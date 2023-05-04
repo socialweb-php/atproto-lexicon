@@ -20,7 +20,7 @@ class ParserFactory
         'image' => LexImageParser::class,
         'integer' => LexIntegerParser::class,
         'number' => LexNumberParser::class,
-        'object' => null,
+        'object' => LexObjectParser::class,
         'procedure' => null,
         'query' => null,
         'record' => null,
