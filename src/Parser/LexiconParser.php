@@ -45,8 +45,8 @@ final class LexiconParser implements Parser
             return $this->getParserFactory()->getParser(LexiconDocParser::class)->parse($data);
         }
 
-        /** @var mixed $type */
-        $type = $data->type ?? '';
+        /** @var string | null $type */
+        $type = $data->type ?? null;
 
         if (is_string($type)) {
             return match ($type) {
