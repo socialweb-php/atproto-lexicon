@@ -6,7 +6,6 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
-use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
@@ -50,7 +49,6 @@ final class LexiconParser implements Parser
             return match ($type) {
                 'procedure' => $this->parseProcedure($data),
                 'query' => $this->parseQuery($data),
-                'record' => $this->parseRecord($data),
                 default => $this->getParserFactory()->getParserByTypeName($type)->parse($data),
             };
         }
@@ -112,22 +110,6 @@ final class LexiconParser implements Parser
     {
         /** @var LexXrpcQuery */
         return $this->parseMethod($def, 'query');
-    }
-
-    private function parseRecord(object $def): LexRecord
-    {
-        $record = $def->record ?? null;
-        $key = $def->key ?? null;
-        $description = $def->description ?? null;
-
-        assert(is_object($record));
-        assert($key === null || is_string($key));
-        assert($description === null || is_string($description));
-
-        /** @var LexObject $parsedRecord */
-        $parsedRecord = $this->parse($record);
-
-        return new LexRecord($parsedRecord, $key, $description);
     }
 
     private function parseXrpcBody(object $def): LexXrpcBody

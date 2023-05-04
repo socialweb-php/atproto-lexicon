@@ -23,7 +23,7 @@ class ParserFactory
         'object' => LexObjectParser::class,
         'procedure' => null,
         'query' => null,
-        'record' => null,
+        'record' => LexRecordParser::class,
         'ref' => LexRefParser::class,
         'string' => LexStringParser::class,
         'token' => LexTokenParser::class,
