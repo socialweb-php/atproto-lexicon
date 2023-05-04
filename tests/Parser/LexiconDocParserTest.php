@@ -19,6 +19,21 @@ class LexiconDocParserTest extends ParserTestCase
         return LexiconDocParser::class;
     }
 
+    public function testReturnsAlreadyParsedSchema(): void
+    {
+        $document = '{"lexicon":1,"id":"com.example.foo"}';
+
+        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+
+        $parser = new LexiconDocParser();
+        $parser->setSchemaRepository($schemaRepo);
+        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $parsed1 = $parser->parse($document);
+        $parsed2 = $parser->parse($document);
+
+        $this->assertSame($parsed1, $parsed2);
+    }
+
     /**
      * @param array<string, scalar | scalar[]> $checkValues
      */
