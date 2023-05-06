@@ -1,0 +1,13 @@
+{
+    "lexicon": 1,
+    "id": "org.example.invalid.docWithNonMainRecord",
+    "defs": {
+        "notMain": {
+            "type": "record",
+            "description": "This is a record that's not in the main def.",
+            "record": {
+                "type": "object"
+            }
+        }
+    }
+}

@@ -7,6 +7,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use Closure;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function is_float;
@@ -55,8 +56,30 @@ class LexiconDocParser implements Parser
         $defs = $data->defs ?? (object) [];
         $parsedDefs = [];
 
-        foreach ($defs as $name => $def) {
-            $parsedDefs[$name] = $this->getParserFactory()->getParser(LexiconParser::class)->parse($def);
+        foreach ($defs as $defId => $def) {
+            $parsedDef = $this->getParserFactory()->getParser(LexiconParser::class)->parse($def);
+
+            /**
+             * @psalm-suppress NoInterfaceProperties
+             * @var LexType | null $defType
+             */
+            $defType = $parsedDef->type ?? null;
+
+            if (
+                $defId !== LexiconDoc::MAIN
+                && (
+                    $defType === LexType::Record
+                    || $defType === LexType::Procedure
+                    || $defType === LexType::Query
+                    || $defType === LexType::Subscription
+                )
+            ) {
+                throw new UnableToParse(
+                    'Records, procedures, queries, and subscriptions must be the main definition.',
+                );
+            }
+
+            $parsedDefs[$defId] = $parsedDef;
         }
 
         return $parsedDefs;

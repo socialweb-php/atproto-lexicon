@@ -1,0 +1,10 @@
+{
+    "lexicon": 1,
+    "id": "org.example.invalid.docWithNonMainProcedure",
+    "defs": {
+        "notMain": {
+            "type": "procedure",
+            "description": "This is a procedure that's not in the main def."
+        }
+    }
+}

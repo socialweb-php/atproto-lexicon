@@ -19,6 +19,8 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
  */
 class LexiconDoc implements LexEntity
 {
+    public const MAIN = 'main';
+
     public readonly int $lexicon;
 
     /**

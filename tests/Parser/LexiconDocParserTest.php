@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
+use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
+use function file_get_contents;
 use function json_encode;
 
 class LexiconDocParserTest extends ParserTestCase
@@ -56,6 +59,28 @@ class LexiconDocParserTest extends ParserTestCase
 
         // We use assertEquals() here, since we can't assert sameness on the object.
         $this->assertEquals($checkValues['id'] ?? null, $parsed->id);
+    }
+
+    #[TestWith(['org.example.invalid.docWithNonMainProcedure'])]
+    #[TestWith(['org.example.invalid.docWithNonMainQuery'])]
+    #[TestWith(['org.example.invalid.docWithNonMainRecord'])]
+    #[TestWith(['org.example.invalid.docWithNonMainSubscription'])]
+    public function testThrowsWhenNonMainDefContainsImproperType(string $schemaNsid): void
+    {
+        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+
+        $parser = new LexiconDocParser();
+        $parser->setSchemaRepository($schemaRepo);
+        $parser->setParserFactory(new ParserFactory($schemaRepo));
+
+        $nsid = new Nsid($schemaNsid);
+        $schemaFile = (string) $schemaRepo->findSchemaPathByNsid($nsid);
+        $schemaContents = (string) file_get_contents($schemaFile);
+
+        $this->expectException(UnableToParse::class);
+        $this->expectExceptionMessage('Records, procedures, queries, and subscriptions must be the main definition.');
+
+        $parser->parse($schemaContents);
     }
 
     /**
