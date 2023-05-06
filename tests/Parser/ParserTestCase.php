@@ -39,8 +39,8 @@ abstract class ParserTestCase extends TestCase
 
         $this->expectException(UnableToParse::class);
         $this->expectExceptionMessage(
-            'The input data does not contain a valid schema definition: "'
-            . (is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES)) . '"',
+            'The input data does not contain a valid schema definition: '
+            . (is_string($value) ? $value : json_encode($value, JSON_UNESCAPED_SLASHES)),
         );
 
         $parser->parse($value);

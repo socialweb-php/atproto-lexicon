@@ -18,10 +18,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use function is_int;
 use function is_object;
 use function is_string;
-use function json_encode;
-use function sprintf;
-
-use const JSON_UNESCAPED_SLASHES;
 
 /**
  * @phpstan-import-type TLexArray from LexArray
@@ -77,10 +73,7 @@ class LexArrayParser implements Parser
             return $parsedItems;
         }
 
-        throw new UnableToParse(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
-            json_encode($data, JSON_UNESCAPED_SLASHES),
-        ));
+        $this->throwParserError($data);
     }
 
     /**

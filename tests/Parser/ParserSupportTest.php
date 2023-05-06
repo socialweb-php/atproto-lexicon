@@ -55,7 +55,7 @@ class ParserSupportTest extends TestCase
     public function testValidateThrowsForInvalidJson(): void
     {
         $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage('The input data does not contain a valid schema definition: "foo bar"');
+        $this->expectExceptionMessage('The input data does not contain a valid schema definition: foo bar');
 
         $this->validate('foo bar', fn (): bool => true);
     }
@@ -63,7 +63,7 @@ class ParserSupportTest extends TestCase
     public function testValidateThrowsForInvalidObject(): void
     {
         $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage('The input data does not contain a valid schema definition: "{"foo":"bar"}"');
+        $this->expectExceptionMessage('The input data does not contain a valid schema definition: {"foo":"bar"}');
 
         $this->validate((object) ['foo' => 'bar'], fn (object $data): bool => isset($data->baz));
     }

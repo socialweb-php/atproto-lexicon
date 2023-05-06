@@ -46,7 +46,7 @@ class LexiconParserTest extends TestCase
     {
         $this->expectException(UnableToParse::class);
         $this->expectExceptionMessage(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
+            'The input data does not contain a valid schema definition: %s',
             $json,
         ));
 

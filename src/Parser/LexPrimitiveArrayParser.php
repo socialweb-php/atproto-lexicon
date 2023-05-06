@@ -8,11 +8,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveArray;
 
-use function json_encode;
-use function sprintf;
-
-use const JSON_UNESCAPED_SLASHES;
-
 /**
  * @phpstan-import-type TLexPrimitiveArray from LexPrimitiveArray
  */
@@ -50,9 +45,6 @@ class LexPrimitiveArrayParser extends LexArrayParser implements Parser
             return $parsedItems;
         }
 
-        throw new UnableToParse(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
-            json_encode($data, JSON_UNESCAPED_SLASHES),
-        ));
+        $this->throwParserError($data);
     }
 }

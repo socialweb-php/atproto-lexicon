@@ -16,6 +16,8 @@ use const JSON_UNESCAPED_SLASHES;
 
 trait ParserSupport
 {
+    private const PARSE_ERROR = 'The input data does not contain a valid schema definition: %s';
+
     private ?ParserFactory $parserFactory = null;
     private ?SchemaRepository $schemaRepository = null;
 
@@ -64,12 +66,17 @@ trait ParserSupport
         }
 
         if (!is_object($data) || !$validator($data)) {
-            throw new UnableToParse(sprintf(
-                'The input data does not contain a valid schema definition: "%s"',
-                is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_SLASHES),
-            ));
+            $this->throwParserError($data);
         }
 
         return $data;
+    }
+
+    private function throwParserError(mixed $data): never
+    {
+        throw new UnableToParse(sprintf(
+            self::PARSE_ERROR,
+            is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_SLASHES),
+        ));
     }
 }

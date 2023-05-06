@@ -16,10 +16,6 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use function array_reduce;
 use function is_object;
 use function is_string;
-use function json_encode;
-use function sprintf;
-
-use const JSON_UNESCAPED_SLASHES;
 
 /**
  * @phpstan-import-type TLexObject from LexObject
@@ -68,10 +64,7 @@ class LexObjectParser implements Parser
             return $parsedProperties;
         }
 
-        throw new UnableToParse(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
-            json_encode($data, JSON_UNESCAPED_SLASHES),
-        ));
+        $this->throwParserError($data);
     }
 
     /**

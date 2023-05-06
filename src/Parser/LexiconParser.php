@@ -7,8 +7,6 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 
 use function is_string;
-use function json_encode;
-use function sprintf;
 
 class LexiconParser implements Parser
 {
@@ -43,9 +41,6 @@ class LexiconParser implements Parser
             return $this->getParserFactory()->getParserByTypeName($type)->parse($data);
         }
 
-        throw new UnableToParse(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
-            json_encode($data),
-        ));
+        $this->throwParserError($data);
     }
 }
