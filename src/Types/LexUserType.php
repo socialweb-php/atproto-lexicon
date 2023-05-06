@@ -18,7 +18,8 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * @phpstan-import-type TLexUnknown from LexUnknown
  * @phpstan-import-type TLexXrpcProcedure from LexXrpcProcedure
  * @phpstan-import-type TLexXrpcQuery from LexXrpcQuery
- * @phpstan-type TLexUserType = TLexArray | TLexBlob | TLexBoolean | TLexBytes | TLexCidLink | TLexInteger | TLexObject | TLexRecord | TLexString | TLexToken | TLexUnknown | TLexXrpcProcedure | TLexXrpcQuery
+ * @phpstan-import-type TLexXrpcSubscription from LexXrpcSubscription
+ * @phpstan-type TLexUserType = TLexArray | TLexBlob | TLexBoolean | TLexBytes | TLexCidLink | TLexInteger | TLexObject | TLexRecord | TLexString | TLexToken | TLexUnknown | TLexXrpcProcedure | TLexXrpcQuery | LexXrpcSubscription
  */
 interface LexUserType extends LexEntity
 {

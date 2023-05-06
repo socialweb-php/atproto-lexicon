@@ -21,6 +21,7 @@ use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcParametersParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcProcedureParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexXrpcSubscriptionParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\ParserNotFound;
@@ -85,6 +86,7 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['ref', LexRefParser::class])]
     #[TestWith(['record', LexRecordParser::class])]
     #[TestWith(['string', LexStringParser::class])]
+    #[TestWith(['subscription', LexXrpcSubscriptionParser::class])]
     #[TestWith(['token', LexTokenParser::class])]
     #[TestWith(['union', LexRefUnionParser::class])]
     #[TestWith(['unknown', LexUnknownParser::class])]

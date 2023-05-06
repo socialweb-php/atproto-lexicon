@@ -7,11 +7,11 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcType;
 
-class LexXrpcProcedureParser extends LexXrpcMethodParser implements Parser
+class LexXrpcProcedureParser extends LexXrpcParser implements Parser
 {
     public function parse(object | string $data): LexXrpcProcedure
     {
         /** @var LexXrpcProcedure */
-        return $this->parseMethod($data, LexXrpcType::Procedure);
+        return $this->parseXrpc($data, LexXrpcType::Procedure);
     }
 }

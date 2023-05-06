@@ -19,6 +19,7 @@ enum LexType: string
     case Record = 'record';
     case Ref = 'ref';
     case String = 'string';
+    case Subscription = 'subscription';
     case Token = 'token';
     case Union = 'union';
     case Unknown = 'unknown';

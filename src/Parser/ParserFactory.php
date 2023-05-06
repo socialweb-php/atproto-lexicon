@@ -26,6 +26,7 @@ class ParserFactory
         'record' => LexRecordParser::class,
         'ref' => LexRefParser::class,
         'string' => LexStringParser::class,
+        'subscription' => LexXrpcSubscriptionParser::class,
         'token' => LexTokenParser::class,
         'union' => LexRefUnionParser::class,
         'unknown' => LexUnknownParser::class,

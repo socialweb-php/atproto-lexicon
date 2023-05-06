@@ -102,6 +102,8 @@ class LexXrpcBodyParserTest extends ParserTestCase
             ['value' =>
                 (object) ['encoding' => 'text/plain', 'schema' => (object) ['type' => 'object'], 'description' => 123],
             ],
+            ['value' => '{"encoding":"text/plain","schema":{"type":"string"}'],
+            ['value' => (object) ['encoding' => 'text/plain', 'schema' => (object) ['type' => 'array']]],
         ];
     }
 }

@@ -8,4 +8,5 @@ enum LexXrpcType: string
 {
     case Query = 'query';
     case Procedure = 'procedure';
+    case Subscription = 'subscription';
 }
