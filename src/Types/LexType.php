@@ -8,6 +8,7 @@ enum LexType: string
 {
     case Array = 'array';
     case Blob = 'blob';
+    case Bytes = 'bytes';
     case Boolean = 'boolean';
     case Integer = 'integer';
     case Object = 'object';

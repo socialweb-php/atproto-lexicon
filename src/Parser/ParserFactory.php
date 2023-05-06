@@ -16,6 +16,7 @@ class ParserFactory
         'array' => LexArrayParser::class,
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
+        'bytes' => LexBytesParser::class,
         'integer' => LexIntegerParser::class,
         'object' => LexObjectParser::class,
         'procedure' => LexXrpcProcedureParser::class,
