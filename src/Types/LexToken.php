@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexTokenJson = object{
+ * @phpstan-type TLexToken = object{
  *     type: 'token',
  *     description?: string,
  * }

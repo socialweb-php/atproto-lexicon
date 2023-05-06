@@ -12,7 +12,7 @@ use function is_bool;
 use function is_string;
 
 /**
- * @phpstan-import-type LexRefUnionJson from LexRefUnion
+ * @phpstan-import-type TLexRefUnion from LexRefUnion
  */
 class LexRefUnionParser implements Parser
 {
@@ -21,7 +21,7 @@ class LexRefUnionParser implements Parser
 
     public function parse(object | string $data): LexRefUnion
     {
-        /** @var LexRefUnionJson $data */
+        /** @var TLexRefUnion $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexRefUnion(

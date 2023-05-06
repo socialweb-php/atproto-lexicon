@@ -13,7 +13,7 @@ use function is_int;
 use function is_string;
 
 /**
- * @phpstan-import-type LexBlobJson from LexBlob
+ * @phpstan-import-type TLexBlob from LexBlob
  */
 class LexBlobParser implements Parser
 {
@@ -22,7 +22,7 @@ class LexBlobParser implements Parser
 
     public function parse(object | string $data): LexBlob
     {
-        /** @var LexBlobJson $data */
+        /** @var TLexBlob $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexBlob(

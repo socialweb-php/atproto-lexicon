@@ -22,7 +22,7 @@ use function sprintf;
 use const JSON_UNESCAPED_SLASHES;
 
 /**
- * @phpstan-import-type LexObjectJson from LexObject
+ * @phpstan-import-type TLexObject from LexObject
  */
 class LexObjectParser implements Parser
 {
@@ -31,7 +31,7 @@ class LexObjectParser implements Parser
 
     public function parse(object | string $data): LexObject
     {
-        /** @var LexObjectJson $data */
+        /** @var TLexObject $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexObject(
@@ -45,7 +45,7 @@ class LexObjectParser implements Parser
     /**
      * @return array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion>
      *
-     * @phpstan-param LexObjectJson $data
+     * @phpstan-param TLexObject $data
      */
     private function parseProperties(object $data): array
     {

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexObjectJson from LexObject
- * @phpstan-type LexRecordJson = object{
+ * @phpstan-import-type TLexObject from LexObject
+ * @phpstan-type TLexRecord = object{
  *     type: 'record',
  *     description?: string,
  *     key?: string,
- *     record: LexObjectJson,
+ *     record: TLexObject,
  * }
  */
 class LexRecord implements LexUserType

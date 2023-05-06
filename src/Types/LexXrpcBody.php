@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexObjectJson from LexObject
- * @phpstan-import-type LexRefVariantJson from LexRef
- * @phpstan-type LexXrpcBodyJson = object{
+ * @phpstan-import-type TLexObject from LexObject
+ * @phpstan-import-type TLexRefVariant from LexEntity
+ * @phpstan-type TLexXrpcBody = object{
  *     description?: string,
  *     encoding: string,
- *     schema?: LexObjectJson | LexRefVariantJson,
+ *     schema?: TLexObject | TLexRefVariant,
  * }
  */
 class LexXrpcBody implements LexEntity

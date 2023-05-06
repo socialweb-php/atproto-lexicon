@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexBlobJson = object{
+ * @phpstan-type TLexBlob = object{
  *     type: 'blob',
  *     description?: string,
  *     accept?: string[],

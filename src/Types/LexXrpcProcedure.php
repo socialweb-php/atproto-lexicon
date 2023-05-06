@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
- * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
- * @phpstan-type LexXrpcProcedureJson = object{
+ * @phpstan-import-type TLexXrpcBody from LexXrpcBody
+ * @phpstan-import-type TLexXrpcError from LexXrpcError
+ * @phpstan-type TLexXrpcProcedure = object{
  *     type: 'procedure',
  *     description?: string,
  *     parameters?: array<string, LexPrimitive>,
- *     input?: LexXrpcBodyJson,
- *     output?: LexXrpcBodyJson,
- *     errors?: LexXrpcErrorJson[],
+ *     input?: TLexXrpcBody,
+ *     output?: TLexXrpcBody,
+ *     errors?: TLexXrpcError[],
  * }
  */
 class LexXrpcProcedure implements LexUserType

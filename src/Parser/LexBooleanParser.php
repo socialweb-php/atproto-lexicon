@@ -12,7 +12,7 @@ use function is_bool;
 use function is_string;
 
 /**
- * @phpstan-import-type LexBooleanJson from LexBoolean
+ * @phpstan-import-type TLexBoolean from LexBoolean
  */
 class LexBooleanParser implements Parser
 {
@@ -20,7 +20,7 @@ class LexBooleanParser implements Parser
 
     public function parse(object | string $data): LexBoolean
     {
-        /** @var LexBooleanJson $data */
+        /** @var TLexBoolean $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexBoolean(

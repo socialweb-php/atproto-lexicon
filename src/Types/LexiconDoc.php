@@ -7,14 +7,14 @@ namespace SocialWeb\Atproto\Lexicon\Types;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 
 /**
- * @phpstan-import-type LexUserTypeJson from LexUserType
- * @phpstan-import-type NsidJson from Nsid
- * @phpstan-type LexiconDocJson = object{
+ * @phpstan-import-type TLexUserType from LexUserType
+ * @phpstan-import-type TNsid from Nsid
+ * @phpstan-type TLexiconDoc = object{
  *     lexicon: 1,
- *     id: NsidJson,
+ *     id: TNsid,
  *     revision?: float | int,
  *     description?: string,
- *     defs: array<string, LexUserTypeJson>,
+ *     defs: array<string, TLexUserType>,
  * }
  */
 class LexiconDoc implements LexEntity

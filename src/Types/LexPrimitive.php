@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexBooleanJson from LexBoolean
- * @phpstan-import-type LexIntegerJson from LexInteger
- * @phpstan-import-type LexStringJson from LexString
- * @phpstan-import-type LexUnknownJson from LexUnknown
- * @phpstan-type LexPrimitiveJson = LexBooleanJson | LexIntegerJson | LexStringJson | LexUnknownJson
+ * @phpstan-import-type TLexBoolean from LexBoolean
+ * @phpstan-import-type TLexInteger from LexInteger
+ * @phpstan-import-type TLexString from LexString
+ * @phpstan-import-type TLexUnknown from LexUnknown
+ * @phpstan-type TLexPrimitive = TLexBoolean | TLexInteger | TLexString | TLexUnknown
  */
 interface LexPrimitive extends LexEntity
 {

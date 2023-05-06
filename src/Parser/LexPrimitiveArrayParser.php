@@ -14,7 +14,7 @@ use function sprintf;
 use const JSON_UNESCAPED_SLASHES;
 
 /**
- * @phpstan-import-type LexPrimitiveArrayJson from LexPrimitiveArray
+ * @phpstan-import-type TLexPrimitiveArray from LexPrimitiveArray
  */
 class LexPrimitiveArrayParser extends LexArrayParser implements Parser
 {
@@ -22,7 +22,7 @@ class LexPrimitiveArrayParser extends LexArrayParser implements Parser
 
     public function parse(object | string $data): LexArray
     {
-        /** @var LexPrimitiveArrayJson $data */
+        /** @var TLexPrimitiveArray $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexPrimitiveArray(
@@ -34,7 +34,7 @@ class LexPrimitiveArrayParser extends LexArrayParser implements Parser
     }
 
     /**
-     * @phpstan-param LexPrimitiveArrayJson $data
+     * @phpstan-param TLexPrimitiveArray $data
      */
     private function parseItems(object $data): LexPrimitive | null
     {

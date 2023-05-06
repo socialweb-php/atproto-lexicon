@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexBytesJson = object{
+ * @phpstan-type TLexBytes = object{
  *     type: 'bytes',
  *     description?: string,
  *     maxLength?: int,

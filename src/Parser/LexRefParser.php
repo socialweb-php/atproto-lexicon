@@ -11,7 +11,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use function is_string;
 
 /**
- * @phpstan-import-type LexRefJson from LexRef
+ * @phpstan-import-type TLexRef from LexRef
  */
 class LexRefParser implements Parser
 {
@@ -19,7 +19,7 @@ class LexRefParser implements Parser
 
     public function parse(object | string $data): LexRef
     {
-        /** @var LexRefJson $data */
+        /** @var TLexRef $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexRef(

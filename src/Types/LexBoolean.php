@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexBooleanJson = object{
+ * @phpstan-type TLexBoolean = object{
  *     type: 'boolean',
  *     description?: string,
  *     default?: bool,

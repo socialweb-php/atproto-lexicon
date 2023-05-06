@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexBytesJson from LexBytes
- * @phpstan-type LexCidLinkJson = object{
+ * @phpstan-type TLexCidLink = object{
  *     type: 'cid-link',
  *     description?: string,
  * }
- * @phpstan-type LexIpldTypeJson = LexBytesJson | LexCidLinkJson
  */
 class LexCidLink implements LexUserType
 {

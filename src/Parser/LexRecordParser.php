@@ -12,7 +12,7 @@ use function is_object;
 use function is_string;
 
 /**
- * @phpstan-import-type LexRecordJson from LexRecord
+ * @phpstan-import-type TLexRecord from LexRecord
  */
 class LexRecordParser implements Parser
 {
@@ -20,7 +20,7 @@ class LexRecordParser implements Parser
 
     public function parse(object | string $data): LexRecord
     {
-        /** @var LexRecordJson $data */
+        /** @var TLexRecord $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexRecord(

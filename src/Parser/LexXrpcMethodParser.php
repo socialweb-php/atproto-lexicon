@@ -24,10 +24,10 @@ use const JSON_UNESCAPED_SLASHES;
 /**
  * @internal
  *
- * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
- * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
- * @phpstan-import-type LexXrpcProcedureJson from LexXrpcProcedure
- * @phpstan-import-type LexXrpcQueryJson from LexXrpcQuery
+ * @phpstan-import-type TLexXrpcBody from LexXrpcBody
+ * @phpstan-import-type TLexXrpcError from LexXrpcError
+ * @phpstan-import-type TLexXrpcProcedure from LexXrpcProcedure
+ * @phpstan-import-type TLexXrpcQuery from LexXrpcQuery
  */
 abstract class LexXrpcMethodParser implements Parser
 {
@@ -37,7 +37,7 @@ abstract class LexXrpcMethodParser implements Parser
         object | string $data,
         LexXrpcType $method,
     ): LexXrpcQuery | LexXrpcProcedure {
-        /** @var LexXrpcProcedureJson | LexXrpcQueryJson $data */
+        /** @var TLexXrpcProcedure | TLexXrpcQuery $data */
         $data = $this->validate($data, $this->getValidator($method));
 
         $parameters = $this->parseParameters($data);
@@ -45,7 +45,7 @@ abstract class LexXrpcMethodParser implements Parser
         $output = $this->parseBody($data->output ?? null);
 
         if ($method === LexXrpcType::Procedure) {
-            /** @var LexXrpcBodyJson | null $input */
+            /** @var TLexXrpcBody | null $input */
             $input = $data->input ?? null;
 
             return new LexXrpcProcedure(
@@ -100,7 +100,7 @@ abstract class LexXrpcMethodParser implements Parser
      */
     private function parseErrors(object $data): ?array
     {
-        /** @var LexXrpcErrorJson[] $errors */
+        /** @var TLexXrpcError[] $errors */
         $errors = $data->errors ?? [];
         $parsedErrors = [];
 
@@ -112,7 +112,7 @@ abstract class LexXrpcMethodParser implements Parser
     }
 
     /**
-     * @phpstan-param LexXrpcBodyJson | null $body
+     * @phpstan-param TLexXrpcBody | null $body
      */
     private function parseBody(?object $body): ?LexXrpcBody
     {

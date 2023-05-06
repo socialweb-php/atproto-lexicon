@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexIntegerJson = object{
+ * @phpstan-type TLexInteger = object{
  *     type: 'integer',
  *     description?: string,
  *     default?: int,

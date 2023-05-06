@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexRefUnionJson from LexRefUnion
- * @phpstan-type LexRefJson = object{
+ * @phpstan-type TLexRef = object{
  *     type: 'ref',
  *     description?: string,
  *     ref: string,
  * }
- * @phpstan-type LexRefVariantJson = LexRefJson | LexRefUnionJson
  */
 class LexRef implements LexEntity
 {

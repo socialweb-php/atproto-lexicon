@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexXrpcErrorJson = object{
+ * @phpstan-type TLexXrpcError = object{
  *     name: string,
  *     description?: string,
  * }

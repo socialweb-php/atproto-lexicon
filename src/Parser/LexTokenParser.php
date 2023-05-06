@@ -11,7 +11,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use function is_string;
 
 /**
- * @phpstan-import-type LexTokenJson from LexToken
+ * @phpstan-import-type TLexToken from LexToken
  */
 class LexTokenParser implements Parser
 {
@@ -20,7 +20,7 @@ class LexTokenParser implements Parser
 
     public function parse(object | string $data): LexToken
     {
-        /** @var LexTokenJson $data */
+        /** @var TLexToken $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexToken(

@@ -13,7 +13,7 @@ use function implode;
 use function is_string;
 
 /**
- * @phpstan-type NsidJson = string
+ * @phpstan-type TNsid = string
  */
 class Nsid implements JsonSerializable
 {

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexPrimitiveJson from LexPrimitive
- * @phpstan-type LexPrimitiveArrayJson = object{
+ * @phpstan-import-type TLexPrimitive from LexPrimitive
+ * @phpstan-type TLexPrimitiveArray = object{
  *     type: 'array',
  *     description?: string,
- *     items?: LexPrimitiveJson,
+ *     items?: TLexPrimitive,
  *     minLength?: int,
  *     maxLength?: int,
  * }

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
- * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
- * @phpstan-type LexXrpcQueryJson = object{
+ * @phpstan-import-type TLexXrpcBody from LexXrpcBody
+ * @phpstan-import-type TLexXrpcError from LexXrpcError
+ * @phpstan-type TLexXrpcQuery = object{
  *     type: 'query',
  *     description?: string,
  *     parameters?: array<string, LexPrimitive>,
- *     output?: LexXrpcBodyJson,
- *     errors?: LexXrpcErrorJson[],
+ *     output?: TLexXrpcBody,
+ *     errors?: TLexXrpcError[],
  * }
  */
 class LexXrpcQuery implements LexUserType

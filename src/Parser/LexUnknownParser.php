@@ -11,7 +11,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use function is_string;
 
 /**
- * @phpstan-import-type LexUnknownJson from LexUnknown
+ * @phpstan-import-type TLexUnknown from LexUnknown
  */
 class LexUnknownParser implements Parser
 {
@@ -20,7 +20,7 @@ class LexUnknownParser implements Parser
 
     public function parse(object | string $data): LexUnknown
     {
-        /** @var LexUnknownJson $data */
+        /** @var TLexUnknown $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexUnknown(

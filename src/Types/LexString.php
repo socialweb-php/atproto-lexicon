@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexStringFormatJson from LexStringFormat
- * @phpstan-type LexStringJson = object{
+ * @phpstan-import-type TLexStringFormat from LexStringFormat
+ * @phpstan-type TLexString = object{
  *     type: 'string',
- *     format?: LexStringFormatJson,
+ *     format?: TLexStringFormat,
  *     description?: string,
  *     default?: string,
  *     minLength?: int,

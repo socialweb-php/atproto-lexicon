@@ -10,7 +10,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 use function is_string;
 
 /**
- * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
+ * @phpstan-import-type TLexXrpcError from LexXrpcError
  */
 class LexXrpcErrorParser implements Parser
 {
@@ -18,7 +18,7 @@ class LexXrpcErrorParser implements Parser
 
     public function parse(object | string $data): LexXrpcError
     {
-        /** @var LexXrpcErrorJson $data */
+        /** @var TLexXrpcError $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexXrpcError(

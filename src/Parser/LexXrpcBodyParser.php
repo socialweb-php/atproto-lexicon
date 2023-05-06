@@ -11,7 +11,7 @@ use function is_object;
 use function is_string;
 
 /**
- * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
+ * @phpstan-import-type TLexXrpcBody from LexXrpcBody
  */
 class LexXrpcBodyParser implements Parser
 {
@@ -19,7 +19,7 @@ class LexXrpcBodyParser implements Parser
 
     public function parse(object | string $data): LexXrpcBody
     {
-        /** @var LexXrpcBodyJson $data */
+        /** @var TLexXrpcBody $data */
         $data = $this->validate($data, $this->getValidator());
 
         $schema = null;

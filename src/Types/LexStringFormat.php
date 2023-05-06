@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-type LexStringFormatJson = 'at-identifier' | 'at-uri' | 'cid' | 'datetime' | 'did' | 'handle' | 'nsid' | 'uri'
+ * @phpstan-type TLexStringFormat = 'at-identifier' | 'at-uri' | 'cid' | 'datetime' | 'did' | 'handle' | 'nsid' | 'uri'
  */
 enum LexStringFormat: string
 {

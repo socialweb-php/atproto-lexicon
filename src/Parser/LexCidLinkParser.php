@@ -11,7 +11,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use function is_string;
 
 /**
- * @phpstan-import-type LexCidLinkJson from LexCidLink
+ * @phpstan-import-type TLexCidLink from LexCidLink
  */
 class LexCidLinkParser implements Parser
 {
@@ -19,7 +19,7 @@ class LexCidLinkParser implements Parser
 
     public function parse(object | string $data): LexCidLink
     {
-        /** @var LexCidLinkJson $data */
+        /** @var TLexCidLink $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexCidLink(

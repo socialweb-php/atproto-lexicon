@@ -15,7 +15,7 @@ use function is_object;
 use function is_string;
 
 /**
- * @phpstan-import-type LexiconDocJson from LexiconDoc
+ * @phpstan-import-type TLexiconDoc from LexiconDoc
  */
 class LexiconDocParser implements Parser
 {
@@ -24,7 +24,7 @@ class LexiconDocParser implements Parser
 
     public function parse(object | string $data): LexiconDoc
     {
-        /** @var LexiconDocJson $data */
+        /** @var TLexiconDoc $data */
         $data = $this->validate($data, $this->getValidator());
 
         $nsid = new Nsid($data->id);

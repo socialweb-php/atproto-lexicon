@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
- * @phpstan-import-type LexBlobJson from LexBlob
- * @phpstan-import-type LexIpldTypeJson from LexCidLink
- * @phpstan-import-type LexPrimitiveJson from LexPrimitive
- * @phpstan-import-type LexRefVariantJson from LexRef
- * @phpstan-type LexArrayJson = object{
+ * @phpstan-import-type TLexBlob from LexBlob
+ * @phpstan-import-type TLexIpldType from LexEntity
+ * @phpstan-import-type TLexPrimitive from LexPrimitive
+ * @phpstan-import-type TLexRefVariant from LexEntity
+ * @phpstan-type TLexArray = object{
  *     type: 'array',
  *     description?: string,
- *     items?: LexBlobJson | LexIpldTypeJson | LexPrimitiveJson | LexRefVariantJson,
+ *     items?: TLexBlob | TLexIpldType | TLexPrimitive | TLexRefVariant,
  *     minLength?: int,
  *     maxLength?: int,
  * }
