@@ -21,25 +21,28 @@ use function sprintf;
 
 use const JSON_UNESCAPED_SLASHES;
 
+/**
+ * @phpstan-import-type LexArrayJson from LexArray
+ */
 final class LexArrayParser implements Parser
 {
     use ParserSupport;
 
     public function parse(object | string $data): LexArray
     {
-        /** @var object{items?: object, minLength?: int, maxLength?: int, description?: string} $data */
+        /** @var LexArrayJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexArray(
+            description: $data->description ?? null,
             items: $this->parseItems($data),
             minLength: $data->minLength ?? null,
             maxLength: $data->maxLength ?? null,
-            description: $data->description ?? null,
         );
     }
 
     /**
-     * @param object{items?: object, minLength?: int, maxLength?: int, description?: string} $data
+     * @phpstan-param LexArrayJson $data
      */
     private function parseItems(object $data): LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown | null
     {
@@ -71,9 +74,9 @@ final class LexArrayParser implements Parser
     private function getValidator(): Closure
     {
         return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Array->value
+            && (!isset($data->description) || is_string($data->description))
             && (!isset($data->items) || is_object($data->items))
             && (!isset($data->minLength) || is_int($data->minLength))
-            && (!isset($data->maxLength) || is_int($data->maxLength))
-            && (!isset($data->description) || is_string($data->description));
+            && (!isset($data->maxLength) || is_int($data->maxLength));
     }
 }

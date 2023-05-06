@@ -11,6 +11,9 @@ use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use function is_bool;
 use function is_string;
 
+/**
+ * @phpstan-import-type LexRefUnionJson from LexRefUnion
+ */
 final class LexRefUnionParser implements Parser
 {
     use IsArrayOf;
@@ -18,7 +21,7 @@ final class LexRefUnionParser implements Parser
 
     public function parse(object | string $data): LexRefUnion
     {
-        /** @var object{type: 'union', description?: string, refs: string[], closed?: bool} $data */
+        /** @var LexRefUnionJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexRefUnion(

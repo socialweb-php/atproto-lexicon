@@ -81,14 +81,14 @@ class LexXrpcQueryParserTest extends ParserTestCase
             ],
             'JSON with output' => [
                 'value' => '{"type":"query","output":{"encoding":"application/json","schema":{"type":"object"}}}',
-                'checkValues' => ['output' => new LexXrpcBody('application/json', new LexObject())],
+                'checkValues' => ['output' => new LexXrpcBody(encoding: 'application/json', schema: new LexObject())],
             ],
             'object with output' => [
                 'value' => (object) [
                     'type' => 'query',
                     'output' => (object) ['encoding' => 'application/xml', 'schema' => (object) ['type' => 'object']],
                 ],
-                'checkValues' => ['output' => new LexXrpcBody('application/xml', new LexObject())],
+                'checkValues' => ['output' => new LexXrpcBody(encoding: 'application/xml', schema: new LexObject())],
             ],
             'JSON with description' => [
                 'value' => '{"type":"query","description":"Hello there"}',

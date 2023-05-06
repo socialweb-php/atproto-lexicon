@@ -9,13 +9,16 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 
 use function is_string;
 
+/**
+ * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
+ */
 final class LexXrpcErrorParser implements Parser
 {
     use ParserSupport;
 
     public function parse(object | string $data): LexXrpcError
     {
-        /** @var object{name: string, description?: string} $data */
+        /** @var LexXrpcErrorJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexXrpcError(

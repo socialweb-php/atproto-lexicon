@@ -10,6 +10,9 @@ use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
 use function is_string;
 
+/**
+ * @phpstan-import-type LexTokenJson from LexToken
+ */
 final class LexTokenParser implements Parser
 {
     use IsArrayOf;
@@ -17,7 +20,7 @@ final class LexTokenParser implements Parser
 
     public function parse(object | string $data): LexToken
     {
-        /** @var object{description?: string} $data */
+        /** @var LexTokenJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexToken(

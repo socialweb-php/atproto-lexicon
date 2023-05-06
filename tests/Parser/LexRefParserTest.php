@@ -25,6 +25,7 @@ class LexRefParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexRef::class, $parsed);
+        $this->assertSame($checkValues['description'] ?? null, $parsed->description ?? null);
         $this->assertSame($checkValues['ref'], $parsed->ref);
     }
 
@@ -41,6 +42,16 @@ class LexRefParserTest extends ParserTestCase
             'object' => [
                 'value' => (object) ['type' => 'ref', 'ref' => 'net.example.foo.something#somewhere'],
                 'checkValues' => ['ref' => 'net.example.foo.something#somewhere'],
+            ],
+            'JSON with description' => [
+                'value' => '{"type":"ref","ref":"net.example.foo.something#somewhere","description":"Hi there!"}',
+                'checkValues' => ['ref' => 'net.example.foo.something#somewhere', 'description' => 'Hi there!'],
+            ],
+            'object with description' => [
+                'value' => (object) [
+                    'type' => 'ref', 'ref' => 'net.example.foo.something#somewhere', 'description' => "What's up?",
+                ],
+                'checkValues' => ['ref' => 'net.example.foo.something#somewhere', 'description' => "What's up?"],
             ],
         ];
     }

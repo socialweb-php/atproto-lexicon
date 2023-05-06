@@ -24,7 +24,7 @@ class MockParser implements Parser
 
     public function __construct()
     {
-        $this->parsedValue = new LexiconDoc(new Nsid('foo.bar.baz'), []);
+        $this->parsedValue = new LexiconDoc(id: new Nsid('foo.bar.baz'));
     }
 
     public function getParserFactory(): ParserFactory

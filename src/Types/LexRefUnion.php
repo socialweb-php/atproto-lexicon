@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+/**
+ * @phpstan-type LexRefUnionJson = object{
+ *     type: 'union',
+ *     description?: string,
+ *     refs: string[],
+ *     closed?: bool,
+ * }
+ */
 final class LexRefUnion implements LexType
 {
     public readonly LexPrimitiveType $type;

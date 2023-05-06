@@ -10,19 +10,27 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use function is_object;
 use function is_string;
 
+/**
+ * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
+ */
 final class LexXrpcBodyParser implements Parser
 {
     use ParserSupport;
 
     public function parse(object | string $data): LexXrpcBody
     {
-        /** @var object{encoding: string, schema: object, description?: string} $data */
+        /** @var LexXrpcBodyJson $data */
         $data = $this->validate($data, $this->getValidator());
 
+        $schema = null;
+        if (isset($data->schema)) {
+            $schema = $this->getParserFactory()->getParser(LexObjectParser::class)->parse($data->schema);
+        }
+
         return new LexXrpcBody(
-            encoding: $data->encoding,
-            schema: $this->getParserFactory()->getParser(LexObjectParser::class)->parse($data->schema),
             description: $data->description ?? null,
+            encoding: $data->encoding,
+            schema: $schema,
         );
     }
 
@@ -31,8 +39,8 @@ final class LexXrpcBodyParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->encoding) && is_string($data->encoding)
-            && isset($data->schema) && is_object($data->schema)
-            && (!isset($data->description) || is_string($data->description));
+        return fn (object $data): bool => (!isset($data->description) || is_string($data->description))
+            && isset($data->encoding) && is_string($data->encoding)
+            && (!isset($data->schema) || is_object($data->schema));
     }
 }

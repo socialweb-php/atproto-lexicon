@@ -7,10 +7,14 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
+use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
 
 use function is_int;
 use function is_string;
 
+/**
+ * @phpstan-import-type LexStringJson from LexString
+ */
 final class LexStringParser implements Parser
 {
     use IsArrayOf;
@@ -18,19 +22,20 @@ final class LexStringParser implements Parser
 
     public function parse(object | string $data): LexString
     {
-        /** @var object{format?: string, default?: string, minLength?: int, maxLength?: int, maxGraphemes?: int, enum?: string[], const?: string, knownValues?: string[], description?: string} $data */
+        /** @var LexStringJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexString(
-            format: $data->format ?? null,
+            format: LexStringFormat::tryFrom($data->format ?? ''),
+            description: $data->description ?? null,
             default: $data->default ?? null,
             minLength: $data->minLength ?? null,
             maxLength: $data->maxLength ?? null,
+            minGraphemes: $data->minGraphemes ?? null,
             maxGraphemes: $data->maxGraphemes ?? null,
             enum: $data->enum ?? null,
             const: $data->const ?? null,
             knownValues: $data->knownValues ?? null,
-            description: $data->description ?? null,
         );
     }
 
@@ -41,13 +46,14 @@ final class LexStringParser implements Parser
     {
         return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::String->value
             && (!isset($data->format) || is_string($data->format))
+            && (!isset($data->description) || is_string($data->description))
             && (!isset($data->default) || is_string($data->default))
             && (!isset($data->minLength) || is_int($data->minLength))
             && (!isset($data->maxLength) || is_int($data->maxLength))
+            && (!isset($data->minGraphemes) || is_int($data->minGraphemes))
             && (!isset($data->maxGraphemes) || is_int($data->maxGraphemes))
             && (!isset($data->enum) || $this->isArrayOfString($data->enum))
             && (!isset($data->const) || is_string($data->const))
-            && (!isset($data->knownValues) || $this->isArrayOfString($data->knownValues))
-            && (!isset($data->description) || is_string($data->description));
+            && (!isset($data->knownValues) || $this->isArrayOfString($data->knownValues));
     }
 }

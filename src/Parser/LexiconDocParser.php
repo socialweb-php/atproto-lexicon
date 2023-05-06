@@ -14,6 +14,9 @@ use function is_int;
 use function is_object;
 use function is_string;
 
+/**
+ * @phpstan-import-type LexiconDocJson from LexiconDoc
+ */
 final class LexiconDocParser implements Parser
 {
     use IsArrayOf;
@@ -21,7 +24,7 @@ final class LexiconDocParser implements Parser
 
     public function parse(object | string $data): LexiconDoc
     {
-        /** @var object{id: string, revision?: float | int, description?: string, defs?: object} $data */
+        /** @var LexiconDocJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         $nsid = new Nsid($data->id);
@@ -33,9 +36,9 @@ final class LexiconDocParser implements Parser
 
         $doc = new LexiconDoc(
             id: $nsid,
-            defs: $this->parseDefs($data),
             revision: $data->revision ?? null,
             description: $data->description ?? null,
+            defs: $this->parseDefs($data),
         );
 
         $this->getSchemaRepository()->storeSchema($doc);

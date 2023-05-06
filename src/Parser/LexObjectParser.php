@@ -22,6 +22,9 @@ use function sprintf;
 
 use const JSON_UNESCAPED_SLASHES;
 
+/**
+ * @phpstan-import-type LexObjectJson from LexObject
+ */
 final class LexObjectParser implements Parser
 {
     use IsArrayOf;
@@ -29,20 +32,21 @@ final class LexObjectParser implements Parser
 
     public function parse(object | string $data): LexObject
     {
-        /** @var object{properties?: object, required?: string[], description?: string} $data */
+        /** @var LexObjectJson $data */
         $data = $this->validate($data, $this->getValidator());
 
         return new LexObject(
-            properties: $this->parseProperties($data),
-            required: $data->required ?? null,
             description: $data->description ?? null,
+            required: $data->required ?? null,
+            nullable: $data->nullable ?? null,
+            properties: $this->parseProperties($data),
         );
     }
 
     /**
-     * @param object{properties?: object, required?: string[], description?: string} $data
-     *
      * @return array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown>
+     *
+     * @phpstan-param LexObjectJson $data
      */
     private function parseProperties(object $data): array
     {
@@ -77,9 +81,10 @@ final class LexObjectParser implements Parser
     private function getValidator(): Closure
     {
         return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Object->value
-            && (!isset($data->properties) || is_object($data->properties))
+            && (!isset($data->description) || is_string($data->description))
             && (!isset($data->required) || $this->isArrayOfString($data->required))
-            && (!isset($data->description) || is_string($data->description));
+            && (!isset($data->nullable) || $this->isArrayOfString($data->nullable))
+            && (!isset($data->properties) || is_object($data->properties));
     }
 
     /**

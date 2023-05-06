@@ -82,25 +82,25 @@ class LexXrpcProcedureParserTest extends ParserTestCase
             ],
             'JSON with input' => [
                 'value' => '{"type":"procedure","input":{"encoding":"text/plain","schema":{"type":"object"}}}',
-                'checkValues' => ['input' => new LexXrpcBody('text/plain', new LexObject())],
+                'checkValues' => ['input' => new LexXrpcBody(encoding: 'text/plain', schema: new LexObject())],
             ],
             'object with input' => [
                 'value' => (object) [
                     'type' => 'procedure',
                     'input' => (object) ['encoding' => 'text/html', 'schema' => (object) ['type' => 'object']],
                 ],
-                'checkValues' => ['input' => new LexXrpcBody('text/html', new LexObject())],
+                'checkValues' => ['input' => new LexXrpcBody(encoding: 'text/html', schema: new LexObject())],
             ],
             'JSON with output' => [
                 'value' => '{"type":"procedure","output":{"encoding":"application/json","schema":{"type":"object"}}}',
-                'checkValues' => ['output' => new LexXrpcBody('application/json', new LexObject())],
+                'checkValues' => ['output' => new LexXrpcBody(encoding: 'application/json', schema: new LexObject())],
             ],
             'object with output' => [
                 'value' => (object) [
                     'type' => 'procedure',
                     'output' => (object) ['encoding' => 'application/xml', 'schema' => (object) ['type' => 'object']],
                 ],
-                'checkValues' => ['output' => new LexXrpcBody('application/xml', new LexObject())],
+                'checkValues' => ['output' => new LexXrpcBody(encoding: 'application/xml', schema: new LexObject())],
             ],
             'JSON with description' => [
                 'value' => '{"type":"procedure","description":"Hello there"}',

@@ -103,8 +103,8 @@ class LexiconDocParserTest extends ParserTestCase
                     'id' => new Nsid('com.example.foo'),
                     // For easier testing, we convert this to JSON in testParsesValidValues().
                     'defs' => '{"main":{"type":"string","description":null,"format":null,"default":null,'
-                        . '"minLength":null,"maxLength":null,"maxGraphemes":null,"enum":null,"const":null,'
-                        . '"knownValues":null},"foo":{"type":"integer","description":null,"default":null,'
+                        . '"minLength":null,"maxLength":null,"minGraphemes":null,"maxGraphemes":null,"enum":null,'
+                        . '"const":null,"knownValues":null},"foo":{"type":"integer","description":null,"default":null,'
                         . '"minimum":null,"maximum":null,"enum":null,"const":null}}',
                 ],
             ],

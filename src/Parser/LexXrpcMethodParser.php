@@ -23,6 +23,10 @@ use const JSON_UNESCAPED_SLASHES;
 
 /**
  * @internal
+ *
+ * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
+ * @phpstan-import-type LexXrpcProcedureJson from LexXrpcProcedure
+ * @phpstan-import-type LexXrpcQueryJson from LexXrpcQuery
  */
 abstract class LexXrpcMethodParser implements Parser
 {
@@ -32,7 +36,7 @@ abstract class LexXrpcMethodParser implements Parser
         object | string $data,
         LexXrpcMethodType $method,
     ): LexXrpcQuery | LexXrpcProcedure {
-        /** @var object{type: 'query' | 'procedure', parameters?: array<string, object>, errors?: object[], input?: object, output?: object, description?: string} $data */
+        /** @var LexXrpcProcedureJson | LexXrpcQueryJson $data */
         $data = $this->validate($data, $this->getValidator($method));
 
         $parameters = $this->parseParameters($data);
@@ -40,22 +44,23 @@ abstract class LexXrpcMethodParser implements Parser
         $output = $this->parseBody($data->output ?? null);
 
         if ($method === LexXrpcMethodType::Procedure) {
-            $input = $this->parseBody($data->input ?? null);
+            /** @var LexXrpcBodyJson | null $input */
+            $input = $data->input ?? null;
 
             return new LexXrpcProcedure(
+                description: $data->description ?? null,
                 parameters: $parameters,
-                input: $input,
+                input: $this->parseBody($input),
                 output: $output,
                 errors: $errors,
-                description: $data->description ?? null,
             );
         }
 
         return new LexXrpcQuery(
+            description: $data->description ?? null,
             parameters: $parameters,
             output: $output,
             errors: $errors,
-            description: $data->description ?? null,
         );
     }
 
@@ -105,6 +110,9 @@ abstract class LexXrpcMethodParser implements Parser
         return $parsedErrors ?: null;
     }
 
+    /**
+     * @phpstan-param LexXrpcBodyJson | null $body
+     */
     private function parseBody(?object $body): ?LexXrpcBody
     {
         if ($body === null) {

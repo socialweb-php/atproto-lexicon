@@ -63,7 +63,7 @@ class LexArrayParserTest extends ParserTestCase
             ],
             'JSON with items as object' => [
                 'value' => '{"type":"array","items":{"type":"object","properties":{"foo":{"type":"unknown"}}}}',
-                'checkValues' => ['items' => new LexObject(['foo' => new LexUnknown()])],
+                'checkValues' => ['items' => new LexObject(properties: ['foo' => new LexUnknown()])],
             ],
             'object with items as object' => [
                 'value' => (object) [
@@ -73,7 +73,7 @@ class LexArrayParserTest extends ParserTestCase
                         'properties' => (object) ['foo' => (object) ['type' => 'unknown']],
                     ],
                 ],
-                'checkValues' => ['items' => new LexObject(['foo' => new LexUnknown()])],
+                'checkValues' => ['items' => new LexObject(properties: ['foo' => new LexUnknown()])],
             ],
             'JSON with items as primitive' => [
                 'value' => '{"type":"array","items":{"type":"string"}}',
@@ -85,11 +85,11 @@ class LexArrayParserTest extends ParserTestCase
             ],
             'JSON with items as ref' => [
                 'value' => '{"type":"array","items":{"type":"ref","ref":"com.example.foo#baz"}}',
-                'checkValues' => ['items' => new LexRef('com.example.foo#baz')],
+                'checkValues' => ['items' => new LexRef(ref: 'com.example.foo#baz')],
             ],
             'object with items as ref' => [
                 'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'ref', 'ref' => 'io.foo.bar']],
-                'checkValues' => ['items' => new LexRef('io.foo.bar')],
+                'checkValues' => ['items' => new LexRef(ref: 'io.foo.bar')],
             ],
             'JSON with items as union' => [
                 'value' => '{"type":"array","items":{"type":"union","refs":["io.foo.bar","io.foo.baz"]}}',

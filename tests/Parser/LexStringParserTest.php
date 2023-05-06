@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
+use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
 
 class LexStringParserTest extends ParserTestCase
 {
@@ -17,7 +18,7 @@ class LexStringParserTest extends ParserTestCase
     }
 
     /**
-     * @param array<string, scalar | scalar[]> $checkValues
+     * @param array<string, scalar | scalar[] | LexStringFormat> $checkValues
      */
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
@@ -39,7 +40,7 @@ class LexStringParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[]>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexStringFormat>}>
      */
     public static function validValuesProvider(): array
     {
@@ -54,7 +55,7 @@ class LexStringParserTest extends ParserTestCase
             ],
             'JSON with format as string' => [
                 'value' => '{"type":"string","format":"datetime"}',
-                'checkValues' => ['format' => 'datetime'],
+                'checkValues' => ['format' => LexStringFormat::DateTime],
             ],
             'JSON with default as string' => [
                 'value' => '{"type":"string","default":"foo"}',
@@ -121,7 +122,7 @@ class LexStringParserTest extends ParserTestCase
                     . '"maxGraphemes":235,"enum":["what","is","this"],"const":"is","knownValues":["well","ha"],'
                     . '"description":"Well then"}',
                 'checkValues' => [
-                    'format' => 'uri',
+                    'format' => LexStringFormat::Uri,
                     'default' => 'something',
                     'minLength' => 0,
                     'maxLength' => 255,
@@ -146,7 +147,7 @@ class LexStringParserTest extends ParserTestCase
                     'description' => 'Well then',
                 ],
                 'checkValues' => [
-                    'format' => 'uri',
+                    'format' => LexStringFormat::Uri,
                     'default' => 'something',
                     'minLength' => 0,
                     'maxLength' => 255,

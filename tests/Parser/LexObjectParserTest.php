@@ -40,8 +40,9 @@ class LexObjectParserTest extends ParserTestCase
 
         $this->assertInstanceOf(LexObject::class, $parsed);
         $this->assertSame(LexUserTypeType::Object, $parsed->type);
-        $this->assertSame($checkValues['required'] ?? null, $parsed->required);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
+        $this->assertSame($checkValues['required'] ?? null, $parsed->required);
+        $this->assertSame($checkValues['nullable'] ?? null, $parsed->nullable);
 
         // We use assertEquals() here, since we can't assert sameness on the objects.
         $this->assertEquals($checkValues['properties'] ?? [], $parsed->properties);
@@ -65,24 +66,26 @@ class LexObjectParserTest extends ParserTestCase
                 'value' => '{"type":"object","properties":{"aa":{"type":"array"},"bb":{"type":"blob"},'
                     . '"cc":{"type":"object"},"dd":{"type":"number"},"ee":{"type":"ref","ref":"io.foo.bar"},'
                     . '"ff":{"type":"union","refs":["io.baz.aaa", "io.baz.bbb"]},"gg":{"type":"unknown"}},'
-                    . '"required":["aa","dd","gg"]}',
+                    . '"required":["aa","dd","gg"],"nullable":["dd","gg"]}',
                 'checkValues' => [
                     'properties' => [
                         'aa' => new LexArray(),
                         'bb' => new LexBlob(),
                         'cc' => new LexObject(),
                         'dd' => new LexNumber(),
-                        'ee' => new LexRef('io.foo.bar'),
+                        'ee' => new LexRef(ref: 'io.foo.bar'),
                         'ff' => new LexRefUnion(refs: ['io.baz.aaa', 'io.baz.bbb']),
                         'gg' => new LexUnknown(),
                     ],
                     'required' => ['aa', 'dd', 'gg'],
+                    'nullable' => ['dd', 'gg'],
                 ],
             ],
             'object with items as object' => [
                 'value' => (object) [
                     'type' => 'object',
                     'required' => ['bb', 'ff'],
+                    'nullable' => ['ff'],
                     'properties' => (object) [
                         'aa' => (object) ['type' => 'array'],
                         'bb' => (object) ['type' => 'blob'],
@@ -99,11 +102,12 @@ class LexObjectParserTest extends ParserTestCase
                         'bb' => new LexBlob(),
                         'cc' => new LexObject(),
                         'dd' => new LexBoolean(),
-                        'ee' => new LexRef('com.example.fooBar#main'),
+                        'ee' => new LexRef(ref: 'com.example.fooBar#main'),
                         'ff' => new LexRefUnion(refs: ['io.foo.aaa', 'io.bar.bbb']),
                         'gg' => new LexUnknown(),
                     ],
                     'required' => ['bb', 'ff'],
+                    'nullable' => ['ff'],
                 ],
             ],
             'JSON with description' => [
@@ -144,6 +148,10 @@ class LexObjectParserTest extends ParserTestCase
                     ],
                 ],
             ],
+            ['value' => '{"type":"object","required":["foo",1]}'],
+            ['value' => (object) ['type' => 'object', 'required' => 'foobar']],
+            ['value' => '{"type":"object","nullable":[23.1,"bar"]}'],
+            ['value' => (object) ['type' => 'object', 'nullable' => false]],
             ['value' => '{"type":"object","description":false}'],
             ['value' => (object) ['type' => 'object', 'description' => false]],
         ];
