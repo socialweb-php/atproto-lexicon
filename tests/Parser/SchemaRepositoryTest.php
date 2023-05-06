@@ -23,6 +23,18 @@ class SchemaRepositoryTest extends TestCase
         new SchemaRepository('foo/bar/baz/');
     }
 
+    public function testWhenArrayDoesNotContainOnlyStrings(): void
+    {
+        $this->expectException(SchemaNotFound::class);
+        $this->expectExceptionMessage('All schema directory paths must be strings');
+
+        /**
+         * @psalm-suppress InvalidArgument
+         * @phpstan-ignore-next-line
+         */
+        new SchemaRepository([__DIR__ . '/../schemas', 1234]);
+    }
+
     #[TestWith([new Nsid('net.example.someOperation'), new LexiconDoc(id: new Nsid('net.example.someOperation'))])]
     #[TestWith([new Nsid('net.example.someOtherOperation'), null])]
     public function testFindSchemaByNsid(Nsid $nsid, ?LexiconDoc $expectedResult): void
@@ -60,13 +72,20 @@ class SchemaRepositoryTest extends TestCase
         __DIR__ . '/../schemas/org/example/foo/getSomething.json',
     ])]
     #[TestWith([new Nsid('net.example.notExists'), null])]
+    #[TestWith([
+        new Nsid('net.example.defs#inviteCodeUse'),
+        __DIR__ . '/../more-schemas/net/example/defs.json',
+    ])]
     public function testFindSchemaPathByNsid(Nsid $nsid, ?string $expectedPath): void
     {
         if ($expectedPath !== null) {
             $expectedPath = realpath($expectedPath);
         }
 
-        $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepository = new SchemaRepository([
+            __DIR__ . '/../schemas',
+            __DIR__ . '/../more-schemas',
+        ]);
 
         $this->assertSame($expectedPath, $schemaRepository->findSchemaPathByNsid($nsid));
     }

@@ -9,30 +9,49 @@ use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function explode;
 use function implode;
+use function is_string;
 use function realpath;
 
 use const DIRECTORY_SEPARATOR;
 
 class SchemaRepository
 {
-    public readonly string $schemaDirectory;
+    use IsArrayOf;
 
     /**
-     * @param string $schemaDirectory The directory where all the schemas are
-     *     located. The folder structure in this directory should be organized
-     *     according to the schema NSIDs.
+     * @var list<string>
+     */
+    public readonly array $schemaDirectories;
+
+    /**
+     * @param string | list<string> $schemaDirectory The directory (or
+     *     directories) where all the schemas are located. The folder structure
+     *     in the directories should be organized according to the schema NSIDs.
      * @param array<string, LexiconDoc> $parsedSchemas An array for storing and
      *     retrieving already-parsed schemas.
      */
-    public function __construct(string $schemaDirectory, private array $parsedSchemas = [])
+    public function __construct(array | string $schemaDirectory, private array $parsedSchemas = [])
     {
-        $realSchemaDirectory = realpath($schemaDirectory);
-
-        if ($realSchemaDirectory === false) {
-            throw new SchemaNotFound("Unable to find schema directory at \"$schemaDirectory\"");
+        if (is_string($schemaDirectory)) {
+            $schemaDirectory = [$schemaDirectory];
         }
 
-        $this->schemaDirectory = $realSchemaDirectory;
+        if (!$this->isArrayOfString($schemaDirectory)) {
+            throw new SchemaNotFound('All schema directory paths must be strings');
+        }
+
+        $directories = [];
+        foreach ($schemaDirectory as $directory) {
+            $realSchemaDirectory = realpath($directory);
+
+            if ($realSchemaDirectory === false) {
+                throw new SchemaNotFound("Unable to find schema directory at \"$directory\"");
+            }
+
+            $directories[] = $realSchemaDirectory;
+        }
+
+        $this->schemaDirectories = $directories;
     }
 
     public function findSchemaByNsid(Nsid $nsid): ?LexiconDoc
@@ -47,13 +66,23 @@ class SchemaRepository
 
     /**
      * Returns the absolute path to the schema file, if the file exists.
+     *
+     * When more than one schema directory is configured, there is a possibility
+     * of conflicts; this method returns the first file found.
      */
     public function findSchemaPathByNsid(Nsid $nsid): ?string
     {
         $pathParts = explode('.', $nsid->nsid);
         $fileName = implode(DIRECTORY_SEPARATOR, $pathParts) . '.json';
-        $filePath = $this->schemaDirectory . DIRECTORY_SEPARATOR . $fileName;
 
-        return realpath($filePath) ?: null;
+        foreach ($this->schemaDirectories as $schemaDirectory) {
+            $filePath = realpath($schemaDirectory . DIRECTORY_SEPARATOR . $fileName);
+
+            if ($filePath !== false) {
+                return $filePath;
+            }
+        }
+
+        return null;
     }
 }
