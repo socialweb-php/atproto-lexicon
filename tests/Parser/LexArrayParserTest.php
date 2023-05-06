@@ -13,6 +13,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexBytes;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
+use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveArray;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
@@ -30,8 +31,11 @@ class LexArrayParserTest extends ParserTestCase
      * @param array<string, scalar | scalar[]> $checkValues
      */
     #[DataProvider('validValuesProvider')]
-    public function testParsesValidValues(object | string $value, array $checkValues): void
-    {
+    public function testParsesValidValues(
+        object | string $value,
+        array $checkValues,
+        bool $isPrimitiveArray = false,
+    ): void {
         $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
 
         $parser = new LexArrayParser();
@@ -46,10 +50,16 @@ class LexArrayParserTest extends ParserTestCase
 
         // We use assertEquals() here, since we can't assert sameness on the object.
         $this->assertEquals($checkValues['items'] ?? null, $parsed->items);
+
+        if ($isPrimitiveArray) {
+            $this->assertInstanceOf(LexPrimitiveArray::class, $parsed);
+        } else {
+            $this->assertNotInstanceOf(LexPrimitiveArray::class, $parsed);
+        }
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexEntity>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexEntity>, isPrimitiveArray?: bool}>
      */
     public static function validValuesProvider(): array
     {
@@ -65,10 +75,12 @@ class LexArrayParserTest extends ParserTestCase
             'JSON with items as primitive' => [
                 'value' => '{"type":"array","items":{"type":"string"}}',
                 'checkValues' => ['items' => new LexString()],
+                'isPrimitiveArray' => true,
             ],
             'object with items as primitive' => [
                 'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'integer']],
                 'checkValues' => ['items' => new LexInteger()],
+                'isPrimitiveArray' => true,
             ],
             'JSON with items as ref' => [
                 'value' => '{"type":"array","items":{"type":"ref","ref":"com.example.foo#baz"}}',
@@ -97,10 +109,12 @@ class LexArrayParserTest extends ParserTestCase
             'JSON with items as unknown' => [
                 'value' => '{"type":"array","items":{"type":"unknown"}}',
                 'checkValues' => ['items' => new LexUnknown()],
+                'isPrimitiveArray' => true,
             ],
             'object with items as unknown' => [
                 'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'unknown']],
                 'checkValues' => ['items' => new LexUnknown()],
+                'isPrimitiveArray' => true,
             ],
             'JSON with items as blob' => [
                 'value' => '{"type":"array","items":{"type":"blob"}}',

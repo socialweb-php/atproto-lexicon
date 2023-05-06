@@ -10,6 +10,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexBytes;
 use SocialWeb\Atproto\Lexicon\Types\LexCidLink;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
+use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveArray;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
@@ -34,9 +35,20 @@ class LexArrayParser implements Parser
         /** @var TLexArray $data */
         $data = $this->validate($data, $this->getValidator());
 
+        $items = $this->parseItems($data);
+
+        if ($items instanceof LexPrimitive) {
+            return new LexPrimitiveArray(
+                description: $data->description ?? null,
+                items: $items,
+                minLength: $data->minLength ?? null,
+                maxLength: $data->maxLength ?? null,
+            );
+        }
+
         return new LexArray(
             description: $data->description ?? null,
-            items: $this->parseItems($data),
+            items: $items,
             minLength: $data->minLength ?? null,
             maxLength: $data->maxLength ?? null,
         );
