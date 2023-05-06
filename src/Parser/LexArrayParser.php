@@ -6,6 +6,9 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
+use SocialWeb\Atproto\Lexicon\Types\LexBlob;
+use SocialWeb\Atproto\Lexicon\Types\LexBytes;
+use SocialWeb\Atproto\Lexicon\Types\LexCidLink;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
@@ -42,8 +45,9 @@ final class LexArrayParser implements Parser
     /**
      * @phpstan-param LexArrayJson $data
      */
-    private function parseItems(object $data): LexPrimitive | LexRef | LexRefUnion | null
-    {
+    private function parseItems(
+        object $data,
+    ): LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion | null {
         $parsedItems = null;
         if (isset($data->items)) {
             $parsedItems = $this->getParserFactory()->getParser(LexiconParser::class)->parse($data->items);
@@ -51,6 +55,9 @@ final class LexArrayParser implements Parser
 
         if (
             $parsedItems === null
+            || $parsedItems instanceof LexBlob
+            || $parsedItems instanceof LexBytes
+            || $parsedItems instanceof LexCidLink
             || $parsedItems instanceof LexPrimitive
             || $parsedItems instanceof LexRef
             || $parsedItems instanceof LexRefUnion

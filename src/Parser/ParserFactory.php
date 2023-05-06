@@ -17,6 +17,7 @@ class ParserFactory
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
         'bytes' => LexBytesParser::class,
+        'cid-link' => LexCidLinkParser::class,
         'integer' => LexIntegerParser::class,
         'object' => LexObjectParser::class,
         'procedure' => LexXrpcProcedureParser::class,

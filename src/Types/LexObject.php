@@ -7,6 +7,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
 /**
  * @phpstan-import-type LexArrayJson from LexArray
  * @phpstan-import-type LexBlobJson from LexBlob
+ * @phpstan-import-type LexIpldTypeJson from LexCidLink
  * @phpstan-import-type LexPrimitiveJson from LexPrimitive
  * @phpstan-import-type LexRefVariantJson from LexRef
  * @phpstan-type LexObjectJson = object{
@@ -14,7 +15,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     description?: string,
  *     required?: string[],
  *     nullable?: string[],
- *     properties?: array<string, LexArrayJson | LexBlobJson | LexPrimitiveJson | LexRefVariantJson>,
+ *     properties?: array<string, LexArrayJson | LexBlobJson | LexIpldTypeJson | LexPrimitiveJson | LexRefVariantJson>,
  * }
  */
 final class LexObject implements LexUserType
@@ -24,7 +25,7 @@ final class LexObject implements LexUserType
     /**
      * @param string[] | null $required
      * @param string[] | null $nullable
-     * @param array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion> $properties
+     * @param array<string, LexArray | LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion> $properties
      */
     public function __construct(
         public readonly ?string $description = null,

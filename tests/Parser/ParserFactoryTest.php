@@ -9,6 +9,7 @@ use SocialWeb\Atproto\Lexicon\Parser\LexArrayParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBlobParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBytesParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexCidLinkParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexObjectParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexRecordParser;
@@ -74,6 +75,7 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['blob', LexBlobParser::class])]
     #[TestWith(['boolean', LexBooleanParser::class])]
     #[TestWith(['bytes', LexBytesParser::class])]
+    #[TestWith(['cid-link', LexCidLinkParser::class])]
     #[TestWith(['integer', LexIntegerParser::class])]
     #[TestWith(['object', LexObjectParser::class])]
     #[TestWith(['procedure', LexXrpcProcedureParser::class])]

@@ -10,6 +10,7 @@ enum LexType: string
     case Blob = 'blob';
     case Bytes = 'bytes';
     case Boolean = 'boolean';
+    case CidLink = 'cid-link';
     case Integer = 'integer';
     case Object = 'object';
     case Procedure = 'procedure';

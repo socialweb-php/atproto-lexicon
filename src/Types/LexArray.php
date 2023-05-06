@@ -6,12 +6,13 @@ namespace SocialWeb\Atproto\Lexicon\Types;
 
 /**
  * @phpstan-import-type LexBlobJson from LexBlob
+ * @phpstan-import-type LexIpldTypeJson from LexCidLink
  * @phpstan-import-type LexPrimitiveJson from LexPrimitive
  * @phpstan-import-type LexRefVariantJson from LexRef
  * @phpstan-type LexArrayJson = object{
  *     type: 'array',
  *     description?: string,
- *     items?: LexBlobJson | LexPrimitiveJson | LexRefVariantJson,
+ *     items?: LexBlobJson | LexIpldTypeJson | LexPrimitiveJson | LexRefVariantJson,
  *     minLength?: int,
  *     maxLength?: int,
  * }
@@ -22,7 +23,7 @@ final class LexArray implements LexUserType
 
     public function __construct(
         public readonly ?string $description = null,
-        public readonly LexBlob | LexPrimitive | LexRef | LexRefUnion | null $items = null,
+        public readonly LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion | null $items = null,
         public readonly ?int $minLength = null,
         public readonly ?int $maxLength = null,
     ) {
