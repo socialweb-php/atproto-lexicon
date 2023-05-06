@@ -9,7 +9,6 @@ use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
-use SocialWeb\Atproto\Lexicon\Types\LexNumber;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
@@ -62,8 +61,8 @@ class LexXrpcQueryParserTest extends ParserTestCase
                 'checkValues' => [],
             ],
             'JSON with parameters' => [
-                'value' => '{"type":"query","parameters":{"foo":{"type":"string"},"bar":{"type":"number"}}}',
-                'checkValues' => ['parameters' => ['foo' => new LexString(), 'bar' => new LexNumber()]],
+                'value' => '{"type":"query","parameters":{"foo":{"type":"string"},"bar":{"type":"integer"}}}',
+                'checkValues' => ['parameters' => ['foo' => new LexString(), 'bar' => new LexInteger()]],
             ],
             'object with parameters' => [
                 'value' => (object) [

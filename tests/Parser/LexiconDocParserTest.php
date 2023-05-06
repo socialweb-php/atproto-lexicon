@@ -111,14 +111,14 @@ class LexiconDocParserTest extends ParserTestCase
             'object with defs' => [
                 'value' => (object) [
                     'lexicon' => 1, 'id' => 'net.example.bar', 'defs' => (object) [
-                        'main' => (object) ['type' => 'number'],
+                        'main' => (object) ['type' => 'integer'],
                         'foo' => (object) ['type' => 'boolean'],
                     ],
                 ],
                 'checkValues' => [
                     'id' => new Nsid('net.example.bar'),
                     // For easier testing, we convert this to JSON in testParsesValidValues().
-                    'defs' => '{"main":{"type":"number","description":null,"default":null,"minimum":null,'
+                    'defs' => '{"main":{"type":"integer","description":null,"default":null,"minimum":null,'
                         . '"maximum":null,"enum":null,"const":null},"foo":{"type":"boolean","description":null,'
                         . '"default":null,"const":null}}',
                 ],

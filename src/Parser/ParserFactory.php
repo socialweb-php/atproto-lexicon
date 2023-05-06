@@ -14,12 +14,9 @@ class ParserFactory
      */
     private array $typeParserMap = [
         'array' => LexArrayParser::class,
-        'audio' => LexAudioParser::class,
         'blob' => LexBlobParser::class,
         'boolean' => LexBooleanParser::class,
-        'image' => LexImageParser::class,
         'integer' => LexIntegerParser::class,
-        'number' => LexNumberParser::class,
         'object' => LexObjectParser::class,
         'procedure' => LexXrpcProcedureParser::class,
         'query' => LexXrpcQueryParser::class,
@@ -29,7 +26,6 @@ class ParserFactory
         'token' => LexTokenParser::class,
         'union' => LexRefUnionParser::class,
         'unknown' => LexUnknownParser::class,
-        'video' => LexVideoParser::class,
     ];
 
     /**

@@ -6,12 +6,9 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\TestWith;
 use SocialWeb\Atproto\Lexicon\Parser\LexArrayParser;
-use SocialWeb\Atproto\Lexicon\Parser\LexAudioParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBlobParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
-use SocialWeb\Atproto\Lexicon\Parser\LexImageParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
-use SocialWeb\Atproto\Lexicon\Parser\LexNumberParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexObjectParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexRecordParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexRefParser;
@@ -19,7 +16,6 @@ use SocialWeb\Atproto\Lexicon\Parser\LexRefUnionParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
-use SocialWeb\Atproto\Lexicon\Parser\LexVideoParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcProcedureParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
@@ -74,12 +70,9 @@ class ParserFactoryTest extends TestCase
      * @param class-string<Parser> $expectedParserClass
      */
     #[TestWith(['array', LexArrayParser::class])]
-    #[TestWith(['audio', LexAudioParser::class])]
     #[TestWith(['blob', LexBlobParser::class])]
     #[TestWith(['boolean', LexBooleanParser::class])]
-    #[TestWith(['image', LexImageParser::class])]
     #[TestWith(['integer', LexIntegerParser::class])]
-    #[TestWith(['number', LexNumberParser::class])]
     #[TestWith(['object', LexObjectParser::class])]
     #[TestWith(['procedure', LexXrpcProcedureParser::class])]
     #[TestWith(['query', LexXrpcQueryParser::class])]
@@ -89,7 +82,6 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['token', LexTokenParser::class])]
     #[TestWith(['union', LexRefUnionParser::class])]
     #[TestWith(['unknown', LexUnknownParser::class])]
-    #[TestWith(['video', LexVideoParser::class])]
     public function testGetParserByTypeName(string $typeName, string $expectedParserClass): void
     {
         $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');

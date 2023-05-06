@@ -11,7 +11,7 @@ use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
-use SocialWeb\Atproto\Lexicon\Types\LexNumber;
+use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
@@ -64,7 +64,7 @@ class LexObjectParserTest extends ParserTestCase
             ],
             'JSON with various types of properties' => [
                 'value' => '{"type":"object","properties":{"aa":{"type":"array"},"bb":{"type":"blob"},'
-                    . '"cc":{"type":"object"},"dd":{"type":"number"},"ee":{"type":"ref","ref":"io.foo.bar"},'
+                    . '"cc":{"type":"object"},"dd":{"type":"integer"},"ee":{"type":"ref","ref":"io.foo.bar"},'
                     . '"ff":{"type":"union","refs":["io.baz.aaa", "io.baz.bbb"]},"gg":{"type":"unknown"}},'
                     . '"required":["aa","dd","gg"],"nullable":["dd","gg"]}',
                 'checkValues' => [
@@ -72,7 +72,7 @@ class LexObjectParserTest extends ParserTestCase
                         'aa' => new LexArray(),
                         'bb' => new LexBlob(),
                         'cc' => new LexObject(),
-                        'dd' => new LexNumber(),
+                        'dd' => new LexInteger(),
                         'ee' => new LexRef(ref: 'io.foo.bar'),
                         'ff' => new LexRefUnion(refs: ['io.baz.aaa', 'io.baz.bbb']),
                         'gg' => new LexUnknown(),
@@ -132,7 +132,7 @@ class LexObjectParserTest extends ParserTestCase
             ['value' => (object) []],
             ['value' => '{"type":"foo"}'],
             ['value' => (object) ['type' => 'foo']],
-            ['value' => '{"type":"object","properties":{"foo":{"type":"number"},"bar":{"type":"token"}}}'],
+            ['value' => '{"type":"object","properties":{"foo":{"type":"integer"},"bar":{"type":"token"}}}'],
             [
                 'value' => (object) [
                     'type' => 'object',
