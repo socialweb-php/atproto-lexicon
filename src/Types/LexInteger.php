@@ -11,7 +11,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     default?: int,
  *     minimum?: int,
  *     maximum?: int,
- *     enum?: int[],
+ *     enum?: list<int>,
  *     const?: int,
  * }
  */
@@ -20,7 +20,7 @@ class LexInteger implements LexPrimitive, LexUserType
     public readonly LexType $type;
 
     /**
-     * @param int[] | null $enum
+     * @param list<int> | null $enum
      */
     public function __construct(
         public readonly ?string $description = null,

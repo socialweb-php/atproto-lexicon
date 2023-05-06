@@ -15,9 +15,9 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxLength?: int,
  *     minGraphemes?: int,
  *     maxGraphemes?: int,
- *     enum?: string[],
+ *     enum?: list<string>,
  *     const?: string,
- *     knownValues?: string[],
+ *     knownValues?: list<string>,
  * }
  */
 class LexString implements LexPrimitive, LexUserType
@@ -25,8 +25,8 @@ class LexString implements LexPrimitive, LexUserType
     public readonly LexType $type;
 
     /**
-     * @param string[] | null $enum
-     * @param string[] | null $knownValues
+     * @param list<string> | null $enum
+     * @param list<string> | null $knownValues
      */
     public function __construct(
         public readonly ?LexStringFormat $format = null,

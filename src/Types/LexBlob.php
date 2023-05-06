@@ -8,7 +8,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * @phpstan-type TLexBlob = object{
  *     type: 'blob',
  *     description?: string,
- *     accept?: string[],
+ *     accept?: list<string>,
  *     maxSize?: int | float,
  * }
  */
@@ -17,7 +17,7 @@ class LexBlob implements LexUserType
     public readonly LexType $type;
 
     /**
-     * @param string[] | null $accept
+     * @param list<string> | null $accept
      */
     public function __construct(
         public readonly ?string $description = null,

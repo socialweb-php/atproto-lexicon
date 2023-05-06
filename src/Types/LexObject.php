@@ -13,8 +13,8 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * @phpstan-type TLexObject = object{
  *     type: 'object',
  *     description?: string,
- *     required?: string[],
- *     nullable?: string[],
+ *     required?: list<string>,
+ *     nullable?: list<string>,
  *     properties?: array<string, TLexArray | TLexBlob | TLexIpldType | TLexPrimitive | TLexRefVariant>,
  * }
  */
@@ -23,8 +23,8 @@ class LexObject implements LexUserType
     public readonly LexType $type;
 
     /**
-     * @param string[] | null $required
-     * @param string[] | null $nullable
+     * @param list<string> | null $required
+     * @param list<string> | null $nullable
      * @param array<string, LexArray | LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion> $properties
      */
     public function __construct(

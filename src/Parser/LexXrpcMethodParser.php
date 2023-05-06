@@ -96,7 +96,7 @@ abstract class LexXrpcMethodParser implements Parser
     }
 
     /**
-     * @return LexXrpcError[] | null
+     * @return list<LexXrpcError> | null
      */
     private function parseErrors(object $data): ?array
     {

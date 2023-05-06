@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     description?: string,
  *     parameters?: array<string, LexPrimitive>,
  *     output?: TLexXrpcBody,
- *     errors?: TLexXrpcError[],
+ *     errors?: list<TLexXrpcError>,
  * }
  */
 class LexXrpcQuery implements LexUserType
@@ -21,7 +21,7 @@ class LexXrpcQuery implements LexUserType
 
     /**
      * @param array<string, LexPrimitive> $parameters
-     * @param LexXrpcError[] $errors
+     * @param list<LexXrpcError> $errors
      */
     public function __construct(
         public readonly ?string $description = null,
