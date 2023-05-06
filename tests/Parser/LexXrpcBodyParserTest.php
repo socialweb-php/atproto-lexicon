@@ -10,6 +10,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
+use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 
 class LexXrpcBodyParserTest extends ParserTestCase
@@ -52,6 +53,17 @@ class LexXrpcBodyParserTest extends ParserTestCase
             'object basic' => [
                 'value' => (object) ['encoding' => 'application/json', 'schema' => (object) ['type' => 'object']],
                 'checkValues' => ['encoding' => 'application/json', 'schema' => new LexObject()],
+            ],
+            'JSON with ref' => [
+                'value' => '{"encoding":"application/json","schema":{"type":"ref","ref":"com.example.foo"}}',
+                'checkValues' => ['encoding' => 'application/json', 'schema' => new LexRef(ref: 'com.example.foo')],
+            ],
+            'object with ref' => [
+                'value' => (object) [
+                    'encoding' => 'application/json',
+                    'schema' => (object) ['type' => 'ref', 'ref' => 'com.example.bar'],
+                ],
+                'checkValues' => ['encoding' => 'application/json', 'schema' => new LexRef(ref: 'com.example.bar')],
             ],
             'JSON with description' => [
                 'value' => '{"encoding":"text/plain","schema":{"type":"object"},'

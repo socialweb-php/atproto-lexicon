@@ -5,12 +5,22 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
+use SocialWeb\Atproto\Lexicon\Types\LexObject;
+use SocialWeb\Atproto\Lexicon\Types\LexRef;
+use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 
 use function is_object;
 use function is_string;
+use function json_encode;
+use function sprintf;
+
+use const JSON_UNESCAPED_SLASHES;
 
 /**
+ * @phpstan-import-type TLexObject from LexObject
+ * @phpstan-import-type TLexRefVariant from LexEntity
  * @phpstan-import-type TLexXrpcBody from LexXrpcBody
  */
 class LexXrpcBodyParser implements Parser
@@ -22,16 +32,40 @@ class LexXrpcBodyParser implements Parser
         /** @var TLexXrpcBody $data */
         $data = $this->validate($data, $this->getValidator());
 
-        $schema = null;
-        if (isset($data->schema)) {
-            $schema = $this->getParserFactory()->getParser(LexObjectParser::class)->parse($data->schema);
-        }
-
         return new LexXrpcBody(
             description: $data->description ?? null,
             encoding: $data->encoding,
-            schema: $schema,
+            schema: $this->parseSchema($data),
         );
+    }
+
+    /**
+     * @phpstan-param TLexXrpcBody $data
+     */
+    private function parseSchema(object $data): LexObject | LexRef | LexRefUnion | null
+    {
+        /** @var TLexObject | TLexRefVariant | null $schema */
+        $schema = $data->schema ?? null;
+        $parsedSchema = null;
+
+        if ($schema !== null) {
+            $parsedSchema = $this->getParserFactory()->getParser(LexiconParser::class)->parse($schema);
+        }
+
+        if (
+            $parsedSchema === null
+            || $parsedSchema instanceof LexObject
+            || $parsedSchema instanceof LexRef
+            || $parsedSchema instanceof LexRefUnion
+        ) {
+            /** @var LexObject | LexRef | LexRefUnion | null */
+            return $parsedSchema;
+        }
+
+        throw new UnableToParse(sprintf(
+            'The input data does not contain a valid schema definition: "%s"',
+            json_encode($data, JSON_UNESCAPED_SLASHES),
+        ));
     }
 
     /**
