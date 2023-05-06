@@ -5,27 +5,23 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
+use SocialWeb\Atproto\Lexicon\Types\LexXrpcParameters;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcType;
 
-use function array_reduce;
 use function is_array;
 use function is_object;
 use function is_string;
-use function json_encode;
-use function sprintf;
-
-use const JSON_UNESCAPED_SLASHES;
 
 /**
  * @internal
  *
  * @phpstan-import-type TLexXrpcBody from LexXrpcBody
  * @phpstan-import-type TLexXrpcError from LexXrpcError
+ * @phpstan-import-type TLexXrpcParameters from LexXrpcParameters
  * @phpstan-import-type TLexXrpcProcedure from LexXrpcProcedure
  * @phpstan-import-type TLexXrpcQuery from LexXrpcQuery
  */
@@ -40,7 +36,7 @@ abstract class LexXrpcMethodParser implements Parser
         /** @var TLexXrpcProcedure | TLexXrpcQuery $data */
         $data = $this->validate($data, $this->getValidator($method));
 
-        $parameters = $this->parseParameters($data);
+        $parameters = $this->parseParameters($data->parameters ?? null);
         $errors = $this->parseErrors($data);
         $output = $this->parseBody($data->output ?? null);
 
@@ -66,33 +62,15 @@ abstract class LexXrpcMethodParser implements Parser
     }
 
     /**
-     * @return array<string, LexPrimitive> | null
+     * @phpstan-param TLexXrpcParameters | null $parameters
      */
-    private function parseParameters(object $data): ?array
+    private function parseParameters(?object $parameters): ?LexXrpcParameters
     {
-        /** @var array<string, object> $parameters */
-        $parameters = $data->parameters ?? [];
-        $parsedParameters = [];
-
-        foreach ($parameters as $name => $value) {
-            $parsedParameters[$name] = $this->getParserFactory()->getParser(LexiconParser::class)->parse($value);
-        }
-
-        if ($parsedParameters === []) {
+        if ($parameters === null) {
             return null;
         }
 
-        $isValid = array_reduce($parsedParameters, $this->getParameterValidator(), true);
-
-        if ($isValid) {
-            /** @var array<string, LexPrimitive> */
-            return $parsedParameters;
-        }
-
-        throw new UnableToParse(sprintf(
-            'The input data does not contain a valid schema definition: "%s"',
-            json_encode($data, JSON_UNESCAPED_SLASHES),
-        ));
+        return $this->getParserFactory()->getParser(LexXrpcParametersParser::class)->parse($parameters);
     }
 
     /**
@@ -141,14 +119,5 @@ abstract class LexXrpcMethodParser implements Parser
                 && (!isset($data->description) || is_string($data->description))
                 && $isInputValid;
         };
-    }
-
-    /**
-     * @return Closure(bool, mixed): bool
-     */
-    private function getParameterValidator(): Closure
-    {
-        return fn (bool $carry, mixed $value): bool => $carry
-            && $value instanceof LexPrimitive;
     }
 }

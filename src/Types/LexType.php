@@ -13,6 +13,7 @@ enum LexType: string
     case CidLink = 'cid-link';
     case Integer = 'integer';
     case Object = 'object';
+    case Params = 'params';
     case Procedure = 'procedure';
     case Query = 'query';
     case Record = 'record';

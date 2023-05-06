@@ -18,6 +18,7 @@ use SocialWeb\Atproto\Lexicon\Parser\LexRefUnionParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexXrpcParametersParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcProcedureParser;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
@@ -78,6 +79,7 @@ class ParserFactoryTest extends TestCase
     #[TestWith(['cid-link', LexCidLinkParser::class])]
     #[TestWith(['integer', LexIntegerParser::class])]
     #[TestWith(['object', LexObjectParser::class])]
+    #[TestWith(['params', LexXrpcParametersParser::class])]
     #[TestWith(['procedure', LexXrpcProcedureParser::class])]
     #[TestWith(['query', LexXrpcQueryParser::class])]
     #[TestWith(['ref', LexRefParser::class])]

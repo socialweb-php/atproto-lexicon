@@ -15,6 +15,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
+use SocialWeb\Atproto\Lexicon\Types\LexXrpcParameters;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 
 class LexXrpcProcedureParserTest extends ParserTestCase
@@ -25,7 +26,7 @@ class LexXrpcProcedureParserTest extends ParserTestCase
     }
 
     /**
-     * @param array<string, scalar | scalar[] | LexXrpcBody | array<string | LexPrimitive> | LexXrpcError[]> $checkValues
+     * @param array<string, scalar | scalar[] | LexXrpcBody | array<string | LexPrimitive> | LexXrpcError[] | LexXrpcParameters> $checkValues
      */
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
@@ -48,7 +49,7 @@ class LexXrpcProcedureParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexXrpcBody | array<string | LexPrimitive> | LexXrpcError[]>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexXrpcBody | array<string | LexPrimitive> | LexXrpcError[] | LexXrpcParameters>}>
      */
     public static function validValuesProvider(): array
     {
@@ -62,14 +63,23 @@ class LexXrpcProcedureParserTest extends ParserTestCase
                 'checkValues' => [],
             ],
             'JSON with parameters' => [
-                'value' => '{"type":"procedure","parameters":{"foo":{"type":"string"},"bar":{"type":"integer"}}}',
-                'checkValues' => ['parameters' => ['foo' => new LexString(), 'bar' => new LexInteger()]],
+                'value' => '{"type":"procedure","parameters":{"type":"params","properties":{"foo":{"type":"string"},'
+                    . '"bar":{"type":"integer"}}}}',
+                'checkValues' => [
+                    'parameters' => new LexXrpcParameters(
+                        properties: ['foo' => new LexString(), 'bar' => new LexInteger()],
+                    ),
+                ],
             ],
             'object with parameters' => [
                 'value' => (object) [
-                    'type' => 'procedure', 'parameters' => (object) ['baz' => (object) ['type' => 'integer']],
+                    'type' => 'procedure',
+                    'parameters' => (object) [
+                        'type' => 'params',
+                        'properties' => (object) ['baz' => (object) ['type' => 'integer']],
+                    ],
                 ],
-                'checkValues' => ['parameters' => ['baz' => new LexInteger()]],
+                'checkValues' => ['parameters' => new LexXrpcParameters(properties: ['baz' => new LexInteger()])],
             ],
             'JSON with errors' => [
                 'value' => '{"type":"procedure","errors":[{"name":"MyError"},{"name":"YourError"}]}',
@@ -124,9 +134,7 @@ class LexXrpcProcedureParserTest extends ParserTestCase
             ['value' => '{"type":"foo"}'],
             ['value' => (object) ['type' => 'foo']],
             ['value' => '{"type":"procedure","parameters":false}'],
-            ['value' =>
-                (object) ['type' => 'procedure', 'parameters' => (object) ['foo' => (object) ['type' => 'object']]],
-            ],
+            ['value' => (object) ['type' => 'procedure', 'parameters' => 'foobar']],
             ['value' => '{"type":"procedure","errors":123}'],
             ['value' => (object) ['type' => 'procedure', 'errors' => 'foobar']],
             ['value' => '{"type":"procedure","input":"hello"}'],

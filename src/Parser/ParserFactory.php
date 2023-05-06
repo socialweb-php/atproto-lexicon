@@ -20,6 +20,7 @@ class ParserFactory
         'cid-link' => LexCidLinkParser::class,
         'integer' => LexIntegerParser::class,
         'object' => LexObjectParser::class,
+        'params' => LexXrpcParametersParser::class,
         'procedure' => LexXrpcProcedureParser::class,
         'query' => LexXrpcQueryParser::class,
         'record' => LexRecordParser::class,
