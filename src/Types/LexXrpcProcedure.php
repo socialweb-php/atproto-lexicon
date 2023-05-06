@@ -16,7 +16,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     errors?: LexXrpcErrorJson[],
  * }
  */
-final class LexXrpcProcedure implements LexUserType
+class LexXrpcProcedure implements LexUserType
 {
     public readonly LexType $type;
 

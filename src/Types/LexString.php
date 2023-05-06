@@ -20,7 +20,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     knownValues?: string[],
  * }
  */
-final class LexString implements LexPrimitive, LexUserType
+class LexString implements LexPrimitive, LexUserType
 {
     public readonly LexType $type;
 

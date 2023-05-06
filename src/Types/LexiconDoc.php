@@ -17,7 +17,7 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
  *     defs: array<string, LexUserTypeJson>,
  * }
  */
-final class LexiconDoc implements LexEntity
+class LexiconDoc implements LexEntity
 {
     public readonly int $lexicon;
 

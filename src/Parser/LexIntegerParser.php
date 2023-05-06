@@ -14,7 +14,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexIntegerJson from LexInteger
  */
-final class LexIntegerParser implements Parser
+class LexIntegerParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

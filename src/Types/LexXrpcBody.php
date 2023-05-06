@@ -13,7 +13,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     schema?: LexObjectJson | LexRefVariantJson,
  * }
  */
-final class LexXrpcBody implements LexEntity
+class LexXrpcBody implements LexEntity
 {
     public function __construct(
         public readonly ?string $description = null,

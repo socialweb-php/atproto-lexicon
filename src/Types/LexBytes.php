@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     minLength?: int,
  * }
  */
-final class LexBytes implements LexUserType
+class LexBytes implements LexUserType
 {
     public readonly LexType $type;
 

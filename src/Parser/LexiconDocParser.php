@@ -17,7 +17,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexiconDocJson from LexiconDoc
  */
-final class LexiconDocParser implements Parser
+class LexiconDocParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

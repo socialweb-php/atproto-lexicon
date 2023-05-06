@@ -18,7 +18,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     properties?: array<string, LexArrayJson | LexBlobJson | LexIpldTypeJson | LexPrimitiveJson | LexRefVariantJson>,
  * }
  */
-final class LexObject implements LexUserType
+class LexObject implements LexUserType
 {
     public readonly LexType $type;
 

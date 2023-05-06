@@ -12,7 +12,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
  */
-final class LexXrpcErrorParser implements Parser
+class LexXrpcErrorParser implements Parser
 {
     use ParserSupport;
 

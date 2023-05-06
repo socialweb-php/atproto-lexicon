@@ -14,7 +14,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexBooleanJson from LexBoolean
  */
-final class LexBooleanParser implements Parser
+class LexBooleanParser implements Parser
 {
     use ParserSupport;
 

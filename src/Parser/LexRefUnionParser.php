@@ -14,7 +14,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexRefUnionJson from LexRefUnion
  */
-final class LexRefUnionParser implements Parser
+class LexRefUnionParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

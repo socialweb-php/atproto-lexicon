@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * }
  * @phpstan-type LexIpldTypeJson = LexBytesJson | LexCidLinkJson
  */
-final class LexCidLink implements LexUserType
+class LexCidLink implements LexUserType
 {
     public readonly LexType $type;
 

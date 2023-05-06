@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxSize?: int | float,
  * }
  */
-final class LexBlob implements LexUserType
+class LexBlob implements LexUserType
 {
     public readonly LexType $type;
 

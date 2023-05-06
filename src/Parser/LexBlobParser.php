@@ -15,7 +15,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexBlobJson from LexBlob
  */
-final class LexBlobParser implements Parser
+class LexBlobParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

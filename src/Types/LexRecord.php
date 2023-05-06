@@ -13,7 +13,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     record: LexObjectJson,
  * }
  */
-final class LexRecord implements LexUserType
+class LexRecord implements LexUserType
 {
     public readonly LexType $type;
 

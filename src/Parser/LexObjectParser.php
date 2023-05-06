@@ -24,7 +24,7 @@ use const JSON_UNESCAPED_SLASHES;
 /**
  * @phpstan-import-type LexObjectJson from LexObject
  */
-final class LexObjectParser implements Parser
+class LexObjectParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

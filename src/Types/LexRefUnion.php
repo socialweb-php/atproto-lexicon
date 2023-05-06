@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     closed?: bool,
  * }
  */
-final class LexRefUnion implements LexEntity
+class LexRefUnion implements LexEntity
 {
     public readonly LexType $type;
 

@@ -13,7 +13,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * }
  * @phpstan-type LexRefVariantJson = LexRefJson | LexRefUnionJson
  */
-final class LexRef implements LexEntity
+class LexRef implements LexEntity
 {
     public readonly LexType $type;
 

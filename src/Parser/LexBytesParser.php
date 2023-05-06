@@ -14,7 +14,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexBytesJson from LexBytes
  */
-final class LexBytesParser implements Parser
+class LexBytesParser implements Parser
 {
     use ParserSupport;
 

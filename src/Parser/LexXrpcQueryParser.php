@@ -7,7 +7,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcType;
 
-final class LexXrpcQueryParser extends LexXrpcMethodParser implements Parser
+class LexXrpcQueryParser extends LexXrpcMethodParser implements Parser
 {
     public function parse(object | string $data): LexXrpcQuery
     {

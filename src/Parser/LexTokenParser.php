@@ -13,7 +13,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexTokenJson from LexToken
  */
-final class LexTokenParser implements Parser
+class LexTokenParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;

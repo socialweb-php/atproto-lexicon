@@ -12,7 +12,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: bool,
  * }
  */
-final class LexBoolean implements LexPrimitive, LexUserType
+class LexBoolean implements LexPrimitive, LexUserType
 {
     public readonly LexType $type;
 

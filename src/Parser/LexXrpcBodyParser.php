@@ -13,7 +13,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
  */
-final class LexXrpcBodyParser implements Parser
+class LexXrpcBodyParser implements Parser
 {
     use ParserSupport;
 

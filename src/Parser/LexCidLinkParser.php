@@ -13,7 +13,7 @@ use function is_string;
 /**
  * @phpstan-import-type LexCidLinkJson from LexCidLink
  */
-final class LexCidLinkParser implements Parser
+class LexCidLinkParser implements Parser
 {
     use ParserSupport;
 

@@ -15,7 +15,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: int,
  * }
  */
-final class LexInteger implements LexPrimitive, LexUserType
+class LexInteger implements LexPrimitive, LexUserType
 {
     public readonly LexType $type;
 

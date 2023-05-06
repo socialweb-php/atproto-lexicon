@@ -10,7 +10,7 @@ use function is_string;
 use function json_encode;
 use function sprintf;
 
-final class LexiconParser implements Parser
+class LexiconParser implements Parser
 {
     use IsArrayOf;
     use ParserSupport;
