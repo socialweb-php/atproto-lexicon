@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
@@ -34,8 +34,8 @@ abstract class ParserTestCase extends TestCase
         $parserClass = $this->getParserClassName();
         $parser = new $parserClass();
 
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
-        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
+        $parser->setParserFactory(new DefaultParserFactory($schemaRepo));
 
         $this->expectException(UnableToParse::class);
         $this->expectExceptionMessage(

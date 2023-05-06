@@ -10,8 +10,6 @@ interface Parser
 {
     public function getParserFactory(): ParserFactory;
 
-    public function getSchemaRepository(): SchemaRepository;
-
     /**
      * @param object | string $data A JSON object or string representation of
      *     the Lexicon entity to parse.
@@ -19,6 +17,4 @@ interface Parser
     public function parse(object | string $data): LexEntity;
 
     public function setParserFactory(ParserFactory $parserFactory): void;
-
-    public function setSchemaRepository(SchemaRepository $schemaRepository): void;
 }

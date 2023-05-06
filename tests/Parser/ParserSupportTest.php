@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\InvalidParserConfiguration;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\ParserSupport;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
@@ -25,31 +25,14 @@ class ParserSupportTest extends TestCase
         $this->getParserFactory();
     }
 
-    public function testGetSchemaRepositoryThrowsException(): void
-    {
-        $this->expectException(InvalidParserConfiguration::class);
-        $this->expectExceptionMessage('Please configure this parser with a schema repository');
-
-        $this->getSchemaRepository();
-    }
-
     public function testSetParserFactory(): void
     {
-        $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
-        $parserFactory = new ParserFactory($schemaRepository);
+        $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
+        $parserFactory = new DefaultParserFactory($schemaRepository);
 
         $this->setParserFactory($parserFactory);
 
         $this->assertSame($parserFactory, $this->getParserFactory());
-    }
-
-    public function testSetSchemaRepository(): void
-    {
-        $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
-
-        $this->setSchemaRepository($schemaRepository);
-
-        $this->assertSame($schemaRepository, $this->getSchemaRepository());
     }
 
     public function testValidateThrowsForInvalidJson(): void

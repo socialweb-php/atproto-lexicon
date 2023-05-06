@@ -6,8 +6,8 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\TestWith;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaNotFound;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 use SocialWeb\Test\Atproto\Lexicon\TestCase;
 
@@ -20,7 +20,7 @@ class SchemaRepositoryTest extends TestCase
         $this->expectException(SchemaNotFound::class);
         $this->expectExceptionMessage('Unable to find schema directory at "foo/bar/baz/"');
 
-        new SchemaRepository('foo/bar/baz/');
+        new DefaultSchemaRepository('foo/bar/baz/');
     }
 
     public function testWhenArrayDoesNotContainOnlyStrings(): void
@@ -32,7 +32,7 @@ class SchemaRepositoryTest extends TestCase
          * @psalm-suppress InvalidArgument
          * @phpstan-ignore-next-line
          */
-        new SchemaRepository([__DIR__ . '/../schemas', 1234]);
+        new DefaultSchemaRepository([__DIR__ . '/../schemas', 1234]);
     }
 
     #[TestWith([new Nsid('net.example.someOperation'), new LexiconDoc(id: new Nsid('net.example.someOperation'))])]
@@ -45,7 +45,7 @@ class SchemaRepositoryTest extends TestCase
             $parsedSchemas[$expectedResult->id->nsid] = $expectedResult;
         }
 
-        $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas', $parsedSchemas);
+        $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas', $parsedSchemas);
 
         $this->assertSame($expectedResult, $schemaRepository->findSchemaByNsid($nsid));
     }
@@ -53,7 +53,7 @@ class SchemaRepositoryTest extends TestCase
     public function testStoreSchema(): void
     {
         $schema = new LexiconDoc(id: new Nsid('net.example.someOperation'));
-        $schemaRepository = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
         $nsid = new Nsid('net.example.someOperation');
 
         $this->assertNull($schemaRepository->findSchemaByNsid($nsid));
@@ -82,7 +82,7 @@ class SchemaRepositoryTest extends TestCase
             $expectedPath = realpath($expectedPath);
         }
 
-        $schemaRepository = new SchemaRepository([
+        $schemaRepository = new DefaultSchemaRepository([
             __DIR__ . '/../schemas',
             __DIR__ . '/../more-schemas',
         ]);

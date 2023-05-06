@@ -38,12 +38,8 @@ use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 $file = '/path/to/bluesky-social/atproto/lexicons/app/bsky/feed/post.json';
 $schemas = '/path/to/bluesky-social/atproto/lexicons';
 
-$schemaRepository = new SchemaRepository($schemas);
-
-$parser = new LexiconParser(
-    schemaRepository: $schemaRepository,
-    parserFactory: new ParserFactory($schemaRepository),
-);
+$schemaRepository = new DefaultSchemaRepository($schemas);
+$parser = new LexiconParser(new DefaultParserFactory($schemaRepository));
 
 $document = $parser->parse((string) file_get_contents($file));
 

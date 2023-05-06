@@ -8,7 +8,6 @@ use RuntimeException;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
@@ -17,10 +16,8 @@ class MockParser implements Parser
     public LexEntity $parsedValue;
     public int $parseCalled = 0;
     public int $setParserFactoryCalled = 0;
-    public int $setSchemaRepositoryCalled = 0;
 
     private ?ParserFactory $parserFactory = null;
-    private ?SchemaRepository $schemaRepository = null;
 
     public function __construct()
     {
@@ -36,15 +33,6 @@ class MockParser implements Parser
         return $this->parserFactory;
     }
 
-    public function getSchemaRepository(): SchemaRepository
-    {
-        if ($this->schemaRepository === null) {
-            throw new RuntimeException('You forgot to set a schema repository');
-        }
-
-        return $this->schemaRepository;
-    }
-
     public function parse(object | string $data): LexEntity
     {
         $this->parseCalled++;
@@ -56,11 +44,5 @@ class MockParser implements Parser
     {
         $this->parserFactory = $parserFactory;
         $this->setParserFactoryCalled++;
-    }
-
-    public function setSchemaRepository(SchemaRepository $schemaRepository): void
-    {
-        $this->schemaRepository = $schemaRepository;
-        $this->setSchemaRepositoryCalled++;
     }
 }

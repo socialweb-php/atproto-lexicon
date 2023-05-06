@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\TestWith;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
@@ -25,12 +25,9 @@ class LexiconParserTest extends TestCase
     {
         parent::setUp();
 
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
 
-        $this->parser = new LexiconParser(
-            $schemaRepo,
-            new ParserFactory($schemaRepo),
-        );
+        $this->parser = new LexiconParser(new DefaultParserFactory($schemaRepo));
     }
 
     #[TestWith([''])]

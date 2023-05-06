@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcQueryParser;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
@@ -31,10 +31,10 @@ class LexXrpcQueryParserTest extends ParserTestCase
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
     {
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
 
         $parser = new LexXrpcQueryParser();
-        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $parser->setParserFactory(new DefaultParserFactory($schemaRepo));
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexXrpcQuery::class, $parsed);

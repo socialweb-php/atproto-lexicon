@@ -13,14 +13,8 @@ class LexiconParser implements Parser
     use IsArrayOf;
     use ParserSupport;
 
-    public function __construct(
-        ?SchemaRepository $schemaRepository = null,
-        ?ParserFactory $parserFactory = null,
-    ) {
-        if ($schemaRepository !== null) {
-            $this->setSchemaRepository($schemaRepository);
-        }
-
+    public function __construct(?ParserFactory $parserFactory = null)
+    {
         if ($parserFactory !== null) {
             $this->setParserFactory($parserFactory);
         }

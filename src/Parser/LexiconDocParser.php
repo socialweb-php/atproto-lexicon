@@ -30,7 +30,7 @@ class LexiconDocParser implements Parser
 
         $nsid = new Nsid($data->id);
 
-        $existingDoc = $this->getSchemaRepository()->findSchemaByNsid($nsid);
+        $existingDoc = $this->getParserFactory()->getSchemaRepository()->findSchemaByNsid($nsid);
         if ($existingDoc !== null) {
             return $existingDoc;
         }
@@ -42,7 +42,7 @@ class LexiconDocParser implements Parser
             defs: $this->parseDefs($data),
         );
 
-        $this->getSchemaRepository()->storeSchema($doc);
+        $this->getParserFactory()->getSchemaRepository()->storeSchema($doc);
 
         return $doc;
     }

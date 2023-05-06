@@ -19,7 +19,6 @@ trait ParserSupport
     private const PARSE_ERROR = 'The input data does not contain a valid schema definition: %s';
 
     private ?ParserFactory $parserFactory = null;
-    private ?SchemaRepository $schemaRepository = null;
 
     public function getParserFactory(): ParserFactory
     {
@@ -30,23 +29,9 @@ trait ParserSupport
         return $this->parserFactory;
     }
 
-    public function getSchemaRepository(): SchemaRepository
-    {
-        if ($this->schemaRepository === null) {
-            throw new InvalidParserConfiguration('Please configure this parser with a schema repository');
-        }
-
-        return $this->schemaRepository;
-    }
-
     public function setParserFactory(ParserFactory $parserFactory): void
     {
         $this->parserFactory = $parserFactory;
-    }
-
-    public function setSchemaRepository(SchemaRepository $schemaRepository): void
-    {
-        $this->schemaRepository = $schemaRepository;
     }
 
     /**

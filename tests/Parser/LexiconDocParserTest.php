@@ -7,9 +7,9 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestWith;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
@@ -27,11 +27,10 @@ class LexiconDocParserTest extends ParserTestCase
     {
         $document = '{"lexicon":1,"id":"com.example.foo"}';
 
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
 
         $parser = new LexiconDocParser();
-        $parser->setSchemaRepository($schemaRepo);
-        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $parser->setParserFactory(new DefaultParserFactory($schemaRepo));
         $parsed1 = $parser->parse($document);
         $parsed2 = $parser->parse($document);
 
@@ -44,11 +43,10 @@ class LexiconDocParserTest extends ParserTestCase
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
     {
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
 
         $parser = new LexiconDocParser();
-        $parser->setSchemaRepository($schemaRepo);
-        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $parser->setParserFactory(new DefaultParserFactory($schemaRepo));
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexiconDoc::class, $parsed);
@@ -67,11 +65,10 @@ class LexiconDocParserTest extends ParserTestCase
     #[TestWith(['org.example.invalid.docWithNonMainSubscription'])]
     public function testThrowsWhenNonMainDefContainsImproperType(string $schemaNsid): void
     {
-        $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
+        $schemaRepo = new DefaultSchemaRepository(__DIR__ . '/../schemas');
 
         $parser = new LexiconDocParser();
-        $parser->setSchemaRepository($schemaRepo);
-        $parser->setParserFactory(new ParserFactory($schemaRepo));
+        $parser->setParserFactory(new DefaultParserFactory($schemaRepo));
 
         $nsid = new Nsid($schemaNsid);
         $schemaFile = (string) $schemaRepo->findSchemaPathByNsid($nsid);
