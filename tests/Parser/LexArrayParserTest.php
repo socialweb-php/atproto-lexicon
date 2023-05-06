@@ -9,9 +9,8 @@ use SocialWeb\Atproto\Lexicon\Parser\LexArrayParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
-use SocialWeb\Atproto\Lexicon\Types\LexObject;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
@@ -38,7 +37,7 @@ class LexArrayParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexArray::class, $parsed);
-        $this->assertSame(LexPrimitiveType::Array, $parsed->type);
+        $this->assertSame(LexType::Array, $parsed->type);
         $this->assertSame($checkValues['minLength'] ?? null, $parsed->minLength);
         $this->assertSame($checkValues['maxLength'] ?? null, $parsed->maxLength);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
@@ -48,7 +47,7 @@ class LexArrayParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexType>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexEntity>}>
      */
     public static function validValuesProvider(): array
     {
@@ -62,18 +61,15 @@ class LexArrayParserTest extends ParserTestCase
                 'checkValues' => [],
             ],
             'JSON with items as object' => [
-                'value' => '{"type":"array","items":{"type":"object","properties":{"foo":{"type":"unknown"}}}}',
-                'checkValues' => ['items' => new LexObject(properties: ['foo' => new LexUnknown()])],
+                'value' => '{"type":"array","items":{"type":"unknown"}}',
+                'checkValues' => ['items' => new LexUnknown()],
             ],
             'object with items as object' => [
                 'value' => (object) [
                     'type' => 'array',
-                    'items' => (object) [
-                        'type' => 'object',
-                        'properties' => (object) ['foo' => (object) ['type' => 'unknown']],
-                    ],
+                    'items' => (object) ['type' => 'unknown'],
                 ],
-                'checkValues' => ['items' => new LexObject(properties: ['foo' => new LexUnknown()])],
+                'checkValues' => ['items' => new LexUnknown()],
             ],
             'JSON with items as primitive' => [
                 'value' => '{"type":"array","items":{"type":"string"}}',

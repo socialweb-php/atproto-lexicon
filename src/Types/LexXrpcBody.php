@@ -10,10 +10,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * @phpstan-type LexXrpcBodyJson = object{
  *     description?: string,
  *     encoding: string,
- *     schema?: LexRefVariantJson | LexObjectJson,
+ *     schema?: LexObjectJson | LexRefVariantJson,
  * }
  */
-final class LexXrpcBody implements LexType
+final class LexXrpcBody implements LexEntity
 {
     public function __construct(
         public readonly ?string $description = null,

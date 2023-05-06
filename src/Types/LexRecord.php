@@ -13,13 +13,15 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     record: LexObjectJson,
  * }
  */
-final class LexRecord extends LexUserType
+final class LexRecord implements LexUserType
 {
+    public readonly LexType $type;
+
     public function __construct(
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?string $key = null,
         public readonly ?LexObject $record = null,
     ) {
-        parent::__construct(LexUserTypeType::Record, $description);
+        $this->type = LexType::Record;
     }
 }

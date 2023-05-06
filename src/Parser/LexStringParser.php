@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_int;
 use function is_string;
@@ -25,8 +25,11 @@ final class LexStringParser implements Parser
         /** @var LexStringJson $data */
         $data = $this->validate($data, $this->getValidator());
 
+        /** @var string $format */
+        $format = $data->format ?? '';
+
         return new LexString(
-            format: LexStringFormat::tryFrom($data->format ?? ''),
+            format: LexStringFormat::tryFrom($format),
             description: $data->description ?? null,
             default: $data->default ?? null,
             minLength: $data->minLength ?? null,
@@ -44,7 +47,7 @@ final class LexStringParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::String->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::String->value
             && (!isset($data->format) || is_string($data->format))
             && (!isset($data->description) || is_string($data->description))
             && (!isset($data->default) || is_string($data->default))

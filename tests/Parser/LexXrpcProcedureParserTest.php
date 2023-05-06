@@ -12,7 +12,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
@@ -37,7 +37,7 @@ class LexXrpcProcedureParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexXrpcProcedure::class, $parsed);
-        $this->assertSame(LexUserTypeType::Procedure, $parsed->type);
+        $this->assertSame(LexType::Procedure, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 
         // We use assertEquals() here, since we can't assert sameness on the objects.

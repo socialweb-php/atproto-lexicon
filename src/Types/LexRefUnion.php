@@ -12,9 +12,9 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     closed?: bool,
  * }
  */
-final class LexRefUnion implements LexType
+final class LexRefUnion implements LexEntity
 {
-    public readonly LexPrimitiveType $type;
+    public readonly LexType $type;
 
     /**
      * @param string[] $refs
@@ -24,6 +24,6 @@ final class LexRefUnion implements LexType
         public readonly array $refs = [],
         public readonly ?bool $closed = null,
     ) {
-        $this->type = LexPrimitiveType::Union;
+        $this->type = LexType::Union;
     }
 }

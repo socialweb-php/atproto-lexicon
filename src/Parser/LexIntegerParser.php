@@ -6,7 +6,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_int;
 use function is_string;
@@ -39,7 +39,7 @@ final class LexIntegerParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Integer->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Integer->value
             && (!isset($data->description) || is_string($data->description))
             && (!isset($data->default) || is_int($data->default))
             && (!isset($data->minimum) || is_int($data->minimum))

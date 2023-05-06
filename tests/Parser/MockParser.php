@@ -9,12 +9,12 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\Parser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
-use SocialWeb\Atproto\Lexicon\Types\LexType;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 class MockParser implements Parser
 {
-    public LexType $parsedValue;
+    public LexEntity $parsedValue;
     public int $parseCalled = 0;
     public int $setParserFactoryCalled = 0;
     public int $setSchemaRepositoryCalled = 0;
@@ -45,7 +45,7 @@ class MockParser implements Parser
         return $this->schemaRepository;
     }
 
-    public function parse(object | string $data): LexType
+    public function parse(object | string $data): LexEntity
     {
         $this->parseCalled++;
 

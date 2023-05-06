@@ -10,7 +10,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     description?: string,
  * }
  */
-final class LexXrpcError implements LexType
+final class LexXrpcError implements LexEntity
 {
     public function __construct(
         public readonly string $name,

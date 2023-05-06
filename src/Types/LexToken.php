@@ -10,10 +10,12 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     description?: string,
  * }
  */
-final class LexToken extends LexUserType
+final class LexToken implements LexUserType
 {
-    public function __construct(?string $description = null)
+    public readonly LexType $type;
+
+    public function __construct(public readonly ?string $description = null)
     {
-        parent::__construct(LexUserTypeType::Token, $description);
+        $this->type = LexType::Token;
     }
 }

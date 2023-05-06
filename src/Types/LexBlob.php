@@ -12,16 +12,18 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxSize?: int | float,
  * }
  */
-final class LexBlob extends LexUserType
+final class LexBlob implements LexUserType
 {
+    public readonly LexType $type;
+
     /**
      * @param string[] | null $accept
      */
     public function __construct(
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?array $accept = null,
         public readonly float | int | null $maxSize = null,
     ) {
-        parent::__construct(LexUserTypeType::Blob, $description);
+        $this->type = LexType::Blob;
     }
 }

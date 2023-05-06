@@ -15,19 +15,21 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: int,
  * }
  */
-final class LexInteger extends LexPrimitive
+final class LexInteger implements LexPrimitive, LexUserType
 {
+    public readonly LexType $type;
+
     /**
      * @param int[] | null $enum
      */
     public function __construct(
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?int $default = null,
         public readonly ?int $minimum = null,
         public readonly ?int $maximum = null,
         public readonly ?array $enum = null,
         public readonly ?int $const = null,
     ) {
-        parent::__construct(LexPrimitiveType::Integer, $description);
+        $this->type = LexType::Integer;
     }
 }

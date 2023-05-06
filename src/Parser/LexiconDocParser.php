@@ -6,7 +6,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
-use SocialWeb\Atproto\Lexicon\Types\LexType;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function is_float;
@@ -47,7 +47,7 @@ final class LexiconDocParser implements Parser
     }
 
     /**
-     * @return array<string, LexType>
+     * @return array<string, LexEntity>
      */
     private function parseDefs(object $data): array
     {

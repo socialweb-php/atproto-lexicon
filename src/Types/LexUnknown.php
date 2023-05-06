@@ -10,10 +10,12 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     description?: string,
  * }
  */
-final class LexUnknown extends LexUserType
+final class LexUnknown implements LexPrimitive, LexUserType
 {
-    public function __construct(?string $description = null)
+    public readonly LexType $type;
+
+    public function __construct(public readonly ?string $description = null)
     {
-        parent::__construct(LexUserTypeType::Unknown, $description);
+        $this->type = LexType::Unknown;
     }
 }

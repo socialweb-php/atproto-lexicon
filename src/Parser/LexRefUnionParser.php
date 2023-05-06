@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_bool;
 use function is_string;
@@ -36,7 +36,7 @@ final class LexRefUnionParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Union->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Union->value
             && (!isset($data->description) || is_string($data->description))
             && isset($data->refs) && $this->isArrayOfString($data->refs)
             && (!isset($data->closed) || is_bool($data->closed));

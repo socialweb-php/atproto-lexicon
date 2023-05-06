@@ -12,6 +12,9 @@ use function explode;
 use function implode;
 use function is_string;
 
+/**
+ * @phpstan-type NsidJson = string
+ */
 final class Nsid implements JsonSerializable
 {
     public readonly string $nsid;

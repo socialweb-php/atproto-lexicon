@@ -7,7 +7,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexBlobParser;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexBlobParserTest extends ParserTestCase
 {
@@ -26,7 +26,7 @@ class LexBlobParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexBlob::class, $parsed);
-        $this->assertSame(LexUserTypeType::Blob, $parsed->type);
+        $this->assertSame(LexType::Blob, $parsed->type);
         $this->assertSame($checkValues['accept'] ?? null, $parsed->accept);
         $this->assertSame($checkValues['maxSize'] ?? null, $parsed->maxSize);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);

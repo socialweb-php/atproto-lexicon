@@ -11,8 +11,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
-use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function array_reduce;
 use function is_object;
@@ -44,7 +43,7 @@ final class LexObjectParser implements Parser
     }
 
     /**
-     * @return array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown>
+     * @return array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion>
      *
      * @phpstan-param LexObjectJson $data
      */
@@ -65,7 +64,7 @@ final class LexObjectParser implements Parser
         $isValid = array_reduce($parsedProperties, $this->getPropertyValidator(), true);
 
         if ($parsedProperties === [] || $isValid) {
-            /** @var array<string, LexArray | LexBlob | LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown> */
+            /** @var array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion> */
             return $parsedProperties;
         }
 
@@ -80,7 +79,7 @@ final class LexObjectParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Object->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Object->value
             && (!isset($data->description) || is_string($data->description))
             && (!isset($data->required) || $this->isArrayOfString($data->required))
             && (!isset($data->nullable) || $this->isArrayOfString($data->nullable))
@@ -96,11 +95,9 @@ final class LexObjectParser implements Parser
             && (
                 $value instanceof LexArray
                 || $value instanceof LexBlob
-                || $value instanceof LexObject
                 || $value instanceof LexPrimitive
                 || $value instanceof LexRef
                 || $value instanceof LexRefUnion
-                || $value instanceof LexUnknown
             );
     }
 }

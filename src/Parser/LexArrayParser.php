@@ -6,12 +6,10 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
-use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
-use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_int;
 use function is_object;
@@ -44,7 +42,7 @@ final class LexArrayParser implements Parser
     /**
      * @phpstan-param LexArrayJson $data
      */
-    private function parseItems(object $data): LexObject | LexPrimitive | LexRef | LexRefUnion | LexUnknown | null
+    private function parseItems(object $data): LexPrimitive | LexRef | LexRefUnion | null
     {
         $parsedItems = null;
         if (isset($data->items)) {
@@ -53,11 +51,9 @@ final class LexArrayParser implements Parser
 
         if (
             $parsedItems === null
-            || $parsedItems instanceof LexObject
             || $parsedItems instanceof LexPrimitive
             || $parsedItems instanceof LexRef
             || $parsedItems instanceof LexRefUnion
-            || $parsedItems instanceof LexUnknown
         ) {
             return $parsedItems;
         }
@@ -73,7 +69,7 @@ final class LexArrayParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Array->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Array->value
             && (!isset($data->description) || is_string($data->description))
             && (!isset($data->items) || is_object($data->items))
             && (!isset($data->minLength) || is_int($data->minLength))

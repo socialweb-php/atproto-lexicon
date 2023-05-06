@@ -6,7 +6,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_object;
 use function is_string;
@@ -35,7 +35,7 @@ final class LexRecordParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Record->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Record->value
             && (!isset($data->description) || is_string($data->description))
             && (!isset($data->key) || is_string($data->key))
             && isset($data->record) && is_object($data->record);

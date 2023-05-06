@@ -10,7 +10,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexRecordParserTest extends ParserTestCase
 {
@@ -32,7 +32,7 @@ class LexRecordParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexRecord::class, $parsed);
-        $this->assertSame(LexUserTypeType::Record, $parsed->type);
+        $this->assertSame(LexType::Record, $parsed->type);
         $this->assertSame($checkValues['key'] ?? null, $parsed->key);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 

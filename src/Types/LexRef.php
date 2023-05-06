@@ -13,14 +13,14 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  * }
  * @phpstan-type LexRefVariantJson = LexRefJson | LexRefUnionJson
  */
-final class LexRef implements LexType
+final class LexRef implements LexEntity
 {
-    public readonly LexPrimitiveType $type;
+    public readonly LexType $type;
 
     public function __construct(
         public readonly ?string $description = null,
         public readonly ?string $ref = null,
     ) {
-        $this->type = LexPrimitiveType::Ref;
+        $this->type = LexType::Ref;
     }
 }

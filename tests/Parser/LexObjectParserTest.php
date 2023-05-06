@@ -11,13 +11,14 @@ use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
 use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
+use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
 class LexObjectParserTest extends ParserTestCase
 {
@@ -39,7 +40,7 @@ class LexObjectParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexObject::class, $parsed);
-        $this->assertSame(LexUserTypeType::Object, $parsed->type);
+        $this->assertSame(LexType::Object, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
         $this->assertSame($checkValues['required'] ?? null, $parsed->required);
         $this->assertSame($checkValues['nullable'] ?? null, $parsed->nullable);
@@ -49,7 +50,7 @@ class LexObjectParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | array<string, LexType>>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | array<string, LexEntity>>}>
      */
     public static function validValuesProvider(): array
     {
@@ -64,14 +65,14 @@ class LexObjectParserTest extends ParserTestCase
             ],
             'JSON with various types of properties' => [
                 'value' => '{"type":"object","properties":{"aa":{"type":"array"},"bb":{"type":"blob"},'
-                    . '"cc":{"type":"object"},"dd":{"type":"integer"},"ee":{"type":"ref","ref":"io.foo.bar"},'
+                    . '"cc":{"type":"string"},"dd":{"type":"integer"},"ee":{"type":"ref","ref":"io.foo.bar"},'
                     . '"ff":{"type":"union","refs":["io.baz.aaa", "io.baz.bbb"]},"gg":{"type":"unknown"}},'
                     . '"required":["aa","dd","gg"],"nullable":["dd","gg"]}',
                 'checkValues' => [
                     'properties' => [
                         'aa' => new LexArray(),
                         'bb' => new LexBlob(),
-                        'cc' => new LexObject(),
+                        'cc' => new LexString(),
                         'dd' => new LexInteger(),
                         'ee' => new LexRef(ref: 'io.foo.bar'),
                         'ff' => new LexRefUnion(refs: ['io.baz.aaa', 'io.baz.bbb']),
@@ -89,7 +90,7 @@ class LexObjectParserTest extends ParserTestCase
                     'properties' => (object) [
                         'aa' => (object) ['type' => 'array'],
                         'bb' => (object) ['type' => 'blob'],
-                        'cc' => (object) ['type' => 'object'],
+                        'cc' => (object) ['type' => 'string'],
                         'dd' => (object) ['type' => 'boolean'],
                         'ee' => (object) ['type' => 'ref', 'ref' => 'com.example.fooBar#main'],
                         'ff' => (object) ['type' => 'union', 'refs' => ['io.foo.aaa', 'io.bar.bbb']],
@@ -100,7 +101,7 @@ class LexObjectParserTest extends ParserTestCase
                     'properties' => [
                         'aa' => new LexArray(),
                         'bb' => new LexBlob(),
-                        'cc' => new LexObject(),
+                        'cc' => new LexString(),
                         'dd' => new LexBoolean(),
                         'ee' => new LexRef(ref: 'com.example.fooBar#main'),
                         'ff' => new LexRefUnion(refs: ['io.foo.aaa', 'io.bar.bbb']),
@@ -139,7 +140,7 @@ class LexObjectParserTest extends ParserTestCase
                     'properties' => (object) [
                         'aa' => (object) ['type' => 'array'],
                         'bb' => (object) ['type' => 'blob'],
-                        'cc' => (object) ['type' => 'object'],
+                        'cc' => (object) ['type' => 'string'],
                         'dd' => (object) ['type' => 'boolean'],
                         'ee' => (object) ['type' => 'ref', 'ref' => 'com.example.fooBar#main'],
                         'ff' => (object) ['type' => 'union', 'refs' => ['io.foo.aaa', 'io.bar.bbb']],

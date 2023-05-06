@@ -7,7 +7,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexTokenParser;
 use SocialWeb\Atproto\Lexicon\Types\LexToken;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexTokenParserTest extends ParserTestCase
 {
@@ -26,7 +26,7 @@ class LexTokenParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexToken::class, $parsed);
-        $this->assertSame(LexUserTypeType::Token, $parsed->type);
+        $this->assertSame(LexType::Token, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
     }
 

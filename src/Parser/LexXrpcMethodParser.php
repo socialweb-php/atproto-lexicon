@@ -8,9 +8,9 @@ use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
-use SocialWeb\Atproto\Lexicon\Types\LexXrpcMethodType;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcQuery;
+use SocialWeb\Atproto\Lexicon\Types\LexXrpcType;
 
 use function array_reduce;
 use function is_array;
@@ -25,6 +25,7 @@ use const JSON_UNESCAPED_SLASHES;
  * @internal
  *
  * @phpstan-import-type LexXrpcBodyJson from LexXrpcBody
+ * @phpstan-import-type LexXrpcErrorJson from LexXrpcError
  * @phpstan-import-type LexXrpcProcedureJson from LexXrpcProcedure
  * @phpstan-import-type LexXrpcQueryJson from LexXrpcQuery
  */
@@ -34,7 +35,7 @@ abstract class LexXrpcMethodParser implements Parser
 
     protected function parseMethod(
         object | string $data,
-        LexXrpcMethodType $method,
+        LexXrpcType $method,
     ): LexXrpcQuery | LexXrpcProcedure {
         /** @var LexXrpcProcedureJson | LexXrpcQueryJson $data */
         $data = $this->validate($data, $this->getValidator($method));
@@ -43,7 +44,7 @@ abstract class LexXrpcMethodParser implements Parser
         $errors = $this->parseErrors($data);
         $output = $this->parseBody($data->output ?? null);
 
-        if ($method === LexXrpcMethodType::Procedure) {
+        if ($method === LexXrpcType::Procedure) {
             /** @var LexXrpcBodyJson | null $input */
             $input = $data->input ?? null;
 
@@ -99,7 +100,7 @@ abstract class LexXrpcMethodParser implements Parser
      */
     private function parseErrors(object $data): ?array
     {
-        /** @var object[] $errors */
+        /** @var LexXrpcErrorJson[] $errors */
         $errors = $data->errors ?? [];
         $parsedErrors = [];
 
@@ -125,11 +126,11 @@ abstract class LexXrpcMethodParser implements Parser
     /**
      * @return Closure(object): bool
      */
-    private function getValidator(LexXrpcMethodType $method): Closure
+    private function getValidator(LexXrpcType $method): Closure
     {
         return function (object $data) use ($method): bool {
             $isInputValid = true;
-            if ($method === LexXrpcMethodType::Procedure) {
+            if ($method === LexXrpcType::Procedure) {
                 $isInputValid = (!isset($data->input) || is_object($data->input));
             }
 

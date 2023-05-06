@@ -16,19 +16,21 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     errors?: LexXrpcErrorJson[],
  * }
  */
-final class LexXrpcProcedure extends LexUserType
+final class LexXrpcProcedure implements LexUserType
 {
+    public readonly LexType $type;
+
     /**
      * @param array<string, LexPrimitive> $parameters
      * @param LexXrpcError[] $errors
      */
     public function __construct(
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?array $parameters = null,
         public readonly ?LexXrpcBody $input = null,
         public readonly ?LexXrpcBody $output = null,
         public readonly ?array $errors = null,
     ) {
-        parent::__construct(LexUserTypeType::Procedure, $description);
+        $this->type = LexType::Procedure;
     }
 }

@@ -6,8 +6,8 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexUnknownParser;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
 class LexUnknownParserTest extends ParserTestCase
 {
@@ -26,7 +26,7 @@ class LexUnknownParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexUnknown::class, $parsed);
-        $this->assertSame(LexUserTypeType::Unknown, $parsed->type);
+        $this->assertSame(LexType::Unknown, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
     }
 

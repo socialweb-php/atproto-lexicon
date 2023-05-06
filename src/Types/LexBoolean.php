@@ -12,13 +12,15 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: bool,
  * }
  */
-final class LexBoolean extends LexPrimitive
+final class LexBoolean implements LexPrimitive, LexUserType
 {
+    public readonly LexType $type;
+
     public function __construct(
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?bool $default = null,
         public readonly ?bool $const = null,
     ) {
-        parent::__construct(LexPrimitiveType::Boolean, $description);
+        $this->type = LexType::Boolean;
     }
 }

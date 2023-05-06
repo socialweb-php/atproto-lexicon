@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
-use SocialWeb\Atproto\Lexicon\Types\LexType;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 
 use function is_string;
 use function json_encode;
@@ -28,7 +28,7 @@ final class LexiconParser implements Parser
         }
     }
 
-    public function parse(object | string $data): LexType
+    public function parse(object | string $data): LexEntity
     {
         $data = $this->validate($data, fn (): bool => true);
 

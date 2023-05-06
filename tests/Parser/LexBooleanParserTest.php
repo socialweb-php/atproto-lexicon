@@ -7,7 +7,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexBooleanParser;
 use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexBooleanParserTest extends ParserTestCase
 {
@@ -26,7 +26,7 @@ class LexBooleanParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexBoolean::class, $parsed);
-        $this->assertSame(LexPrimitiveType::Boolean, $parsed->type);
+        $this->assertSame(LexType::Boolean, $parsed->type);
         $this->assertSame($checkValues['default'] ?? null, $parsed->default);
         $this->assertSame($checkValues['const'] ?? null, $parsed->const);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);

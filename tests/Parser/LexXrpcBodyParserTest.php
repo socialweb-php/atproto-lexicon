@@ -8,8 +8,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexXrpcBodyParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
-use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcBody;
 
 class LexXrpcBodyParserTest extends ParserTestCase
@@ -40,7 +40,7 @@ class LexXrpcBodyParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexType>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | LexEntity>}>
      */
     public static function validValuesProvider(): array
     {

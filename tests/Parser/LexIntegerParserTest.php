@@ -7,7 +7,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexIntegerParser;
 use SocialWeb\Atproto\Lexicon\Types\LexInteger;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexIntegerParserTest extends ParserTestCase
 {
@@ -26,7 +26,7 @@ class LexIntegerParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexInteger::class, $parsed);
-        $this->assertSame(LexPrimitiveType::Integer, $parsed->type);
+        $this->assertSame(LexType::Integer, $parsed->type);
         $this->assertSame($checkValues['default'] ?? null, $parsed->default);
         $this->assertSame($checkValues['minimum'] ?? null, $parsed->minimum);
         $this->assertSame($checkValues['maximum'] ?? null, $parsed->maximum);

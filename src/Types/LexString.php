@@ -20,15 +20,17 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     knownValues?: string[],
  * }
  */
-final class LexString extends LexPrimitive
+final class LexString implements LexPrimitive, LexUserType
 {
+    public readonly LexType $type;
+
     /**
      * @param string[] | null $enum
      * @param string[] | null $knownValues
      */
     public function __construct(
         public readonly ?LexStringFormat $format = null,
-        ?string $description = null,
+        public readonly ?string $description = null,
         public readonly ?string $default = null,
         public readonly ?int $minLength = null,
         public readonly ?int $maxLength = null,
@@ -38,6 +40,6 @@ final class LexString extends LexPrimitive
         public readonly ?string $const = null,
         public readonly ?array $knownValues = null,
     ) {
-        parent::__construct(LexPrimitiveType::String, $description);
+        $this->type = LexType::String;
     }
 }

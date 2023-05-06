@@ -6,9 +6,9 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 class LexStringParserTest extends ParserTestCase
 {
@@ -27,7 +27,7 @@ class LexStringParserTest extends ParserTestCase
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexString::class, $parsed);
-        $this->assertSame(LexPrimitiveType::String, $parsed->type);
+        $this->assertSame(LexType::String, $parsed->type);
         $this->assertSame($checkValues['format'] ?? null, $parsed->format);
         $this->assertSame($checkValues['default'] ?? null, $parsed->default);
         $this->assertSame($checkValues['minLength'] ?? null, $parsed->minLength);

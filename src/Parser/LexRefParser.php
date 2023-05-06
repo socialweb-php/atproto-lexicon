@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
-use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveType;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_string;
 
@@ -33,7 +33,7 @@ final class LexRefParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexPrimitiveType::Ref->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Ref->value
             && (!isset($data->description) || is_string($data->description))
             && isset($data->ref) && is_string($data->ref);
     }

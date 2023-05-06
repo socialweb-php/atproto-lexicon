@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
 
 use function is_string;
 
@@ -33,7 +33,7 @@ final class LexUnknownParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Unknown->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Unknown->value
             && (!isset($data->description) || is_string($data->description));
     }
 }

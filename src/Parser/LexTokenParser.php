@@ -6,7 +6,7 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexToken;
-use SocialWeb\Atproto\Lexicon\Types\LexUserTypeType;
+use SocialWeb\Atproto\Lexicon\Types\LexType;
 
 use function is_string;
 
@@ -33,7 +33,7 @@ final class LexTokenParser implements Parser
      */
     private function getValidator(): Closure
     {
-        return fn (object $data): bool => isset($data->type) && $data->type === LexUserTypeType::Token->value
+        return fn (object $data): bool => isset($data->type) && $data->type === LexType::Token->value
             && (!isset($data->description) || is_string($data->description));
     }
 }
