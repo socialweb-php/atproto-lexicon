@@ -17,7 +17,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxLength?: int,
  * }
  */
-final class LexArray implements LexUserType
+class LexArray implements LexUserType
 {
     public readonly LexType $type;
 

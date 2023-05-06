@@ -5,25 +5,19 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use SocialWeb\Atproto\Lexicon\Parser\LexArrayParser;
+use SocialWeb\Atproto\Lexicon\Parser\LexPrimitiveArrayParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
-use SocialWeb\Atproto\Lexicon\Types\LexArray;
-use SocialWeb\Atproto\Lexicon\Types\LexBlob;
-use SocialWeb\Atproto\Lexicon\Types\LexBytes;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
-use SocialWeb\Atproto\Lexicon\Types\LexInteger;
-use SocialWeb\Atproto\Lexicon\Types\LexRef;
-use SocialWeb\Atproto\Lexicon\Types\LexRefUnion;
-use SocialWeb\Atproto\Lexicon\Types\LexString;
+use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveArray;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 
-class LexArrayParserTest extends ParserTestCase
+class LexPrimitiveArrayParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
     {
-        return LexArrayParser::class;
+        return LexPrimitiveArrayParser::class;
     }
 
     /**
@@ -34,15 +28,15 @@ class LexArrayParserTest extends ParserTestCase
     {
         $schemaRepo = new SchemaRepository(__DIR__ . '/../schemas');
 
-        $parser = new LexArrayParser();
+        $parser = new LexPrimitiveArrayParser();
         $parser->setParserFactory(new ParserFactory($schemaRepo));
         $parsed = $parser->parse($value);
 
-        $this->assertInstanceOf(LexArray::class, $parsed);
+        $this->assertInstanceOf(LexPrimitiveArray::class, $parsed);
         $this->assertSame(LexType::Array, $parsed->type);
+        $this->assertSame($checkValues['description'] ?? null, $parsed->description);
         $this->assertSame($checkValues['minLength'] ?? null, $parsed->minLength);
         $this->assertSame($checkValues['maxLength'] ?? null, $parsed->maxLength);
-        $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 
         // We use assertEquals() here, since we can't assert sameness on the object.
         $this->assertEquals($checkValues['items'] ?? null, $parsed->items);
@@ -62,38 +56,6 @@ class LexArrayParserTest extends ParserTestCase
                 'value' => (object) ['type' => 'array'],
                 'checkValues' => [],
             ],
-            'JSON with items as primitive' => [
-                'value' => '{"type":"array","items":{"type":"string"}}',
-                'checkValues' => ['items' => new LexString()],
-            ],
-            'object with items as primitive' => [
-                'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'integer']],
-                'checkValues' => ['items' => new LexInteger()],
-            ],
-            'JSON with items as ref' => [
-                'value' => '{"type":"array","items":{"type":"ref","ref":"com.example.foo#baz"}}',
-                'checkValues' => ['items' => new LexRef(ref: 'com.example.foo#baz')],
-            ],
-            'object with items as ref' => [
-                'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'ref', 'ref' => 'io.foo.bar']],
-                'checkValues' => ['items' => new LexRef(ref: 'io.foo.bar')],
-            ],
-            'JSON with items as union' => [
-                'value' => '{"type":"array","items":{"type":"union","refs":["io.foo.bar","io.foo.baz"]}}',
-                'checkValues' => ['items' => new LexRefUnion(refs: ['io.foo.bar', 'io.foo.baz'])],
-            ],
-            'object with items as union' => [
-                'value' => (object) [
-                    'type' => 'array',
-                    'items' => (object) [
-                        'type' => 'union',
-                        'refs' => ['io.foo.qux', 'com.example.thing1', 'com.example.thing2'],
-                    ],
-                ],
-                'checkValues' => [
-                    'items' => new LexRefUnion(refs: ['io.foo.qux', 'com.example.thing1', 'com.example.thing2']),
-                ],
-            ],
             'JSON with items as unknown' => [
                 'value' => '{"type":"array","items":{"type":"unknown"}}',
                 'checkValues' => ['items' => new LexUnknown()],
@@ -101,14 +63,6 @@ class LexArrayParserTest extends ParserTestCase
             'object with items as unknown' => [
                 'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'unknown']],
                 'checkValues' => ['items' => new LexUnknown()],
-            ],
-            'JSON with items as blob' => [
-                'value' => '{"type":"array","items":{"type":"blob"}}',
-                'checkValues' => ['items' => new LexBlob()],
-            ],
-            'object with items as bytes' => [
-                'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'bytes']],
-                'checkValues' => ['items' => new LexBytes()],
             ],
             'JSON with minLength as int' => [
                 'value' => '{"type":"array","minLength":3}',
@@ -150,6 +104,10 @@ class LexArrayParserTest extends ParserTestCase
             ['value' => (object) ['type' => 'foo']],
             ['value' => '{"type":"array","items":{"type":"token"}}'],
             ['value' => (object) ['type' => 'array', 'items' => 'abc']],
+            ['value' => '{"type":"array","items":{"type":"object"}}'],
+            ['value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'ref', 'ref' => 'io.foo.bar']]],
+            ['value' => '{"type":"array","items":{"type":"blob"}}'],
+            ['value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'bytes']]],
             ['value' => '{"type":"array","minLength":12.3}'],
             ['value' => (object) ['type' => 'array', 'minLength' => 'foo']],
             ['value' => '{"type":"array","maxLength":false}'],
