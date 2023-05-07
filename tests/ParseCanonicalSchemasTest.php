@@ -14,6 +14,7 @@ use Symfony\Component\Finder\Finder;
 use function array_reduce;
 use function assert;
 use function is_string;
+use function json_encode;
 use function realpath;
 
 use const PHP_EOL;
@@ -59,7 +60,11 @@ class ParseCanonicalSchemasTest extends TestCase
                 $document = $parser->parse($file->getContents());
                 $schemaFile = $schemaRepository->findSchemaPathByNsid($document->id);
 
+                // Make sure our NSID parsing is correct.
                 $this->assertSame($file->getRealPath(), $schemaFile);
+
+                // Make sure the structure we created matches the original document.
+                $this->assertJsonStringEqualsJsonString($file->getContents(), (string) json_encode($document));
             } catch (LexiconException $exception) {
                 $failedSchemas[] = [
                     'file' => $file->getRealPath(),
