@@ -11,10 +11,13 @@ use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconDocParser;
 use SocialWeb\Atproto\Lexicon\Parser\UnableToParse;
+use SocialWeb\Atproto\Lexicon\Types\LexBoolean;
+use SocialWeb\Atproto\Lexicon\Types\LexEntity;
+use SocialWeb\Atproto\Lexicon\Types\LexInteger;
+use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function file_get_contents;
-use function json_encode;
 
 class LexiconDocParserTest extends ParserTestCase
 {
@@ -38,7 +41,7 @@ class LexiconDocParserTest extends ParserTestCase
     }
 
     /**
-     * @param array<string, scalar | scalar[] | Nsid> $checkValues
+     * @param array<string, scalar | scalar[] | Nsid | LexEntity[]> $checkValues
      */
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
@@ -53,10 +56,10 @@ class LexiconDocParserTest extends ParserTestCase
         $this->assertSame(1, $parsed->lexicon);
         $this->assertSame($checkValues['revision'] ?? null, $parsed->revision);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
-        $this->assertSame($checkValues['defs'] ?? '[]', json_encode($parsed->defs));
 
         // We use assertEquals() here, since we can't assert sameness on the object.
         $this->assertEquals($checkValues['id'] ?? null, $parsed->id);
+        $this->assertEquals($checkValues['defs'] ?? [], $parsed->defs);
     }
 
     #[TestWith(['org.example.invalid.docWithNonMainProcedure'])]
@@ -81,7 +84,7 @@ class LexiconDocParserTest extends ParserTestCase
     }
 
     /**
-     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | Nsid>}>
+     * @return array<array{value: object | string, checkValues: array<string, scalar | scalar[] | Nsid | LexEntity[]>}>
      */
     public static function validValuesProvider(): array
     {
@@ -123,11 +126,7 @@ class LexiconDocParserTest extends ParserTestCase
                     . '"foo":{"type":"integer"}}}',
                 'checkValues' => [
                     'id' => new Nsid('com.example.foo'),
-                    // For easier testing, we convert this to JSON in testParsesValidValues().
-                    'defs' => '{"main":{"type":"string","format":null,"description":null,"default":null,'
-                        . '"minLength":null,"maxLength":null,"minGraphemes":null,"maxGraphemes":null,"enum":null,'
-                        . '"const":null,"knownValues":null},"foo":{"type":"integer","description":null,"default":null,'
-                        . '"minimum":null,"maximum":null,"enum":null,"const":null}}',
+                    'defs' => ['main' => new LexString(), 'foo' => new LexInteger()],
                 ],
             ],
             'object with defs' => [
@@ -139,10 +138,7 @@ class LexiconDocParserTest extends ParserTestCase
                 ],
                 'checkValues' => [
                     'id' => new Nsid('net.example.bar'),
-                    // For easier testing, we convert this to JSON in testParsesValidValues().
-                    'defs' => '{"main":{"type":"integer","description":null,"default":null,"minimum":null,'
-                        . '"maximum":null,"enum":null,"const":null},"foo":{"type":"boolean","description":null,'
-                        . '"default":null,"const":null}}',
+                    'defs' => ['main' => new LexInteger(), 'foo' => new LexBoolean()],
                 ],
             ],
         ];

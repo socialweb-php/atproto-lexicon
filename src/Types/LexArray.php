@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-import-type TLexBlob from LexBlob
  * @phpstan-import-type TLexIpldType from LexEntity
@@ -17,8 +19,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxLength?: int,
  * }
  */
-class LexArray implements LexUserType
+class LexArray implements JsonSerializable, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     public function __construct(

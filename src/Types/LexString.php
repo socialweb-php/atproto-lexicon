@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-import-type TLexStringFormat from LexStringFormat
  * @phpstan-type TLexString = object{
@@ -20,8 +22,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     knownValues?: list<string>,
  * }
  */
-class LexString implements LexPrimitive, LexUserType
+class LexString implements JsonSerializable, LexPrimitive, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**

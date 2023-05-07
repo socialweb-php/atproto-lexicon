@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexRef = object{
  *     type: 'ref',
@@ -11,8 +13,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     ref: string,
  * }
  */
-class LexRef implements LexEntity
+class LexRef implements JsonSerializable, LexEntity
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     public function __construct(

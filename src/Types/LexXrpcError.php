@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexXrpcError = object{
  *     name: string,
  *     description?: string,
  * }
  */
-class LexXrpcError implements LexEntity
+class LexXrpcError implements JsonSerializable, LexEntity
 {
+    use LexEntityJsonSerializer;
+
     public function __construct(
         public readonly string $name,
         public readonly ?string $description = null,

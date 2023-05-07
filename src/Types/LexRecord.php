@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-import-type TLexObject from LexObject
  * @phpstan-type TLexRecord = object{
@@ -13,8 +15,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     record: TLexObject,
  * }
  */
-class LexRecord implements LexUserType
+class LexRecord implements JsonSerializable, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     public function __construct(

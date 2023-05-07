@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexBytes = object{
  *     type: 'bytes',
@@ -12,8 +14,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     minLength?: int,
  * }
  */
-class LexBytes implements LexUserType
+class LexBytes implements JsonSerializable, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     public function __construct(

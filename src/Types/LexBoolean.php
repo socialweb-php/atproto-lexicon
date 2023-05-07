@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexBoolean = object{
  *     type: 'boolean',
@@ -12,8 +14,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: bool,
  * }
  */
-class LexBoolean implements LexPrimitive, LexUserType
+class LexBoolean implements JsonSerializable, LexPrimitive, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     public function __construct(

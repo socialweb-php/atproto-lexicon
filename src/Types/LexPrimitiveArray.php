@@ -14,7 +14,7 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxLength?: int,
  * }
  */
-class LexPrimitiveArray extends LexArray implements LexUserType
+class LexPrimitiveArray extends LexArray
 {
     public function __construct(
         ?string $description = null,

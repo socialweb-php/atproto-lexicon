@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexInteger = object{
  *     type: 'integer',
@@ -15,8 +17,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     const?: int,
  * }
  */
-class LexInteger implements LexPrimitive, LexUserType
+class LexInteger implements JsonSerializable, LexPrimitive, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**

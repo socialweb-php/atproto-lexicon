@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-import-type TLexXrpcError from LexXrpcError
  * @phpstan-import-type TLexXrpcParameters from LexXrpcParameters
@@ -17,8 +19,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     errors?: list<TLexXrpcError>,
  * }
  */
-class LexXrpcSubscription implements LexUserType
+class LexXrpcSubscription implements JsonSerializable, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**

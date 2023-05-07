@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexRefUnion = object{
  *     type: 'union',
@@ -12,8 +14,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     closed?: bool,
  * }
  */
-class LexRefUnion implements LexEntity
+class LexRefUnion implements JsonSerializable, LexEntity
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 
 /**
@@ -17,8 +18,10 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
  *     defs: array<string, TLexUserType>,
  * }
  */
-class LexiconDoc implements LexEntity
+class LexiconDoc implements JsonSerializable, LexEntity
 {
+    use LexEntityJsonSerializer;
+
     public const MAIN = 'main';
 
     public readonly int $lexicon;

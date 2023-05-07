@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-type TLexBlob = object{
  *     type: 'blob',
@@ -12,8 +14,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     maxSize?: int | float,
  * }
  */
-class LexBlob implements LexUserType
+class LexBlob implements JsonSerializable, LexUserType
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**

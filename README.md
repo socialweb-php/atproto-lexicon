@@ -31,22 +31,21 @@ composer require socialweb/atproto-lexicon
 ## Usage
 
 ``` php
+use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
+use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
-use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
-use SocialWeb\Atproto\Lexicon\Parser\SchemaRepository;
 
-$file = '/path/to/bluesky-social/atproto/lexicons/app/bsky/feed/post.json';
 $schemas = '/path/to/bluesky-social/atproto/lexicons';
 
 $schemaRepository = new DefaultSchemaRepository($schemas);
 $parser = new LexiconParser(new DefaultParserFactory($schemaRepository));
 
-$document = $parser->parse((string) file_get_contents($file));
+$nsid = new Nsid('app.bsky.feed.post');
+$schemaFile = $schemaRepository->findSchemaPathByNsid($nsid);
+$schemaContents = file_get_contents((string) $schemaFile);
 
-// This isn't necessary, but it uses jq to print the JSON and remove null
-// values, so you can see that what we parsed is very close to what we consumed.
-$json = (string) json_encode($document);
-passthru('echo ' . escapeshellarg($json) . ' | jq -C "del(..|nulls)"');
+$document = $parser->parse((string) $schemaContents);
 ```
 
 ## Contributing

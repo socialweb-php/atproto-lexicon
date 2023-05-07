@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Types;
 
+use JsonSerializable;
+
 /**
  * @phpstan-import-type TLexPrimitive from LexPrimitive
  * @phpstan-import-type TLexPrimitiveArray from LexPrimitiveArray
@@ -14,8 +16,10 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  *     properties: array<string, TLexPrimitive | TLexPrimitiveArray>,
  * }
  */
-class LexXrpcParameters implements LexEntity
+class LexXrpcParameters implements JsonSerializable, LexEntity
 {
+    use LexEntityJsonSerializer;
+
     public readonly LexType $type;
 
     /**
