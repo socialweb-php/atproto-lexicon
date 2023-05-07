@@ -17,6 +17,8 @@ use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcParameters;
 
+use function json_encode;
+
 class LexXrpcParametersParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
@@ -41,8 +43,13 @@ class LexXrpcParametersParserTest extends ParserTestCase
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
         $this->assertSame($checkValues['required'] ?? null, $parsed->required);
 
-        // We use assertEquals() here, since we can't assert sameness on the objects.
-        $this->assertEquals($checkValues['properties'] ?? [], $parsed->properties);
+        // Compare as JSON strings to avoid problems where the LexRef or LexUnion
+        // objects in the parsed values fail equality checks due to the parser
+        // factory instances they contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['properties'] ?? []),
+            (string) json_encode($parsed->properties),
+        );
     }
 
     /**

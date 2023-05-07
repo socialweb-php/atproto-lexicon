@@ -28,6 +28,7 @@ class LexRefUnionParser implements Parser
             description: $data->description ?? null,
             refs: $data->refs,
             closed: $data->closed ?? null,
+            parserFactory: $this->getParserFactory(),
         );
     }
 

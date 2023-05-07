@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Atproto\Lexicon\Types;
 
 use JsonSerializable;
+use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 
 /**
  * @phpstan-import-type TLexStringFormat from LexStringFormat
@@ -43,7 +44,25 @@ class LexString implements JsonSerializable, LexPrimitive, LexUserType
         public readonly ?array $enum = null,
         public readonly ?string $const = null,
         public readonly ?array $knownValues = null,
+        private readonly ?ParserFactory $parserFactory = null,
     ) {
         $this->type = LexType::String;
+    }
+
+    /**
+     * Converts the string refs of the known values to {@see LexRef} instances,
+     * which may then be resolved for further processing.
+     *
+     * @return list<LexRef>
+     */
+    public function getLexRefsForKnownValues(): array
+    {
+        $lexRefs = [];
+
+        foreach ($this->knownValues ?? [] as $ref) {
+            $lexRefs[] = new LexRef($this->description, $ref, $this->parserFactory);
+        }
+
+        return $lexRefs;
     }
 }

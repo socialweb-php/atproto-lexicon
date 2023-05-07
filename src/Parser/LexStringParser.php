@@ -39,6 +39,7 @@ class LexStringParser implements Parser
             enum: $data->enum ?? null,
             const: $data->const ?? null,
             knownValues: $data->knownValues ?? null,
+            parserFactory: $this->getParserFactory(),
         );
     }
 

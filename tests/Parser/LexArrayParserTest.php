@@ -20,6 +20,8 @@ use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
 
+use function json_encode;
+
 class LexArrayParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
@@ -48,8 +50,13 @@ class LexArrayParserTest extends ParserTestCase
         $this->assertSame($checkValues['maxLength'] ?? null, $parsed->maxLength);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 
-        // We use assertEquals() here, since we can't assert sameness on the object.
-        $this->assertEquals($checkValues['items'] ?? null, $parsed->items);
+        // Compare as JSON strings to avoid problems where the LexRef or LexUnion
+        // objects in the parsed values fail equality checks due to the parser
+        // factory instances they contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['items'] ?? null),
+            (string) json_encode($parsed->items),
+        );
 
         if ($isPrimitiveArray) {
             $this->assertInstanceOf(LexPrimitiveArray::class, $parsed);

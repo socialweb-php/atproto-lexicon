@@ -18,6 +18,7 @@ use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexiconDoc;
 
 use function file_get_contents;
+use function json_encode;
 
 class LexiconDocParserTest extends ParserTestCase
 {
@@ -59,7 +60,14 @@ class LexiconDocParserTest extends ParserTestCase
 
         // We use assertEquals() here, since we can't assert sameness on the object.
         $this->assertEquals($checkValues['id'] ?? null, $parsed->id);
-        $this->assertEquals($checkValues['defs'] ?? [], $parsed->defs);
+
+        // Compare as JSON strings to avoid problems where the LexRef or LexUnion
+        // objects in the parsed values fail equality checks due to the parser
+        // factory instances they contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['defs'] ?? []),
+            (string) json_encode($parsed->defs),
+        );
     }
 
     #[TestWith(['org.example.invalid.docWithNonMainProcedure'])]

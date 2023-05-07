@@ -15,6 +15,54 @@
                     }
                 }
             }
+        },
+        "actionReversal": {
+            "type": "object",
+            "required": ["reason", "createdBy", "createdAt"],
+            "properties": {
+                "reason": {"type": "string"},
+                "createdBy": {"type": "string", "format": "did"},
+                "createdAt": {"type": "string", "format": "datetime"}
+            }
+        },
+        "takedown": {
+            "type": "token",
+            "description": "Moderation action type: Takedown. Indicates that content should not be served by the PDS."
+        },
+        "reasonType": {
+            "type": "string",
+            "knownValues": [
+                "org.example.foo.getSomething#reasonSpam",
+                "org.example.foo.getSomething#reasonViolation",
+                "org.example.foo.getSomething#reasonMisleading",
+                "org.example.foo.getSomething#reasonSexual",
+                "org.example.foo.getSomething#reasonRude",
+                "org.example.foo.getSomething#reasonOther"
+            ]
+        },
+        "reasonSpam": {
+            "type": "token",
+            "description": "Spam: frequent unwanted promotion, replies, mentions"
+        },
+        "reasonViolation": {
+            "type": "token",
+            "description": "Direct violation of server rules, laws, terms of service"
+        },
+        "reasonMisleading": {
+            "type": "token",
+            "description": "Misleading identity, affiliation, or content"
+        },
+        "reasonSexual": {
+            "type": "token",
+            "description": "Unwanted or mis-labeled sexual content"
+        },
+        "reasonRude": {
+            "type": "token",
+            "description": "Rude, harassing, explicit, or otherwise unwelcoming behavior"
+        },
+        "reasonOther": {
+            "type": "token",
+            "description": "Other: reports not falling under another report category"
         }
     }
 }

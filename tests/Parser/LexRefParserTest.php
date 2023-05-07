@@ -6,6 +6,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexRefParser;
+use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
 
 class LexRefParserTest extends ParserTestCase
@@ -21,7 +22,10 @@ class LexRefParserTest extends ParserTestCase
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
     {
+        $parserFactory = $this->mockery(ParserFactory::class);
+
         $parser = new LexRefParser();
+        $parser->setParserFactory($parserFactory);
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexRef::class, $parsed);

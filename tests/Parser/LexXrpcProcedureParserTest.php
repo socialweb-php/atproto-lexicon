@@ -18,6 +18,8 @@ use SocialWeb\Atproto\Lexicon\Types\LexXrpcError;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcParameters;
 use SocialWeb\Atproto\Lexicon\Types\LexXrpcProcedure;
 
+use function json_encode;
+
 class LexXrpcProcedureParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
@@ -41,11 +43,25 @@ class LexXrpcProcedureParserTest extends ParserTestCase
         $this->assertSame(LexType::Procedure, $parsed->type);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 
-        // We use assertEquals() here, since we can't assert sameness on the objects.
-        $this->assertEquals($checkValues['parameters'] ?? null, $parsed->parameters);
-        $this->assertEquals($checkValues['errors'] ?? null, $parsed->errors);
-        $this->assertEquals($checkValues['input'] ?? null, $parsed->input);
-        $this->assertEquals($checkValues['output'] ?? null, $parsed->output);
+        // Compare as JSON strings to avoid problems where the LexRef or LexUnion
+        // objects in the parsed values fail equality checks due to the parser
+        // factory instances they contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['parameters'] ?? null),
+            (string) json_encode($parsed->parameters),
+        );
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['errors'] ?? null),
+            (string) json_encode($parsed->errors),
+        );
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['input'] ?? null),
+            (string) json_encode($parsed->input),
+        );
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['output'] ?? null),
+            (string) json_encode($parsed->output),
+        );
     }
 
     /**

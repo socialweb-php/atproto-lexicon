@@ -25,6 +25,7 @@ class LexRefParser implements Parser
         return new LexRef(
             description: $data->description ?? null,
             ref: $data->ref,
+            parserFactory: $this->getParserFactory(),
         );
     }
 

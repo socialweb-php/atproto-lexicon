@@ -6,6 +6,7 @@ namespace SocialWeb\Test\Atproto\Lexicon\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use SocialWeb\Atproto\Lexicon\Parser\LexStringParser;
+use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
@@ -23,7 +24,10 @@ class LexStringParserTest extends ParserTestCase
     #[DataProvider('validValuesProvider')]
     public function testParsesValidValues(object | string $value, array $checkValues): void
     {
+        $parserFactory = $this->mockery(ParserFactory::class);
+
         $parser = new LexStringParser();
+        $parser->setParserFactory($parserFactory);
         $parsed = $parser->parse($value);
 
         $this->assertInstanceOf(LexString::class, $parsed);
