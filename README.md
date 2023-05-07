@@ -16,6 +16,11 @@
 
 ## About
 
+socialweb/atproto-lexicon parses [Lexicon schemas][] for the [AT Protocol][].
+
+The current version is compliant with [@atproto/lexicon][] at commit-ish
+[aabbf43][].
+
 This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
 By participating in this project and its community, you are expected to
 uphold this code.
@@ -30,7 +35,7 @@ composer require socialweb/atproto-lexicon
 
 ## Usage
 
-``` php
+```php
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
@@ -46,6 +51,32 @@ $schemaFile = $schemaRepository->findSchemaPathByNsid($nsid);
 $schemaContents = file_get_contents((string) $schemaFile);
 
 $document = $parser->parse((string) $schemaContents);
+```
+
+### Resolving References
+
+Using this library, you may resolve references in Lexicon schemas.
+
+For example:
+
+```php
+foreach ($document->defs as $defId => $def) {
+    if ($def instanceof LexRef) {
+        $resolved = $def->resolve();
+    }
+
+    if ($def instanceof LexRefUnion) {
+        foreach ($def->getLexRefs() as $ref) {
+            $resolved = $ref->resolve();
+        }
+    }
+
+    if ($def instanceof LexString) {
+        foreach ($def->getLexRefsForKnownValues() as $ref) {
+            $resolved = $ref->resolve();
+        }
+    }
+}
 ```
 
 ## Contributing
@@ -67,3 +98,9 @@ under the terms of the GNU Lesser General Public License (LGPL-3.0-or-later)
 as published by the Free Software Foundation. Please see
 [COPYING.LESSER](COPYING.LESSER), [COPYING](COPYING), and [NOTICE](NOTICE)
 for more information.
+
+
+[lexicon schemas]: https://atproto.com/guides/lexicon
+[at protocol]: https://atproto.com
+[@atproto/lexicon]: https://www.npmjs.com/package/@atproto/lexicon
+[aabbf43]: https://github.com/bluesky-social/atproto/blob/aabbf43a7f86b37cefbba614d408534b59f59525/packages/lexicon/src/types.ts
