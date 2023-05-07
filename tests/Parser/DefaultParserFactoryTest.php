@@ -38,38 +38,38 @@ class DefaultParserFactoryTest extends TestCase
     public function testGetParserThrowsForUnknownParser(string $invalidParserName): void
     {
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository);
+        $parserFactory = new DefaultParserFactory($schemaRepository);
 
         $this->expectException(ParserNotFound::class);
         $this->expectExceptionMessage("Unable to find parser \"$invalidParserName\"");
 
-        $parserRepository->getParser($invalidParserName);
+        $parserFactory->getParser($invalidParserName);
     }
 
     public function testGetSchemaRepository(): void
     {
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository);
+        $parserFactory = new DefaultParserFactory($schemaRepository);
 
-        $this->assertSame($schemaRepository, $parserRepository->getSchemaRepository());
+        $this->assertSame($schemaRepository, $parserFactory->getSchemaRepository());
     }
 
     public function testGetParserReturnsStoredParser(): void
     {
         $parser = new MockParser();
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository, [MockParser::class => $parser]);
+        $parserFactory = new DefaultParserFactory($schemaRepository, [MockParser::class => $parser]);
 
-        $this->assertSame($parser, $parserRepository->getParser(MockParser::class));
+        $this->assertSame($parser, $parserFactory->getParser(MockParser::class));
     }
 
     public function testGetParserConstructsAndStoresParser(): void
     {
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository);
+        $parserFactory = new DefaultParserFactory($schemaRepository);
 
-        $parser1 = $parserRepository->getParser(MockParser::class);
-        $parser2 = $parserRepository->getParser(MockParser::class);
+        $parser1 = $parserFactory->getParser(MockParser::class);
+        $parser2 = $parserFactory->getParser(MockParser::class);
 
         $this->assertInstanceOf(MockParser::class, $parser1);
         $this->assertSame(1, $parser1->setParserFactoryCalled);
@@ -100,8 +100,8 @@ class DefaultParserFactoryTest extends TestCase
     public function testGetParserByTypeName(string $typeName, string $expectedParserClass): void
     {
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository);
-        $parser = $parserRepository->getParserByTypeName($typeName);
+        $parserFactory = new DefaultParserFactory($schemaRepository);
+        $parser = $parserFactory->getParserByTypeName($typeName);
 
         $this->assertInstanceOf($expectedParserClass, $parser);
     }
@@ -110,11 +110,11 @@ class DefaultParserFactoryTest extends TestCase
     public function testGetParserByTypeNameThrowsForUnknownTypeName(string $typeName): void
     {
         $schemaRepository = new DefaultSchemaRepository(__DIR__ . '/../schemas');
-        $parserRepository = new DefaultParserFactory($schemaRepository);
+        $parserFactory = new DefaultParserFactory($schemaRepository);
 
         $this->expectException(ParserNotFound::class);
         $this->expectExceptionMessage("Unable to find parser for \"$typeName\"");
 
-        $parserRepository->getParserByTypeName($typeName);
+        $parserFactory->getParserByTypeName($typeName);
     }
 }
