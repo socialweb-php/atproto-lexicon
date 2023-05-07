@@ -62,8 +62,8 @@ security issue in software that is maintained in this repository, please read
 
 ## Copyright and License
 
-socialweb/atproto-lexicon is copyright © [Ben Ramsey](https://benramsey.com)
-and licensed for use under the terms of the
-GNU Lesser General Public License (LGPL-3.0-or-later) as published by the Free
-Software Foundation. Please see [COPYING.LESSER](COPYING.LESSER),
-[COPYING](COPYING), and [NOTICE](NOTICE) for more information.
+Copyright © the socialweb/atproto-lexicon Contributors and licensed for use
+under the terms of the GNU Lesser General Public License (LGPL-3.0-or-later)
+as published by the Free Software Foundation. Please see
+[COPYING.LESSER](COPYING.LESSER), [COPYING](COPYING), and [NOTICE](NOTICE)
+for more information.

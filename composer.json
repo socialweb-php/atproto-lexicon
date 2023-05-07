@@ -10,13 +10,11 @@
         "bluesky",
         "at-protocol"
     ],
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "email": "ben@benramsey.com",
-            "homepage": "https://benramsey.com"
-        }
-    ],
+    "support": {
+        "issues": "https://github.com/socialweb-php/atproto-lexicon/issues",
+        "forum": "https://github.com/socialweb-php/atproto-lexicon/discussions",
+        "security": "https://github.com/socialweb-php/atproto-lexicon/security/policy"
+    },
     "require": {
         "php": "^8.2"
     },
