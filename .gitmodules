@@ -1,0 +1,3 @@
+[submodule "resources/bluesky-social"]
+	path = resources/bluesky-social
+	url = https://github.com/bluesky-social/atproto.git

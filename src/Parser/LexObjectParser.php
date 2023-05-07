@@ -7,6 +7,8 @@ namespace SocialWeb\Atproto\Lexicon\Parser;
 use Closure;
 use SocialWeb\Atproto\Lexicon\Types\LexArray;
 use SocialWeb\Atproto\Lexicon\Types\LexBlob;
+use SocialWeb\Atproto\Lexicon\Types\LexBytes;
+use SocialWeb\Atproto\Lexicon\Types\LexCidLink;
 use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitive;
 use SocialWeb\Atproto\Lexicon\Types\LexRef;
@@ -39,7 +41,7 @@ class LexObjectParser implements Parser
     }
 
     /**
-     * @return array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion>
+     * @return array<string, LexArray | LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion>
      *
      * @phpstan-param TLexObject $data
      */
@@ -60,7 +62,7 @@ class LexObjectParser implements Parser
         $isValid = array_reduce($parsedProperties, $this->getPropertyValidator(), true);
 
         if ($parsedProperties === [] || $isValid) {
-            /** @var array<string, LexArray | LexBlob | LexPrimitive | LexRef | LexRefUnion> */
+            /** @var array<string, LexArray | LexBlob | LexBytes | LexCidLink | LexPrimitive | LexRef | LexRefUnion> */
             return $parsedProperties;
         }
 
@@ -88,6 +90,8 @@ class LexObjectParser implements Parser
             && (
                 $value instanceof LexArray
                 || $value instanceof LexBlob
+                || $value instanceof LexBytes
+                || $value instanceof LexCidLink
                 || $value instanceof LexPrimitive
                 || $value instanceof LexRef
                 || $value instanceof LexRefUnion
