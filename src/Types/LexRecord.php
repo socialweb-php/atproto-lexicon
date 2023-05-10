@@ -18,6 +18,7 @@ use JsonSerializable;
 class LexRecord implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -27,5 +28,6 @@ class LexRecord implements JsonSerializable, LexUserType
         public readonly ?LexObject $record = null,
     ) {
         $this->type = LexType::Record;
+        $this->record?->setParent($this);
     }
 }

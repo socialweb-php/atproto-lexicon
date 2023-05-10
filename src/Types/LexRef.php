@@ -27,6 +27,7 @@ use const JSON_UNESCAPED_SLASHES;
 class LexRef implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 

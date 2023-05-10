@@ -17,6 +17,7 @@ use JsonSerializable;
 class LexBoolean implements JsonSerializable, LexPrimitive, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 

@@ -68,6 +68,10 @@ class LexiconDocParserTest extends ParserTestCase
             (string) json_encode($checkValues['defs'] ?? []),
             (string) json_encode($parsed->defs),
         );
+
+        foreach ($parsed->defs as $def) {
+            $this->assertSame($parsed, $def->getParent());
+        }
     }
 
     #[TestWith(['org.example.invalid.docWithNonMainProcedure'])]

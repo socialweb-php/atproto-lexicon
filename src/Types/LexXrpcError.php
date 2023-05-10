@@ -15,6 +15,7 @@ use JsonSerializable;
 class LexXrpcError implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public function __construct(
         public readonly string $name,

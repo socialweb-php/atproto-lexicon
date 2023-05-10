@@ -23,6 +23,7 @@ use JsonSerializable;
 class LexObject implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -38,5 +39,9 @@ class LexObject implements JsonSerializable, LexUserType
         public readonly array $properties = [],
     ) {
         $this->type = LexType::Object;
+
+        foreach ($this->properties as $property) {
+            $property->setParent($this);
+        }
     }
 }

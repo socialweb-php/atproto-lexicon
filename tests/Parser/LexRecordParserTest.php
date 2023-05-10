@@ -12,6 +12,8 @@ use SocialWeb\Atproto\Lexicon\Types\LexObject;
 use SocialWeb\Atproto\Lexicon\Types\LexRecord;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 
+use function json_encode;
+
 class LexRecordParserTest extends ParserTestCase
 {
     public function getParserClassName(): string
@@ -36,8 +38,17 @@ class LexRecordParserTest extends ParserTestCase
         $this->assertSame($checkValues['key'] ?? null, $parsed->key);
         $this->assertSame($checkValues['description'] ?? null, $parsed->description);
 
-        // We use assertEquals() here, since we can't assert sameness on the object.
-        $this->assertEquals($checkValues['record'], $parsed->record);
+        // Compare as JSON strings to avoid problems where objects in the parsed
+        // values fail equality checks due to the parser factory instances they
+        // contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['record'] ?? null),
+            (string) json_encode($parsed->record),
+        );
+
+        if ($parsed->record !== null) {
+            $this->assertSame($parsed, $parsed->record->getParent());
+        }
     }
 
     /**

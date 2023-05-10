@@ -22,6 +22,7 @@ use JsonSerializable;
 class LexArray implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -32,5 +33,6 @@ class LexArray implements JsonSerializable, LexUserType
         public readonly ?int $maxLength = null,
     ) {
         $this->type = LexType::Array;
+        $this->items?->setParent($this);
     }
 }

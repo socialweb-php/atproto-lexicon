@@ -18,11 +18,13 @@ use JsonSerializable;
 class LexXrpcBody implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public function __construct(
         public readonly ?string $description = null,
         public readonly ?string $encoding = null,
         public readonly LexObject | LexRef | LexRefUnion | null $schema = null,
     ) {
+        $this->schema?->setParent($this);
     }
 }

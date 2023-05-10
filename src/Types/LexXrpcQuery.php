@@ -21,6 +21,7 @@ use JsonSerializable;
 class LexXrpcQuery implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -34,5 +35,11 @@ class LexXrpcQuery implements JsonSerializable, LexUserType
         public readonly ?array $errors = null,
     ) {
         $this->type = LexType::Query;
+        $this->parameters?->setParent($this);
+        $this->output?->setParent($this);
+
+        foreach ($this->errors ?? [] as $error) {
+            $error->setParent($this);
+        }
     }
 }

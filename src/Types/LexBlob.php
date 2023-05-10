@@ -17,6 +17,7 @@ use JsonSerializable;
 class LexBlob implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 

@@ -15,6 +15,7 @@ use JsonSerializable;
 class LexUnknown implements JsonSerializable, LexPrimitive, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 

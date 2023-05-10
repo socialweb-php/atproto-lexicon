@@ -58,6 +58,18 @@ class LexXrpcQueryParserTest extends ParserTestCase
             (string) json_encode($checkValues['output'] ?? null),
             (string) json_encode($parsed->output),
         );
+
+        if ($parsed->parameters !== null) {
+            $this->assertSame($parsed, $parsed->parameters->getParent());
+        }
+
+        foreach ($parsed->errors ?? [] as $error) {
+            $this->assertSame($parsed, $error->getParent());
+        }
+
+        if ($parsed->output !== null) {
+            $this->assertSame($parsed, $parsed->output->getParent());
+        }
     }
 
     /**

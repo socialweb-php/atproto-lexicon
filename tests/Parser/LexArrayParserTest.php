@@ -58,6 +58,10 @@ class LexArrayParserTest extends ParserTestCase
             (string) json_encode($parsed->items),
         );
 
+        if ($parsed->items !== null) {
+            $this->assertSame($parsed, $parsed->items->getParent());
+        }
+
         if ($isPrimitiveArray) {
             $this->assertInstanceOf(LexPrimitiveArray::class, $parsed);
         } else {

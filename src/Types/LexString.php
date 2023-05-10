@@ -26,6 +26,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 class LexString implements JsonSerializable, LexPrimitive, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 

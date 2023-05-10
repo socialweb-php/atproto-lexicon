@@ -63,6 +63,22 @@ class LexXrpcSubscriptionParserTest extends ParserTestCase
             (string) json_encode($checkValues['errors'] ?? null),
             (string) json_encode($parsed->errors),
         );
+
+        if ($parsed->parameters !== null) {
+            $this->assertSame($parsed, $parsed->parameters->getParent());
+        }
+
+        if ($parsed->message !== null) {
+            $this->assertSame($parsed, $parsed->message->getParent());
+        }
+
+        foreach ($parsed->errors ?? [] as $error) {
+            $this->assertSame($parsed, $error->getParent());
+        }
+
+        foreach ($parsed->infos ?? [] as $info) {
+            $this->assertSame($parsed, $info->getParent());
+        }
     }
 
     /**

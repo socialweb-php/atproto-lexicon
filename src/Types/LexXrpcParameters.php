@@ -19,6 +19,7 @@ use JsonSerializable;
 class LexXrpcParameters implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -32,5 +33,9 @@ class LexXrpcParameters implements JsonSerializable, LexEntity
         public readonly array $properties = [],
     ) {
         $this->type = LexType::Params;
+
+        foreach ($this->properties as $property) {
+            $property->setParent($this);
+        }
     }
 }

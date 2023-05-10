@@ -10,8 +10,11 @@ use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexPrimitiveArrayParser;
 use SocialWeb\Atproto\Lexicon\Types\LexEntity;
 use SocialWeb\Atproto\Lexicon\Types\LexPrimitiveArray;
+use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexType;
 use SocialWeb\Atproto\Lexicon\Types\LexUnknown;
+
+use function json_encode;
 
 class LexPrimitiveArrayParserTest extends ParserTestCase
 {
@@ -38,8 +41,17 @@ class LexPrimitiveArrayParserTest extends ParserTestCase
         $this->assertSame($checkValues['minLength'] ?? null, $parsed->minLength);
         $this->assertSame($checkValues['maxLength'] ?? null, $parsed->maxLength);
 
-        // We use assertEquals() here, since we can't assert sameness on the object.
-        $this->assertEquals($checkValues['items'] ?? null, $parsed->items);
+        // Compare as JSON strings to avoid problems where objects in the parsed
+        // values fail equality checks due to the parser factory instances they
+        // contain in private properties.
+        $this->assertJsonStringEqualsJsonString(
+            (string) json_encode($checkValues['items'] ?? null),
+            (string) json_encode($parsed->items),
+        );
+
+        if ($parsed->items !== null) {
+            $this->assertSame($parsed, $parsed->items->getParent());
+        }
     }
 
     /**
@@ -60,9 +72,9 @@ class LexPrimitiveArrayParserTest extends ParserTestCase
                 'value' => '{"type":"array","items":{"type":"unknown"}}',
                 'checkValues' => ['items' => new LexUnknown()],
             ],
-            'object with items as unknown' => [
-                'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'unknown']],
-                'checkValues' => ['items' => new LexUnknown()],
+            'object with items as string' => [
+                'value' => (object) ['type' => 'array', 'items' => (object) ['type' => 'string']],
+                'checkValues' => ['items' => new LexString()],
             ],
             'JSON with minLength as int' => [
                 'value' => '{"type":"array","minLength":3}',

@@ -22,6 +22,7 @@ use JsonSerializable;
 class LexXrpcProcedure implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -36,5 +37,12 @@ class LexXrpcProcedure implements JsonSerializable, LexUserType
         public readonly ?array $errors = null,
     ) {
         $this->type = LexType::Procedure;
+        $this->parameters?->setParent($this);
+        $this->input?->setParent($this);
+        $this->output?->setParent($this);
+
+        foreach ($this->errors ?? [] as $error) {
+            $error->setParent($this);
+        }
     }
 }

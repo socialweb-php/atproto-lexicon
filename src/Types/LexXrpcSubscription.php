@@ -22,6 +22,7 @@ use JsonSerializable;
 class LexXrpcSubscription implements JsonSerializable, LexUserType
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
@@ -37,5 +38,15 @@ class LexXrpcSubscription implements JsonSerializable, LexUserType
         public readonly ?array $errors = null,
     ) {
         $this->type = LexType::Subscription;
+        $this->parameters?->setParent($this);
+        $this->message?->setParent($this);
+
+        foreach ($this->infos ?? [] as $info) {
+            $info->setParent($this);
+        }
+
+        foreach ($this->errors ?? [] as $error) {
+            $error->setParent($this);
+        }
     }
 }

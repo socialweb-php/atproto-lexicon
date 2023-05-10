@@ -16,4 +16,14 @@ namespace SocialWeb\Atproto\Lexicon\Types;
  */
 interface LexEntity
 {
+    /**
+     * Returns the direct ancestor (e.g., a LexObject, LexXrpcBody, LexiconDoc)
+     * to which this entity belongs, if it is known.
+     */
+    public function getParent(): ?LexEntity;
+
+    /**
+     * Sets the direct ancestor of this entity.
+     */
+    public function setParent(LexEntity $entity): void;
 }

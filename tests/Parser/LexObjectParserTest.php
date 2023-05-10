@@ -54,6 +54,10 @@ class LexObjectParserTest extends ParserTestCase
             (string) json_encode($checkValues['properties'] ?? []),
             (string) json_encode($parsed->properties),
         );
+
+        foreach ($parsed->properties as $property) {
+            $this->assertSame($parsed, $property->getParent());
+        }
     }
 
     /**

@@ -21,6 +21,7 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 class LexiconDoc implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public const MAIN = 'main';
 
@@ -36,5 +37,9 @@ class LexiconDoc implements JsonSerializable, LexEntity
         public readonly array $defs = [],
     ) {
         $this->lexicon = 1;
+
+        foreach ($this->defs as $def) {
+            $def->setParent($this);
+        }
     }
 }

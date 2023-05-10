@@ -18,6 +18,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 class LexRefUnion implements JsonSerializable, LexEntity
 {
     use LexEntityJsonSerializer;
+    use LexEntityParent;
 
     public readonly LexType $type;
 
