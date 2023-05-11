@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.0 - 2023-05-11
+
+### Added
+
+- Add `LexResolvable` interface for classes that can resolve references.
+- Apply `LexResolvable` to `LexRef`, `LexRefUnion`, and `LexString`.
+- Add `LexCollection` for collections of entities, such as those created when resolving union references or known values for string types.
+- Implement resolving of relative references.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Removed `LexString::getLexRefsForKnownValues()`; use `LexString::resolve()` instead.
+- Removed `LexRefUnion::getLexRefs()`; use `LexRefUnion::resolve()` instead.
+
+### Fixed
+
+- Nothing.
+
 ## 0.1.0 - 2023-05-07
 
 ### Added
