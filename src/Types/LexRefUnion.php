@@ -15,7 +15,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
  *     closed?: bool,
  * }
  */
-class LexRefUnion implements JsonSerializable, LexEntity
+class LexRefUnion implements JsonSerializable, LexEntity, LexResolvable
 {
     use LexEntityJsonSerializer;
     use LexEntityParent;
@@ -34,20 +34,20 @@ class LexRefUnion implements JsonSerializable, LexEntity
         $this->type = LexType::Union;
     }
 
-    /**
-     * Converts the string refs of the union to {@see LexRef} instances, which
-     * may then be resolved for further processing.
-     *
-     * @return list<LexRef>
-     */
-    public function getLexRefs(): array
+    public function resolve(): LexCollection
     {
-        $lexRefs = [];
+        $resolved = [];
 
         foreach ($this->refs as $ref) {
-            $lexRefs[] = new LexRef($this->description, $ref, $this->parserFactory);
+            $ref = new LexRef(ref: $ref, parserFactory: $this->parserFactory);
+            $ref->setParent($this);
+
+            $resolved[] = $ref->resolve();
         }
 
-        return $lexRefs;
+        $collection = new LexCollection(...$resolved);
+        $collection->setParent($this);
+
+        return $collection;
     }
 }

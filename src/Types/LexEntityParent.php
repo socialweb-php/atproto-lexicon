@@ -17,4 +17,15 @@ trait LexEntityParent
     {
         $this->parent = $entity;
     }
+
+    private function resolveAncestry(?LexEntity $entity, ?LexEntity $carryParent = null): ?LexEntity
+    {
+        $parent = $entity?->getParent();
+
+        if ($parent !== null) {
+            return $this->resolveAncestry($parent->getParent(), $parent);
+        }
+
+        return $carryParent;
+    }
 }

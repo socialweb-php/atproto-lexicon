@@ -23,7 +23,7 @@ use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
  *     knownValues?: list<string>,
  * }
  */
-class LexString implements JsonSerializable, LexPrimitive, LexUserType
+class LexString implements JsonSerializable, LexPrimitive, LexResolvable, LexUserType
 {
     use LexEntityJsonSerializer;
     use LexEntityParent;
@@ -50,20 +50,20 @@ class LexString implements JsonSerializable, LexPrimitive, LexUserType
         $this->type = LexType::String;
     }
 
-    /**
-     * Converts the string refs of the known values to {@see LexRef} instances,
-     * which may then be resolved for further processing.
-     *
-     * @return list<LexRef>
-     */
-    public function getLexRefsForKnownValues(): array
+    public function resolve(): LexCollection
     {
-        $lexRefs = [];
+        $resolved = [];
 
         foreach ($this->knownValues ?? [] as $ref) {
-            $lexRefs[] = new LexRef($this->description, $ref, $this->parserFactory);
+            $ref = new LexRef(ref: $ref, parserFactory: $this->parserFactory);
+            $ref->setParent($this);
+
+            $resolved[] = $ref->resolve();
         }
 
-        return $lexRefs;
+        $collection = new LexCollection(...$resolved);
+        $collection->setParent($this);
+
+        return $collection;
     }
 }

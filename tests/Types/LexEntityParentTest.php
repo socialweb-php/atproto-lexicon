@@ -24,4 +24,22 @@ class LexEntityParentTest extends TestCase
 
         $this->assertSame($entity, $this->getParent());
     }
+
+    public function testGetParentDoc(): void
+    {
+        $greatGrandparent = $this->mockery(LexEntity::class, [
+            'getParent' => null,
+        ]);
+        $grandparent = $this->mockery(LexEntity::class, [
+            'getParent' => $greatGrandparent,
+        ]);
+        $parent = $this->mockery(LexEntity::class, [
+            'getParent' => $grandparent,
+        ]);
+        $entity = $this->mockery(LexEntity::class, [
+            'getParent' => $parent,
+        ]);
+
+        $this->assertSame($greatGrandparent, $this->resolveAncestry($entity));
+    }
 }

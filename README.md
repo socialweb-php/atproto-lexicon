@@ -41,7 +41,7 @@ use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
 
-$schemas = '/path/to/bluesky-social/atproto/lexicons';
+$schemas = '/path/to/bluesky-social/lexicons';
 
 $schemaRepository = new DefaultSchemaRepository($schemas);
 $parser = new LexiconParser(new DefaultParserFactory($schemaRepository));
@@ -60,21 +60,11 @@ Using this library, you may resolve references in Lexicon schemas.
 For example:
 
 ```php
+use SocialWeb\Atproto\Lexicon\Types\LexResolvable;
+
 foreach ($document->defs as $defId => $def) {
-    if ($def instanceof LexRef) {
+    if ($def instanceof LexResolvable) {
         $resolved = $def->resolve();
-    }
-
-    if ($def instanceof LexRefUnion) {
-        foreach ($def->getLexRefs() as $ref) {
-            $resolved = $ref->resolve();
-        }
-    }
-
-    if ($def instanceof LexString) {
-        foreach ($def->getLexRefsForKnownValues() as $ref) {
-            $resolved = $ref->resolve();
-        }
     }
 }
 ```

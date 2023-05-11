@@ -10,10 +10,12 @@ use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Atproto\Lexicon\Parser\LexiconParser;
 use SocialWeb\Atproto\Lexicon\Parser\ParserFactory;
 
+use function assert;
 use function file_get_contents;
 use function is_array;
 use function json_encode;
 use function sprintf;
+use function str_starts_with;
 
 use const JSON_UNESCAPED_SLASHES;
 
@@ -24,7 +26,7 @@ use const JSON_UNESCAPED_SLASHES;
  *     ref: string,
  * }
  */
-class LexRef implements JsonSerializable, LexEntity
+class LexRef implements JsonSerializable, LexEntity, LexResolvable
 {
     use LexEntityJsonSerializer;
     use LexEntityParent;
@@ -53,15 +55,7 @@ class LexRef implements JsonSerializable, LexEntity
             );
         }
 
-        try {
-            $nsid = new Nsid($this->ref);
-        } catch (InvalidNsid $exception) {
-            throw new UnableToResolveReferences(
-                message: 'Unable to resolve reference for invalid NSID: ' . $this->ref,
-                previous: $exception,
-            );
-        }
-
+        $nsid = $this->getNsidForRef();
         $schemaFile = $this->parserFactory->getSchemaRepository()->findSchemaPathByNsid($nsid);
 
         if ($schemaFile === null) {
@@ -83,5 +77,30 @@ class LexRef implements JsonSerializable, LexEntity
 
         /** @var LexEntity */
         return $entity->defs[$nsid->defId];
+    }
+
+    private function getNsidForRef(): Nsid
+    {
+        assert($this->ref !== null);
+
+        $effectiveRef = $this->ref;
+        if (str_starts_with($effectiveRef, '#')) {
+            $ancestor = $this->resolveAncestry($this);
+
+            if (!$ancestor instanceof LexiconDoc) {
+                throw new UnableToResolveReferences('Unable to resolve relative reference: ' . $this->ref);
+            }
+
+            $effectiveRef = $ancestor->id->nsid . $effectiveRef;
+        }
+
+        try {
+            return new Nsid($effectiveRef);
+        } catch (InvalidNsid $exception) {
+            throw new UnableToResolveReferences(
+                message: 'Unable to resolve reference for invalid NSID: ' . $this->ref,
+                previous: $exception,
+            );
+        }
     }
 }
