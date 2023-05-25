@@ -19,7 +19,7 @@
 socialweb/atproto-lexicon parses [Lexicon schemas][] for the [AT Protocol][].
 
 The current version is compliant with [@atproto/lexicon][] at commit-ish
-[aabbf43][].
+[85bcd18][].
 
 This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
 By participating in this project and its community, you are expected to
@@ -93,4 +93,4 @@ for more information.
 [lexicon schemas]: https://atproto.com/guides/lexicon
 [at protocol]: https://atproto.com
 [@atproto/lexicon]: https://www.npmjs.com/package/@atproto/lexicon
-[aabbf43]: https://github.com/bluesky-social/atproto/blob/aabbf43a7f86b37cefbba614d408534b59f59525/packages/lexicon/src/types.ts
+[85bcd18]: https://github.com/bluesky-social/atproto/blob/85bcd18a7b74908b48e1505737d3b7857772860c/packages/lexicon/src/types.ts
