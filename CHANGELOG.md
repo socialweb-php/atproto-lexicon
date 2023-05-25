@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.1 - 2023-05-25
+
+## Added
+
+- Nothing
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Serialize defs, refs, and properties as objects, even when they are empty.
+- Support parsing Lexicon schemas as of commit-ish [85bcd18](https://github.com/bluesky-social/atproto/blob/85bcd18a7b74908b48e1505737d3b7857772860c/packages/lexicon/src/types.ts) of [@atproto/lexicon](https://www.npmjs.com/package/@atproto/lexicon).
+
 ## 0.2.0 - 2023-05-11
 
 ### Added
