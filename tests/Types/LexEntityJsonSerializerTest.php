@@ -23,6 +23,15 @@ class LexEntityJsonSerializerTest extends TestCase
 
             /** @var mixed[] | null */
             public ?array $qux = null;
+
+            /** @var array<string, mixed> */
+            public array $defs = [];
+
+            /** @var array<string, mixed> */
+            public array $refs = [];
+
+            /** @var array<string, mixed> */
+            public array $properties = [];
         };
 
         $sut->foo = '';
@@ -31,7 +40,7 @@ class LexEntityJsonSerializerTest extends TestCase
         $sut->qux = [];
 
         $this->assertJsonStringEqualsJsonString(
-            '{"foo":"","bar":0,"baz":false,"qux":[]}',
+            '{"foo":"","bar":0,"baz":false,"qux":[],"defs":{},"refs":{},"properties":{}}',
             (string) json_encode($sut),
         );
     }
@@ -69,6 +78,15 @@ class LexEntityJsonSerializerTest extends TestCase
 
             /** @var mixed[] | null */
             public ?array $qux = null;
+
+            /** @var array<string, mixed> | null */
+            public ?array $defs = null;
+
+            /** @var array<string, mixed> | null */
+            public ?array $refs = null;
+
+            /** @var array<string, mixed> | null */
+            public ?array $properties = null;
         };
 
         $this->assertJsonStringEqualsJsonString(

@@ -13,6 +13,8 @@ interface Parser
     /**
      * @param object | string $data A JSON object or string representation of
      *     the Lexicon entity to parse.
+     *
+     * @throws UnableToParse
      */
     public function parse(object | string $data): LexEntity;
 

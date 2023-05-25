@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SocialWeb\Test\Atproto\Lexicon;
 
+use PHPUnit\Framework\AssertionFailedError;
 use SocialWeb\Atproto\Lexicon\LexiconException;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultParserFactory;
 use SocialWeb\Atproto\Lexicon\Parser\DefaultSchemaRepository;
@@ -65,7 +66,7 @@ class ParseCanonicalSchemasTest extends TestCase
 
                 // Make sure the structure we created matches the original document.
                 $this->assertJsonStringEqualsJsonString($file->getContents(), (string) json_encode($document));
-            } catch (LexiconException $exception) {
+            } catch (LexiconException | AssertionFailedError $exception) {
                 $failedSchemas[] = [
                     'file' => $file->getRealPath(),
                     'error' => $exception->getMessage(),
