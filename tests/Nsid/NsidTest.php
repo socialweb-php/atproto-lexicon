@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SocialWeb\Test\Atproto\Lexicon\Nsid;
 
 use PHPUnit\Framework\Attributes\TestWith;
+use SocialWeb\Atproto\Lexicon\Nsid\Authority;
 use SocialWeb\Atproto\Lexicon\Nsid\InvalidNsid;
 use SocialWeb\Atproto\Lexicon\Nsid\Nsid;
 use SocialWeb\Test\Atproto\Lexicon\TestCase;
@@ -28,7 +29,8 @@ class NsidTest extends TestCase
         $nsid = new Nsid($preParsedNsid);
 
         $this->assertSame($expectedParsedNsid, $nsid->nsid);
-        $this->assertSame($expectedParsedAuthority, $nsid->authority);
+        $this->assertInstanceOf(Authority::class, $nsid->authority);
+        $this->assertSame($expectedParsedAuthority, (string) $nsid->authority);
         $this->assertSame($expectedParsedName, $nsid->name);
         $this->assertSame($expectedParsedDefId, $nsid->defId);
     }
@@ -71,5 +73,16 @@ class NsidTest extends TestCase
         $parsedNsid = new Nsid($nsid);
 
         $this->assertSame(sprintf('"%s"', $nsid), json_encode($parsedNsid));
+    }
+
+    #[TestWith(['com.example.status'])]
+    #[TestWith(['io.social.getFeed'])]
+    #[TestWith(['net.users.bob.ping'])]
+    #[TestWith(['com.example.foo#bar'])]
+    public function testToString(string $nsid): void
+    {
+        $parsedNsid = new Nsid($nsid);
+
+        $this->assertSame(sprintf('%s', $nsid), (string) $parsedNsid);
     }
 }
