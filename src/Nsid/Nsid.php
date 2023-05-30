@@ -27,18 +27,15 @@ class Nsid implements JsonSerializable, Stringable
         $parts = explode('.', $nsid);
         $nameAndDefId = explode('#', array_pop($parts));
 
-        try {
-            $parsedAuthority = new Authority(implode('.', $parts));
-        } catch (InvalidNsid $exception) {
-            throw new InvalidNsid("Unable to parse NSID \"$nsid\"", previous: $exception);
-        }
-
         $parsedName = $nameAndDefId[0] ?? '';
         $parsedDefId = $nameAndDefId[1] ?? 'main';
         $parsedNsid = implode('.', $parts) . ".$parsedName";
 
-        if ($parsedNsid === '.') {
-            throw new InvalidNsid("Unable to parse NSID \"$nsid\"");
+        try {
+            (new NsidValidator())->validate($parsedNsid);
+            $parsedAuthority = new Authority(implode('.', $parts));
+        } catch (InvalidNsid $exception) {
+            throw new InvalidNsid("Unable to parse NSID \"$nsid\"", previous: $exception);
         }
 
         $this->nsid = $parsedNsid;
@@ -59,11 +56,11 @@ class Nsid implements JsonSerializable, Stringable
 
         try {
             new self($nsid);
-
-            return true;
         } catch (InvalidNsid) {
             return false;
         }
+
+        return true;
     }
 
     public function __toString(): string

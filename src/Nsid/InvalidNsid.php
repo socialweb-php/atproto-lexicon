@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Nsid;
 
-use RuntimeException;
 use SocialWeb\Atproto\Lexicon\LexiconException;
+use SocialWeb\Atproto\Lexicon\Validators\InvalidValue;
 
-class InvalidNsid extends RuntimeException implements LexiconException
+class InvalidNsid extends InvalidValue implements LexiconException
 {
 }
