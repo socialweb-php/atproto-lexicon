@@ -46,7 +46,7 @@ class DidValidator implements Validator
             throw new InvalidDid('DID cannot end with ":" or "%" characters');
         }
 
-        if (strlen($value) > 8 * 1024) {
+        if (strlen($value) > 8192) {
             throw new InvalidDid('DID cannot be longer than 8 KB');
         }
 

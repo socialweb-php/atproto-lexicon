@@ -20,7 +20,7 @@ class NsidValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidNsid::class);
         $this->expectExceptionMessage($error);
@@ -35,6 +35,7 @@ class NsidValidatorTest extends TestCase
     {
         return [
             ['com.example.foo'],
+            ['com.example.foo.*'],
             ['com.' . str_repeat('o', 63) . '.foo'],
             ['com.example.' . str_repeat('o', 128)],
             ['com.' . str_repeat('middle.', 50) . 'foo'],
@@ -51,11 +52,17 @@ class NsidValidatorTest extends TestCase
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'NSID must be a string'],
+            [12.34, 'NSID must be a string'],
+            [false, 'NSID must be a string'],
+            [[], 'NSID must be a string'],
+            [(object) [], 'NSID must be a string'],
+            [null, 'NSID must be a string'],
             ['com.' . str_repeat('o', 64) . '.foo', 'NSID domain part cannot be longer than 63 characters'],
             ['com.example.' . str_repeat('o', 129), 'NSID name part cannot be longer than 128 characters'],
             ['com.' . str_repeat('middle.', 100) . 'foo', 'NSID cannot be longer than 382 characters'],

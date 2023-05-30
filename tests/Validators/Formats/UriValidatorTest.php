@@ -18,7 +18,7 @@ class UriValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidValue::class);
         $this->expectExceptionMessage($error);
@@ -38,11 +38,17 @@ class UriValidatorTest extends TestCase
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'Value must be a URI'],
+            [12.34, 'Value must be a URI'],
+            [false, 'Value must be a URI'],
+            [[], 'Value must be a URI'],
+            [(object) [], 'Value must be a URI'],
+            [null, 'Value must be a URI'],
             ['foobar', 'Value must be a URI'],
             ['foo://b ar', 'Value must be a URI'],
         ];

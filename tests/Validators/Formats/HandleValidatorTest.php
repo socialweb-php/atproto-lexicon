@@ -20,7 +20,7 @@ class HandleValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidHandle::class);
         $this->expectExceptionMessage($error);
@@ -110,11 +110,17 @@ class HandleValidatorTest extends TestCase
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'Handle must be a string'],
+            [12.34, 'Handle must be a string'],
+            [false, 'Handle must be a string'],
+            [[], 'Handle must be a string'],
+            [(object) [], 'Handle must be a string'],
+            [null, 'Handle must be a string'],
             ['did:thing.test', 'Invalid characters found in handle'],
             ['did:thing', 'Invalid characters found in handle'],
             ['john-.test', 'Handle parts cannot start or end with hyphens'],

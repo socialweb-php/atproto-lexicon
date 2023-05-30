@@ -20,7 +20,7 @@ class AtUriValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidValue::class);
         $this->expectExceptionMessage($error);
@@ -42,16 +42,38 @@ class AtUriValidatorTest extends TestCase
             ['at://user.bsky.social#/frag'],
             ['at://did:plc:asdf123/com.atproto.feed.post#/frag'],
             ['at://did:plc:asdf123/com.atproto.feed.post/record#/frag'],
-            ['at://did:plc:asdf123/com.atproto.feed.post/' . str_repeat('o', 800)],
+            ['at://did:plc:asdf123/com.atproto.feed.post/' . str_repeat('o', 8149)],
         ];
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'AT URI must be a string'],
+            [12.34, 'AT URI must be a string'],
+            [false, 'AT URI must be a string'],
+            [[], 'AT URI must be a string'],
+            [(object) [], 'AT URI must be a string'],
+            [null, 'AT URI must be a string'],
+            ['at://user.bsky.social#/foo#/bar', 'AT URI can have at most one hash mark (#)'],
+            ['at://did:plc:asdf123//foo', 'AT URI cannot have a slash after the authority without a path segment'],
+            [
+                'at://did:plc:asdf123/com.atproto.feed.post//foo',
+                'AT URI cannot have a slash after the collection unless a record key is provided',
+            ],
+            [
+                'at://did:plc:asdf123/com.atproto.feed.post/record/',
+                'AT URI path can have at most two parts and no trailing slash',
+            ],
+            ['at://did:plc:asdf123/com.atproto.feed.post#', 'AT URI fragment must be non-empty and start with slash'],
+            ['at://did:plc:asdf123/com.atproto.feed.post#ab', 'AT URI fragment must be non-empty and start with slash'],
+            [
+                'at://did:plc:asdf123/com.atproto.feed.post/' . str_repeat('o', 8150),
+                'AT URI cannot be longer than 8 KB',
+            ],
             ['a://did:plc:asdf123', 'AT URI must use "at://" scheme'],
             ['at//did:plc:asdf123', 'AT URI must use "at://" scheme'],
             ['at:/a/did:plc:asdf123', 'AT URI must use "at://" scheme'],

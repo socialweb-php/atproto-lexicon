@@ -33,7 +33,7 @@ class DatetimeValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidValue::class);
         $this->expectExceptionMessage($error);
@@ -69,11 +69,17 @@ class DatetimeValidatorTest extends TestCase
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'Value must be an ISO 8601 formatted datetime string'],
+            [12.34, 'Value must be an ISO 8601 formatted datetime string'],
+            [false, 'Value must be an ISO 8601 formatted datetime string'],
+            [[], 'Value must be an ISO 8601 formatted datetime string'],
+            [(object) [], 'Value must be an ISO 8601 formatted datetime string'],
+            [null, 'Value must be an ISO 8601 formatted datetime string'],
             ['2020-12-04', 'Value must be an ISO 8601 formatted datetime string'],
             ['(2023-02-23)', 'Value must be an ISO 8601 formatted datetime string'],
         ];

@@ -20,7 +20,7 @@ class DidValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidDid::class);
         $this->expectExceptionMessage($error);
@@ -57,15 +57,22 @@ class DidValidatorTest extends TestCase
             ['did:web:example.com'],
             ['did:key:zQ3shZc2QzApp2oymGvQbzP8eKheVshBHbU4ZYjeXqwSKEn6N'],
             ['did:ethr:0xb9c5714089478a327f09197987f16f9e5d936e8a'],
+            ['did:plc:7iza6de2dwap2sbkpav7c6c6' . str_repeat('a', 8160)],
         ];
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'DID must be a string'],
+            [12.34, 'DID must be a string'],
+            [false, 'DID must be a string'],
+            [[], 'DID must be a string'],
+            [(object) [], 'DID must be a string'],
+            [null, 'DID must be a string'],
             ['did', 'DID requires a prefix, method, and method-specific content'],
             ['didmethodval', 'DID requires a prefix, method, and method-specific content'],
             ['method:did:val', 'DID requires "did:" prefix'],
@@ -82,6 +89,7 @@ class DidValidatorTest extends TestCase
             ['did:method:val/two', 'Invalid characters found in DID'],
             ['did:method:val?two', 'Invalid characters found in DID'],
             ['did:method:val#two', 'Invalid characters found in DID'],
+            ['did:plc:7iza6de2dwap2sbkpav7c6c6' . str_repeat('a', 8161), 'DID cannot be longer than 8 KB'],
         ];
     }
 }

@@ -18,7 +18,7 @@ class AtIdentifierValidatorTest extends TestCase
     }
 
     #[DataProvider('invalidTestProvider')]
-    public function testInvalidValue(string $value, string $error): void
+    public function testInvalidValue(mixed $value, string $error): void
     {
         $this->expectException(InvalidValue::class);
         $this->expectExceptionMessage($error);
@@ -38,11 +38,17 @@ class AtIdentifierValidatorTest extends TestCase
     }
 
     /**
-     * @return array<array{0: string, 1: string}>
+     * @return array<array{0: mixed, 1: string}>
      */
     public static function invalidTestProvider(): array
     {
         return [
+            [1234, 'Value must be a valid handle or DID'],
+            [12.34, 'Value must be a valid handle or DID'],
+            [false, 'Value must be a valid handle or DID'],
+            [[], 'Value must be a valid handle or DID'],
+            [(object) [], 'Value must be a valid handle or DID'],
+            [null, 'Value must be a valid handle or DID'],
             ['bad id', 'Value must be a valid handle or DID'],
             ['-bad-.test', 'Value must be a valid handle or DID'],
         ];

@@ -76,10 +76,6 @@ class AtUriValidator implements Validator
             throw new InvalidValue('AT URI path can have at most two parts and no trailing slash');
         }
 
-        if (count($uriParts) >= 2 && $fragmentPart === null) {
-            throw new InvalidValue('AT URI fragment must be non-empty and start with slash');
-        }
-
         if ($fragmentPart !== null) {
             if (strlen($fragmentPart) === 0 || $fragmentPart[0] !== '/') {
                 throw new InvalidValue('AT URI fragment must be non-empty and start with slash');
