@@ -90,7 +90,7 @@ class LexiconDocParserTest extends ParserTestCase
         $schemaContents = (string) file_get_contents($schemaFile);
 
         $this->expectException(UnableToParse::class);
-        $this->expectExceptionMessage('Records, procedures, queries, and subscriptions must be the main definition.');
+        $this->expectExceptionMessage('Records, procedures, queries, and subscriptions must be in the main definition');
 
         $parser->parse($schemaContents);
     }

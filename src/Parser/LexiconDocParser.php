@@ -75,7 +75,7 @@ class LexiconDocParser implements Parser
                 )
             ) {
                 throw new UnableToParse(
-                    'Records, procedures, queries, and subscriptions must be the main definition.',
+                    'Records, procedures, queries, and subscriptions must be in the main definition',
                 );
             }
 
