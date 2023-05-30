@@ -16,7 +16,8 @@
         "security": "https://github.com/socialweb-php/atproto-lexicon/security/policy"
     },
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-intl": "*"
     },
     "require-dev": {
         "ramsey/devtools": "^2.0",
