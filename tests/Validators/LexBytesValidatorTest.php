@@ -45,6 +45,7 @@ class LexBytesValidatorTest extends ValidatorTestCase
             [new LexBytes(), [], 'Value must be a byte string'],
             [new LexBytes(), (object) [], 'Value must be a byte string'],
             [new LexBytes(), null, 'Value must be a byte string'],
+            [new LexBytes(), '', 'Value must be a byte string'],
             [new LexBytes(maxLength: 6), "\xdf\x44\x9d\x0a\xdf\x44\x9d", 'Value must not be larger than 6 bytes'],
             [new LexBytes(minLength: 4), "\xdf\x44\x9d", 'Value must not be smaller than 4 bytes'],
         ];

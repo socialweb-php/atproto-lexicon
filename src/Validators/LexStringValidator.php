@@ -7,12 +7,6 @@ namespace SocialWeb\Atproto\Lexicon\Validators;
 use SocialWeb\Atproto\Lexicon\Nsid\NsidValidator;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\AtIdentifierValidator;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\AtUriValidator;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\DatetimeValidator;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\DidValidator;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\HandleValidator;
-use SocialWeb\Atproto\Lexicon\Validators\Formats\UriValidator;
 
 use function grapheme_strlen;
 use function implode;
@@ -63,14 +57,14 @@ class LexStringValidator implements Validator
         }
 
         return match ($this->type->format) {
-            LexStringFormat::AtIdentifier => (new AtIdentifierValidator())->validate($value, $path),
-            LexStringFormat::AtUri => (new AtUriValidator())->validate($value, $path),
-            //LexStringFormat::Cid => ???,
-            LexStringFormat::DateTime => (new DatetimeValidator())->validate($value, $path),
-            LexStringFormat::Did => (new DidValidator())->validate($value, $path),
-            LexStringFormat::Handle => (new HandleValidator())->validate($value, $path),
+            LexStringFormat::AtIdentifier => (new Formats\AtIdentifierValidator())->validate($value, $path),
+            LexStringFormat::AtUri => (new Formats\AtUriValidator())->validate($value, $path),
+            LexStringFormat::Cid => (new LexCidLinkValidator())->validate($value, $path),
+            LexStringFormat::DateTime => (new Formats\DatetimeValidator())->validate($value, $path),
+            LexStringFormat::Did => (new Formats\DidValidator())->validate($value, $path),
+            LexStringFormat::Handle => (new Formats\HandleValidator())->validate($value, $path),
             LexStringFormat::Nsid => (new NsidValidator())->validate($value, $path),
-            LexStringFormat::Uri => (new UriValidator())->validate($value, $path),
+            LexStringFormat::Uri => (new Formats\UriValidator())->validate($value, $path),
             default => $value,
         };
     }
