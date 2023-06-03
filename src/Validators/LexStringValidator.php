@@ -59,7 +59,7 @@ class LexStringValidator implements Validator
         return match ($this->type->format) {
             LexStringFormat::AtIdentifier => (new Formats\AtIdentifierValidator())->validate($value, $path),
             LexStringFormat::AtUri => (new Formats\AtUriValidator())->validate($value, $path),
-            LexStringFormat::Cid => (new LexCidLinkValidator())->validate($value, $path),
+            LexStringFormat::Cid => (new Formats\CidValidator())->validate($value, $path),
             LexStringFormat::DateTime => (new Formats\DatetimeValidator())->validate($value, $path),
             LexStringFormat::Did => (new Formats\DidValidator())->validate($value, $path),
             LexStringFormat::Handle => (new Formats\HandleValidator())->validate($value, $path),
