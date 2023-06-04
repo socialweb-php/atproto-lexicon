@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialWeb\Atproto\Lexicon\Validators;
 
-use SocialWeb\Atproto\Lexicon\Nsid\NsidValidator;
 use SocialWeb\Atproto\Lexicon\Types\LexString;
 use SocialWeb\Atproto\Lexicon\Types\LexStringFormat;
 
@@ -63,7 +62,7 @@ class LexStringValidator implements Validator
             LexStringFormat::DateTime => (new Formats\DatetimeValidator())->validate($value, $path),
             LexStringFormat::Did => (new Formats\DidValidator())->validate($value, $path),
             LexStringFormat::Handle => (new Formats\HandleValidator())->validate($value, $path),
-            LexStringFormat::Nsid => (new NsidValidator())->validate($value, $path),
+            LexStringFormat::Nsid => (new Formats\NsidValidator())->validate($value, $path),
             LexStringFormat::Uri => (new Formats\UriValidator())->validate($value, $path),
             default => $value,
         };

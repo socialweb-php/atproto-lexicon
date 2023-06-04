@@ -80,7 +80,7 @@ class LexStringValidatorTest extends ValidatorTestCase
             [new LexString(format: LexStringFormat::Cid), 1234, 'Value must be a string'],
             [new LexString(format: LexStringFormat::Did), 'method:did:val', 'DID requires "did:" prefix'],
             [new LexString(format: LexStringFormat::Handle), 'did:thing.test', 'Invalid characters found in handle'],
-            [new LexString(format: LexStringFormat::Nsid), 'example.com', 'NSID needs at least three parts'],
+            [new LexString(format: LexStringFormat::Nsid), 'example.com', 'Value must be a valid NSID'],
             [new LexString(format: LexStringFormat::Uri), 'foobar', 'Value must be a URI'],
         ];
     }
